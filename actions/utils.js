@@ -1,8 +1,4 @@
-/* 
-* <license header>
-*/
-
-/* This file exposes some common utilities for your actions */
+const multipart = require('parse-multipart');
 
 /**
  *
@@ -129,9 +125,57 @@ function errorResponse (statusCode, message, logger) {
   }
 }
 
+async function streamToString(stream) {
+  const chunks = [];
+  return new Promise((resolve, reject) => {
+      stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+      stream.on('error', (err) => reject(err));
+      stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+  })
+}
+
+async function parseMultipart(content, boundary){
+  return parts = multipart.Parse(content, boundary);
+}
+
+async function extractBoundary(headerString){
+  var parts = headerString.split(";");
+  var boundary;
+  parts.forEach(element => {
+    if(element.indexOf("boundary")> -1){
+      boundary =  element.split("=")[1];
+    }
+  });
+  return boundary;
+}
+
+async function findHeaderIgnoreCase(headers, key){
+  return headers[Object.keys(headers)
+    .find(k => k.toLowerCase() === key.toLowerCase())
+  ];
+}
+
+async function getFromParsedBody(body, key){
+  body.forEach(element => {
+    if(element.filename == key){
+      return element.data;
+    }
+  });
+}
+/* async function quicktest(){
+  var boundary = await extractBoundary("multipart/form-data; boundary=d32edc76-d338-4443-a322-3861d3c577f9");
+  console.log(boundary)
+}
+quicktest() */
+
 module.exports = {
   errorResponse,
   getBearerToken,
   stringParameters,
-  checkMissingRequestInputs
+  checkMissingRequestInputs,
+  streamToString,
+  parseMultipart,
+  extractBoundary,
+  findHeaderIgnoreCase,
+  getFromParsedBody
 }
