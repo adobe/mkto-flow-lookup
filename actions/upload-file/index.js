@@ -1,8 +1,7 @@
-const filesLib = require('@adobe/aio-lib-files')
-
-const fetch = require('node-fetch')
+const filesLib = require('@adobe/aio-lib-files');
+const parser = require('multipart-form-parser');
 const { Core, Target } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, streamToString, parseMultipart, extractBoundary, findHeaderIgnoreCase, getFromParsedBody } = require('../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, streamToString, extractBoundary, findHeaderIgnoreCase, getFromParsedBody } = require('../utils')
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
@@ -31,22 +30,44 @@ async function main(params) {
     var response = {
       body: {}
     };
+    logger.info(params.target);
     var contentType = await findHeaderIgnoreCase(params.__ow_headers, "Content-Type");
     if (contentType && contentType.indexOf("multipart/form-data") > -1) {
       logger.info("Received multpart request")
       try {
         var boundary = await extractBoundary(contentType);
+        //logger.debug("Body: " + Buffer.from(params.__ow_body, 'base64').toString());
 
-        var parsed = await parseMultipart(params.__ow_body, boundary);
-        var target = await getFromParsedBody(parsed, "target");
-        var content = await getFromParsedBody(parsed, "file");
-        logger.info(streamToString(target));
+
+
+        var parsed = await parser.Parse(Buffer.from(params.__ow_body, 'base64'), boundary);
+        parsed.forEach(element => {
+          logger.debug(Object.keys(element));
+        });
+
+        var target;
+        var content;
+
+        parsed.forEach(element => {
+          if(element.name === "target"){
+            target = element.data.toString();
+          }
+          if(element.name === "file"){
+            content = element.data;
+          }
+        });
+        //var target = await getFromParsedBody(parsed, "target");
+        
+        logger.info("target:\r\n" + target);
+        //var content = await getFromParsedBody(parsed, "file");
+        logger.info("content:\r\n" + content);
+
         await files.write(target, content);
-        props = await files.getProperties(params.target);
+        props = await files.getProperties(target);
 
         response["statusCode"] = 200;
         logger.info(`${response.statusCode}: successful request`);
-        //response.body["props"] = props;
+        response.body["props"] = props;
 
       } catch (error) {
         return errorResponse(400, error.message, logger);

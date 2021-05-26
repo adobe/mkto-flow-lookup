@@ -6,14 +6,20 @@ packages:
         function: actions\upload-file\index.js
         web: 'yes'
         runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
       delete-file:
         function: actions\delete-file\index.js
         web: 'yes'
         runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
       file-properties:
         function: actions\delete-file\index.js
         web: 'yes'
         runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
       # generic:
       #   function: actions\generic\index.js
       #   web: 'yes'

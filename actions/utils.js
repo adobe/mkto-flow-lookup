@@ -1,4 +1,4 @@
-const multipart = require('parse-multipart');
+
 
 /**
  *
@@ -134,9 +134,6 @@ async function streamToString(stream) {
   })
 }
 
-async function parseMultipart(content, boundary){
-  return parts = multipart.Parse(content, boundary);
-}
 
 async function extractBoundary(headerString){
   var parts = headerString.split(";");
@@ -157,7 +154,7 @@ async function findHeaderIgnoreCase(headers, key){
 
 async function getFromParsedBody(body, key){
   body.forEach(element => {
-    if(element.filename == key){
+    if(element.name === key){
       return element.data;
     }
   });
@@ -174,7 +171,6 @@ module.exports = {
   stringParameters,
   checkMissingRequestInputs,
   streamToString,
-  parseMultipart,
   extractBoundary,
   findHeaderIgnoreCase,
   getFromParsedBody
