@@ -5,19 +5,19 @@ packages:
       upload-file:
         function: actions\upload-file\index.js
         web: 'yes'
-        runtime: 'nodejs:12'
+        runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
       delete-file:
         function: actions\delete-file\index.js
         web: 'yes'
-        runtime: 'nodejs:12'
+        runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
       file-properties:
         function: actions\delete-file\index.js
         web: 'yes'
-        runtime: 'nodejs:12'
+        runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
       # generic:

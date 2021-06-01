@@ -31,9 +31,13 @@ async function main(params) {
         };
         try {
             props = await files.getProperties(params.target);
-            logger.debug(props);
-            response["statusCode"] = 200;
-            response.body["props"] = props;
+            if (!props) {
+                return errorResponse(404, { message: "Not Found" }, logger);
+            } else {
+                logger.debug(props);
+                response["statusCode"] = 200;
+                response.body["props"] = props;
+            }
         } catch (error) {
             logger.info("caught error:")
             return errorResponse(400, error, logger);

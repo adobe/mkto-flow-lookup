@@ -21,6 +21,6 @@
     "e2e": "jest --collectCoverage=false --testRegex ./e2e"
   },
   "engines": {
-    "node": "^10 || ^12"
+    "node": "^10 || ^12 || ^14"
   }
 }
