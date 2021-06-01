@@ -125,16 +125,16 @@ function errorResponse (statusCode, message, logger) {
   }
 }
 
-async function streamToString(stream) {
+/* async function streamToString(stream) {
   const chunks = [];
   return new Promise((resolve, reject) => {
       stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
       stream.on('error', (err) => reject(err));
       stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
   })
-}
+} */
 
-
+//TODO, replace w/ multipart library implementation
 async function extractBoundary(headerString){
   var parts = headerString.split(";");
   var boundary;
@@ -146,32 +146,26 @@ async function extractBoundary(headerString){
   return boundary;
 }
 
+/* 
+* Searches headers list for a given header regardless of case
+* 
+* @param headers {array} Headers list
+* @param key {string} Header name to locate
+*
+* @returns The value of the desired header
+*/
+
 async function findHeaderIgnoreCase(headers, key){
   return headers[Object.keys(headers)
     .find(k => k.toLowerCase() === key.toLowerCase())
   ];
 }
 
-async function getFromParsedBody(body, key){
-  body.forEach(element => {
-    if(element.name === key){
-      return element.data;
-    }
-  });
-}
-/* async function quicktest(){
-  var boundary = await extractBoundary("multipart/form-data; boundary=d32edc76-d338-4443-a322-3861d3c577f9");
-  console.log(boundary)
-}
-quicktest() */
-
 module.exports = {
   errorResponse,
   getBearerToken,
   stringParameters,
   checkMissingRequestInputs,
-  streamToString,
   extractBoundary,
-  findHeaderIgnoreCase,
-  getFromParsedBody
+  findHeaderIgnoreCase
 }

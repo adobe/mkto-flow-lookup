@@ -1,4 +1,6 @@
 const filesLib = require('@adobe/aio-lib-files')
+
+const fetch = require('node-fetch')
 const { Core, Target } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs } = require('../utils')
 
@@ -30,10 +32,9 @@ async function main(params) {
             body: {}
         };
         try {
-            props = await files.getProperties(params.target);
-            logger.debug(props);
+            files = await files.list(params.target);
             response["statusCode"] = 200;
-            response.body["props"] = props;
+            response.body["files"] = files;
         } catch (error) {
             logger.info("caught error:")
             return errorResponse(400, error, logger);
