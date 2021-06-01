@@ -1,0 +1,138 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _helpers = require("@swc/helpers");
+/*
+* <license header>
+*/ var _regeneratorRuntime = require("regenerator-runtime");
+var _regeneratorRuntimeDefault = parcelHelpers.interopDefault(_regeneratorRuntime);
+var _excApp = require("@adobe/exc-app");
+var _excAppDefault = parcelHelpers.interopDefault(_excApp);
+var _configJson = require("./config.json");
+var _configJsonDefault = parcelHelpers.interopDefault(_configJson);
+var _utilsJs = require("./utils.js");
+var _utilsJsDefault = parcelHelpers.interopDefault(_utilsJs);
+var regeneratorRuntime = require("regenerator-runtime");
+var _marked = regeneratorRuntime.mark(_invokeAction);
+var state = {
+};
+window.onload = function() {
+    /* Here you can bootstrap your application and configure the integration with the Adobe Experience Cloud Shell */ try {
+        // attempt to load the Experience Cloud Runtime
+        require('./exc-runtime');
+        // if there are no errors, bootstrap the app in the Experience Cloud Shell
+        _excApp.init(initRuntime);
+    } catch (e) {
+        console.log('application not running in Adobe Experience Cloud Shell');
+    }
+    showActionsList();
+    document.getElementById('actionForm').onsubmit = function(event) {
+        event.preventDefault();
+        setTimeout(doSubmit, 1);
+    };
+};
+/**
+ * Initialize runtime and get IMS profile
+ */ function initRuntime() {
+    // get the Experience Cloud Runtime object
+    var runtime = _excAppDefault.default();
+    // ready event brings in authentication/user info
+    runtime.on('ready', function(param) {
+        var imsOrg = param.imsOrg, imsToken = param.imsToken, imsProfile = param.imsProfile, locale = param.locale;
+        // tell the exc-runtime object we are done
+        runtime.done();
+        state = {
+            imsOrg: imsOrg,
+            imsToken: imsToken,
+            imsProfile: imsProfile,
+            locale: locale
+        };
+        console.log('exc-app:ready');
+    });
+    // set solution info, shortTitle is used when window is too small to display full title
+    runtime.solution = {
+        icon: 'AdobeExperienceCloud',
+        title: 'test-raw'
+    };
+    runtime.title = 'test-raw';
+}
+/**
+ * Generate list of actions
+ */ function showActionsList() {
+    var container = document.getElementById('action-list');
+    if (Object.keys(_configJsonDefault.default).length === 0) container.innerHTML = '<span>you have no actions, run <code>aio app add actions</code> to add one</span>';
+    else container.innerHTML = '<select id="selAction">' + Object.entries(_configJsonDefault.default).map(function(param) {
+        var _param = _helpers.slicedToArray(param, 1), actionName = _param[0];
+        return "<option>".concat(actionName, "</option>");
+    }).join('') + '</select>';
+}
+/**
+ * Quick helper to safely call JSON.parse
+ * @param {string} val 
+ */ function safeParse(val) {
+    var result = null;
+    try {
+        result = JSON.parse(val);
+    } catch (e) {
+    }
+    return result;
+}
+/**
+ * Submit the form, and get a result back from the action
+ */ function doSubmit() {
+    var actionIndex = document.getElementById('selAction').selectedIndex || 0;
+    var taOutput = document.getElementById('taOutput');
+    taOutput.innerHTML = "calling action ...";
+    if (_configJsonDefault.default) {
+        var selAction = Object.entries(_configJsonDefault.default)[actionIndex];
+        var headers = safeParse(document.getElementById('actionHeaders').value);
+        var params = safeParse(document.getElementById('actionParams').value);
+        // track the time to a result
+        var preCallTime = Date.now();
+        var outputHTML = '';
+        invokeAction(selAction, headers, params).then(function(actionResponse) {
+            outputHTML = JSON.stringify(actionResponse, 0, 2);
+        }).catch(function(err) {
+            console.error('Error:', err);
+            outputHTML = err.message;
+        }).finally(function() {
+            taOutput.innerHTML = "time:".concat(Date.now() - preCallTime, "ms\n\n ").concat(outputHTML);
+        });
+    }
+}
+function _invokeAction() {
+    _invokeAction = _helpers.asyncToGenerator(regeneratorRuntime.mark(function _callee(action, _headers, _params) {
+        var headers, params, lowercase, result;
+        return regeneratorRuntime.wrap(function _callee$(_ctx) {
+            while(1)switch(_ctx.prev = _ctx.next){
+                case 0:
+                    headers = _headers || {
+                    };
+                    params = _params || {
+                    };
+                    // all headers to lowercase
+                    Object.keys(headers).forEach(function(h) {
+                        lowercase = h.toLowerCase();
+                        if (lowercase !== h) {
+                            headers[lowercase] = headers[h];
+                            headers[h] = undefined;
+                            delete headers[h];
+                        }
+                    });
+                    // set the authorization header and org from the ims props object
+                    if (state.imsToken && !headers.authorization) headers.authorization = "Bearer ".concat(state.imsToken);
+                    if (state.imsOrg && !headers['x-gw-ims-org-id']) headers['x-gw-ims-org-id'] = state.imsOrg;
+                    _ctx.next = 7;
+                    return _utilsJsDefault.default(action[1], headers, params);
+                case 7:
+                    result = _ctx.sent;
+                    return _ctx.abrupt("return", result);
+                case 9:
+                case "end":
+                    return _ctx.stop();
+            }
+        }, _callee);
+    }));
+    return _invokeAction.apply(this, arguments);
+}
+function invokeAction(action, _headers, _params) {
+    return _invokeAction.apply(this, arguments);
+}

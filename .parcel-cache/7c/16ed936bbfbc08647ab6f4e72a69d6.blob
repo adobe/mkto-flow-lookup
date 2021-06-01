@@ -1,0 +1,97 @@
+"use strict";
+/*************************************************************************
+ * Copyright 2020 Adobe
+ * All Rights Reserved.
+ *
+ * NOTICE: Adobe permits you to use, modify, and distribute this file in
+ * accordance with the terms of the Adobe license agreement accompanying
+ * it. If you have received this file from a source other than Adobe,
+ * then your use, modification, or distribution of it requires the prior
+ * written permission of Adobe.
+ **************************************************************************/ var __createBinding = this && this.__createBinding || (Object.create ? function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, {
+        enumerable: true,
+        get: function() {
+            return m[k];
+        }
+    });
+} : function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function(o, v) {
+    Object.defineProperty(o, "default", {
+        enumerable: true,
+        value: v
+    });
+} : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = this && this.__importStar || function(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {
+    };
+    if (mod != null) for(var k in mod)if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.init = void 0;
+/**
+ * API used to integrate as solution web application with the unified shell of the Adobe Experience
+ * Cloud.
+ * @packageDocumentation
+ * @preferred
+ */ const Global_1 = __importStar(require("./src/Global"));
+/**
+ * Get the runtime object which contains all unified-shell APIs.
+ *
+ * ***Example:***
+ *
+ * ```typescript
+ * import React from 'react';
+ * import ReactDOM from 'react-dom';
+ * import excApp from '@adobe/exc-app';
+ *
+ * export class MyComponent extends React.Component {
+ *   constructor(props) {
+ *     this.runtime = excApp();
+ *   }
+ * }
+ * ```
+ * @returns The runtime object.
+ */ function runtime() {
+    // Pass through first argument for backwards compatibility
+    return Global_1.getImpl('default')(arguments[0]); // eslint-disable-line prefer-rest-params
+}
+exports.default = runtime;
+/**
+ * Initializes a solution web application by invoking the bootstrap callback
+ * once the runtime is ready.
+ * 1. if the module is already defined, start to bootstrap
+ * 2. otherwise define the global callback that will be called when runtime is ready.
+ *
+ * ***Example:***
+ *
+ * ```typescript
+ * import React from 'react';
+ * import ReactDOM from 'react-dom';
+ * import runtime, {init} from '@adobe/exc-app';
+ *
+ * init(() => {
+ *   ReactDOM.render(<MainComponent runtime={runtime()} />, document.querySelector('#main'));
+ * });
+ * ```
+ * @param bootstrap Callback used to bootstrap a solution. The runtime object is passed in as a
+ * parameter to this callback.
+ */ function init(bootstrap) {
+    const callback = ()=>{
+        bootstrap(runtime());
+    };
+    if (Global_1.default['exc-module-runtime']) callback();
+    else Global_1.default.EXC_MR_READY = callback;
+}
+exports.init = init;

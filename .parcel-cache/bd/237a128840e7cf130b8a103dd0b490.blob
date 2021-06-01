@@ -1,0 +1,59 @@
+<!-- <license header> -->
+
+  <!DOCTYPE html>
+  <html lang="en" class="spectrum spectrum--medium spectrum--light">
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="27872574d56ac4a7943254de828cd7c1">
+    <link rel="stylesheet" href="ab2ecc7a95f1ec5de7be2bb70fef9588">
+    <link rel="stylesheet" href="af05fa53f1851612e14cfccba341e760">
+  <title>AIOFileman</title>
+  <script src="52fac87db28ccc684a483e9660f12846"></script>
+  <script src="ed0dff9b8e807329bce3edb804c67233"></script>
+</head>
+<body>
+  <h1>Welcome to AIOFileman!</h1>
+  <div class="spectrum--large spectrum-Typography spectrum-Site">
+    <div>
+      <h2>Run your application backend actions</h2>
+      <form id="actionForm">
+        <div>
+          <label for="action-list">Select an action.</label>
+          <span id="action-list" name="action-list"></span>
+        </div>
+        <div>
+          <label for="actionParams">headers { json } to pass to your action:</label>
+          <textarea id="actionHeaders" name="actionHeaders" placeholder="{ &quot;key&quot;: &quot;value&quot; }"></textarea>
+        </div>
+        <div>
+          <label for="actionParams">params { json } to pass to your action:</label>
+          <textarea id="actionParams" name="actionParams" placeholder="{ &quot;key&quot;: &quot;value&quot; }"></textarea>
+        </div>
+        <input type="submit" value="Invoke">
+      </form>
+    </div>
+    <div>
+      <h2>results</h2>
+      <textarea id="taOutput" readonly="" spellcheck="false" style="820c41116f2dd6ed831980c4de284df4"></textarea>
+    </div>
+    <footer>
+      <h2>Useful documentation for your app</h2>
+      <a href="791d86b999423337bb8cfaddd5865e66" target="_blank">
+        Firefly Apps
+      </a>
+      <a href="2f0feb644e3fb7fea563aa0044984bfd" target="_blank">
+        Adobe I/O SDK
+      </a>
+      <a href="d6ac50e624ce3f886bc714b1995f7687" target="_blank">
+        Adobe I/O Runtime
+      </a>
+      <a href="94fdcc00030375a13c34d03d87082e57" target="_blank">
+        React Spectrum
+      </a>
+    </footer>
+  </div>
+</body>
+</html>

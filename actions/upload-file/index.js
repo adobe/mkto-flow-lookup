@@ -13,8 +13,7 @@ async function main(params) {
     // 'info' is the default level if not set
     logger.info('Calling the main action')
 
-    // log parameters, only if params.LOG_LEVEL === 'debug'
-    //logger.debug(stringParameters(params))
+
 
     /* // check for missing request input parameters and headers
     const requiredParams = ['target', 'file'];
@@ -33,34 +32,25 @@ async function main(params) {
     logger.info(params.target);
     var contentType = await findHeaderIgnoreCase(params.__ow_headers, "Content-Type");
     if (contentType && contentType.indexOf("multipart/form-data") > -1) {
-      logger.info("Received multpart request")
+      logger.info("Received multipart request")
       try {
         var boundary = await extractBoundary(contentType);
-        //logger.debug("Body: " + Buffer.from(params.__ow_body, 'base64').toString());
-
-
-
         var parsed = await parser.Parse(Buffer.from(params.__ow_body, 'base64'), boundary);
-        parsed.forEach(element => {
-          logger.debug(Object.keys(element));
-        });
 
         var target;
         var content;
 
         parsed.forEach(element => {
-          if(element.name === "target"){
+          if (element.name === "target") {
             target = element.data.toString();
           }
-          if(element.name === "file"){
+          if (element.name === "file") {
             content = element.data;
           }
         });
-        //var target = await getFromParsedBody(parsed, "target");
-        
-        logger.info("target:\r\n" + target);
-        //var content = await getFromParsedBody(parsed, "file");
-        logger.info("content:\r\n" + content);
+
+        logger.debug("target:\r\n" + target);
+        logger.debug("content:\r\n" + content);
 
         await files.write(target, content);
         props = await files.getProperties(target);
@@ -75,7 +65,8 @@ async function main(params) {
       return response;
     }
     else if (contentType && contentType == "application/json") {
- 
+      logger.debug("Received JSON request")
+      logger.debug(stringParameters(params))
       try {
         await files.write(params.target, params.file);
         props = await files.getProperties(params.target);
@@ -85,8 +76,8 @@ async function main(params) {
       } catch (error) {
         return errorResponse(400, error.message, logger)
       }
- 
-      return response; 
+
+      return response;
     }
   }
   catch (error) {

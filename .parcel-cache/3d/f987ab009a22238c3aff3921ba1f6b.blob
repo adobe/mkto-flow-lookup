@@ -1,0 +1,73 @@
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _helpers = require("@swc/helpers");
+var regeneratorRuntime = require("regenerator-runtime");
+var _marked = regeneratorRuntime.mark(_actionWebInvoke);
+function _actionWebInvoke() {
+    _actionWebInvoke = /*
+* <license header>
+*/ /* global fetch */ /**
+ *
+ * Invokes a web action
+ *
+ * @param  {string} actionUrl
+ * @param {object} headers
+ * @param  {object} params
+ *
+ * @returns {Promise<string|object>} the response
+ *
+ */ _helpers.asyncToGenerator(regeneratorRuntime.mark(function _callee(actionUrl, param, param1, param2) {
+        var headers, params, options, actionHeaders, fetchConfig, response, content;
+        return regeneratorRuntime.wrap(function _callee$(_ctx) {
+            while(1)switch(_ctx.prev = _ctx.next){
+                case 0:
+                    headers = param === void 0 ? {
+                    } : param, params = param1 === void 0 ? {
+                    } : param1, options = param2 === void 0 ? {
+                        method: 'POST'
+                    } : param2;
+                    actionHeaders = _helpers.objectSpread({
+                        'Content-Type': 'application/json'
+                    }, headers);
+                    fetchConfig = {
+                        headers: actionHeaders
+                    };
+                    if (window.location.hostname === 'localhost') actionHeaders['x-ow-extra-logging'] = 'on';
+                    fetchConfig.method = options.method.toUpperCase();
+                    if (fetchConfig.method === 'GET') {
+                        actionUrl = new URL(actionUrl);
+                        Object.keys(params).forEach(function(key) {
+                            return actionUrl.searchParams.append(key, params[key]);
+                        });
+                    } else if (fetchConfig.method === 'POST') fetchConfig.body = JSON.stringify(params);
+                    _ctx.next = 8;
+                    return fetch(actionUrl, fetchConfig);
+                case 8:
+                    response = _ctx.sent;
+                    _ctx.next = 11;
+                    return response.text();
+                case 11:
+                    content = _ctx.sent;
+                    if (response.ok) {
+                        _ctx.next = 14;
+                        break;
+                    }
+                    throw new Error("failed request to '".concat(actionUrl, "' with status: ").concat(response.status, " and message: ").concat(content));
+                case 14:
+                    try {
+                        content = JSON.parse(content);
+                    } catch (e) {
+                    }
+                    return _ctx.abrupt("return", content);
+                case 16:
+                case "end":
+                    return _ctx.stop();
+            }
+        }, _callee);
+    }));
+    return _actionWebInvoke.apply(this, arguments);
+}
+function actionWebInvoke(actionUrl) {
+    return _actionWebInvoke.apply(this, arguments);
+}
+exports.default = actionWebInvoke;

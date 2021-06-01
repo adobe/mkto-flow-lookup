@@ -1,0 +1,52 @@
+"use strict";
+/*************************************************************************
+ * Copyright 2020 Adobe
+ * All Rights Reserved.
+ *
+ * NOTICE: Adobe permits you to use, modify, and distribute this file in
+ * accordance with the terms of the Adobe license agreement accompanying
+ * it. If you have received this file from a source other than Adobe,
+ * then your use, modification, or distribution of it requires the prior
+ * written permission of Adobe.
+ **************************************************************************/ Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.connect = exports.getImpl = void 0;
+/**
+ * Gets the implementation for the module.
+ * @ignore
+ * @param moduleName The name of the module.
+ * @returns The implementation.
+ */ function getImpl(moduleName) {
+    const emr = window['exc-module-runtime'];
+    if (!emr) throw new Error('module-runtime APIs not available.');
+    return emr[moduleName];
+}
+exports.getImpl = getImpl;
+/**
+ * Connects attributes of the specified API.
+ * @ignore
+ * @param apiName Name of the API.
+ * @param attributes The attributes to connect.
+ * @returns The API instance.
+ */ function connect(apiName, attributes) {
+    const api = {
+    };
+    attributes.forEach((feature)=>{
+        const featureName = feature[0];
+        if (feature[1]) api[featureName] = (...args)=>{
+            return getImpl(apiName)[featureName](...args);
+        };
+        else Object.defineProperty(api, featureName, {
+            get: ()=>{
+                return getImpl(apiName)[featureName];
+            },
+            set: (value)=>{
+                getImpl(apiName)[featureName] = value;
+            }
+        });
+    });
+    return api;
+}
+exports.connect = connect;
+exports.default = window;
