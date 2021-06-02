@@ -23,15 +23,20 @@ async function main(params) {
             return errorResponse(400, errorMessage, logger)
         }
 
+
+        // log parameters, only if params.LOG_LEVEL === 'debug'
+        logger.debug(stringParameters(params))
         // extract the user Bearer token from the Authorization header
-        const token = getBearerToken(params)
+        //const token = getBearerToken(params)
 
         var response = {
             body: {}
         };
         try {
             props = await files.getProperties(params.target);
+            logger.debug(props);
             if (!props) {
+                logger.debug("props empty")
                 return errorResponse(404, { message: "Not Found" }, logger);
             } else {
                 logger.debug(props);
@@ -43,7 +48,7 @@ async function main(params) {
             return errorResponse(400, error, logger);
         }
 
-        return { "payload": response };
+        return response;
     } catch (error) {
         // log any server errors
         logger.error(error)

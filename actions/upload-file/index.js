@@ -65,19 +65,24 @@ async function main(params) {
       return response;
     }
     else if (contentType && contentType == "application/json") {
-      logger.debug("Received JSON request")
-      logger.debug(stringParameters(params))
+      logger.debug("Received JSON request");
+      logger.debug(stringParameters(params));
       try {
         await files.write(params.target, params.file);
         props = await files.getProperties(params.target);
-        response["statusCode"] = 200;
-        logger.info(`${response.statusCode}: successful request`);
-        response.body["props"] = props;
+        if (props) {
+          response["statusCode"] = 200;
+          logger.info(`${response.statusCode}: successful request`);
+          response.body["props"] = props;
+          return response;
+        } else {
+          logger.info(`${response.statusCode}: unsuccessful request, props empty`);
+          errorResponse(500, "Something went wrong, no props returned");
+        }
+
       } catch (error) {
         return errorResponse(400, error.message, logger)
       }
-
-      return response;
     }
   }
   catch (error) {
