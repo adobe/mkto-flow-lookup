@@ -35,6 +35,7 @@ async function main(params) {
         try {
             props = await files.getProperties(params.target);
             logger.debug(props);
+            logger.info("keys:" + Object.keys(props));
             if (!props) {
                 logger.debug("props empty")
                 return errorResponse(404, { message: "Not Found" }, logger);

@@ -8,7 +8,7 @@ const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
 const packagejson = JSON.parse(fs.readFileSync('package.json').toString());
 const runtimePackage = `${packagejson.name}-${packagejson.version}`
 const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
-const actionUrl = `${actionPrefix}/file-properties`;
+const propsUrl = `${actionPrefix}/file-properties`;
 const uploadUrl = `${actionPrefix}/upload-file`
 const deleteUrl = `${actionPrefix}/delete-file`
 
@@ -48,6 +48,6 @@ afterEach(async () => {
     logger.debug(res1);
     var res2 = await fetch(deleteUrl, {method: "POST", body: JSON.stringify(file2), headers: { 'Content-Type': 'application/json' }})
     logger.debug(res2);
-    var res3 = await fetch(deleteUrl, {method: "POST", body: JSON.stringify(file3), headers: { 'Content-Type': 'application/json' }})
+    var res3 = await fetch(deleteUrl, {method: "POST", body: JSON.stringify(file), headers: { 'Content-Type': 'application/json' }})
     logger.debug(res3);
 })

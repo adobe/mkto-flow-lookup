@@ -14,7 +14,11 @@ async function main(params) {
         // 'info' is the default level if not set
         logger.info('Calling the main action')
 
+        // log parameters, only if params.LOG_LEVEL === 'debug'
+
+        logger.debug(stringParameters(params))
         // check for missing request input parameters and headers
+
         const requiredParams = ['target'];
         const requiredHeaders = [
             //'Authorization', 
@@ -33,8 +37,15 @@ async function main(params) {
         };
         try {
             files = await files.list(params.target);
-            response["statusCode"] = 200;
-            response.body["files"] = files;
+            if(!files){
+                logger.debug("files is null");
+                return errorResponse(404, { message: "Not Found" }, logger);
+            }else {
+                logger.debug(props);
+                response["statusCode"] = 200;
+                response.body["files"] = files;
+            }
+
         } catch (error) {
             logger.info("caught error:")
             return errorResponse(400, error, logger);

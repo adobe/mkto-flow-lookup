@@ -33,8 +33,13 @@ async function main(params) {
 
     var response = {};
     try {
-      await files.delete(params.target);
-      response["statusCode"] = 200;
+      var props = files.getProperties(params.target)
+      if (!props) {
+        return errorResponse(404, "NotFound", logger);
+      } else {
+        await files.delete(params.target);
+        response["statusCode"] = 200;
+      }
     } catch (error) {
       logger.info("caught error:")
       return errorResponse(400, error, logger);
