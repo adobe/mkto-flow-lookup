@@ -11,7 +11,7 @@ const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePacka
 const propsUrl = `${actionPrefix}/file-properties`;
 const uploadUrl = `${actionPrefix}/upload-file`;
 const deleteUrl = `${actionPrefix}/delete-file`;
-const dir = "test/"
+const dir = "/test/"
 
 const t1 = dir + "1.txt";
 const t2 = dir + "2.txt";
@@ -36,7 +36,7 @@ module.exports = {
     hostname,
     packagejson,
     runtimePackage,
-    ctionPrefix,
+    actionPrefix,
     propsUrl,
     uploadUrl,
     deleteUrl,

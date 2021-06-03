@@ -34,20 +34,10 @@ const file3 = {
 }
 
 beforeEach(async () => {
-    var res1 = await fetch(uploadUrl, {method: "POST", body: JSON.stringify(file1), headers: { 'Content-Type': 'application/json' }})
-    logger.debug(res1);
-    var res2 = await fetch(uploadUrl, {method: "POST", body: JSON.stringify(file2), headers: { 'Content-Type': 'application/json' }})
-    logger.debug(res2);
-    var res3 = await fetch(uploadUrl, {method: "POST", body: JSON.stringify(file3), headers: { 'Content-Type': 'application/json' }})
-    logger.debug(res3);
+
 
 
  })
 afterEach(async () => { 
-    var res1 = await fetch(deleteUrl, {method: "POST", body: JSON.stringify(file1), headers: { 'Content-Type': 'application/json' }})
-    logger.debug(res1);
-    var res2 = await fetch(deleteUrl, {method: "POST", body: JSON.stringify(file2), headers: { 'Content-Type': 'application/json' }})
-    logger.debug(res2);
-    var res3 = await fetch(deleteUrl, {method: "POST", body: JSON.stringify(file), headers: { 'Content-Type': 'application/json' }})
-    logger.debug(res3);
+
 })

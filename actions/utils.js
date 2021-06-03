@@ -161,6 +161,11 @@ async function findHeaderIgnoreCase(headers, key){
   ];
 }
 
+async function handleFNF(error, logger){
+  if (error.code == "ERROR_FILE_NOT_EXISTS"){
+    return errorResponse(404, error, logger);
+  }else throw error;
+}
 
 module.exports = {
   errorResponse,
@@ -168,5 +173,6 @@ module.exports = {
   stringParameters,
   checkMissingRequestInputs,
   extractBoundary,
-  findHeaderIgnoreCase
+  findHeaderIgnoreCase,
+  handleFNF: handleFNF
 }

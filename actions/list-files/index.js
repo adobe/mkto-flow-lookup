@@ -2,7 +2,7 @@ const filesLib = require('@adobe/aio-lib-files')
 
 const fetch = require('node-fetch')
 const { Core, Target } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs } = require('../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../utils')
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
@@ -36,22 +36,23 @@ async function main(params) {
             body: {}
         };
         try {
-            files = await files.list(params.target);
-            if(!files){
-                logger.debug("files is null");
-                return errorResponse(404, { message: "Not Found" }, logger);
-            }else {
+            var files;
+            try {
+                files = await files.list(params.target);
+                logger.debug("files: ", list);
+            } catch (error) {
+                return handleFNF(error)
+            }
                 logger.debug(props);
                 response["statusCode"] = 200;
                 response.body["files"] = files;
-            }
 
         } catch (error) {
             logger.info("caught error:")
             return errorResponse(400, error, logger);
         }
 
-        return { "payload": response };
+        return response;
     } catch (error) {
         // log any server errors
         logger.error(error)

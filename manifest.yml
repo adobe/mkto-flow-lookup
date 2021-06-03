@@ -20,6 +20,12 @@ packages:
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+      list-files:
+        function: actions\delete-file\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
       generic:
         function: actions\generic\index.js
         web: 'yes'

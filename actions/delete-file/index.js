@@ -2,7 +2,7 @@ const filesLib = require('@adobe/aio-lib-files');
 
 const fetch = require('node-fetch')
 const { Core, Target } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs } = require('../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../utils')
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
@@ -31,18 +31,24 @@ async function main(params) {
     // extract the user Bearer token from the Authorization header
     const token = getBearerToken(params)
 
-    var response = {};
+    var response = {
+      body: {}
+    };
     try {
-      var props = files.getProperties(params.target)
-      if (!props) {
-        return errorResponse(404, "NotFound", logger);
-      } else {
-        await files.delete(params.target);
-        response["statusCode"] = 200;
+      var props;
+      try {
+        props = await files.getProperties(params.target);
+      } catch (error) {
+        return handleFNF(error);
       }
+      logger.debug("deleting: " + props)
+      await files.delete(params.target);
+      response["statusCode"] = 200;
+      response["body"]["props"] = props;
+
     } catch (error) {
       logger.info("caught error:")
-      return errorResponse(400, error, logger);
+      return errorResponse(400, error.message, logger);
     }
     return response;
   } catch (error) {

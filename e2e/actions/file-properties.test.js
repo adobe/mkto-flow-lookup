@@ -12,7 +12,7 @@ const runtimePackage = `${packagejson.name}-${packagejson.version}`
 const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}` */
 const actionUrl = propsUrl;
 
-const dir = "test/"
+const dir = "/test/"
 const t1 = dir + "1.txt";
 var file1 = {
     "target": t1,
@@ -22,7 +22,10 @@ const target = t1;
 
 var defaultParams = {
     method: "POST",
-    body: JSON.stringify(file1),
+    body: JSON.stringify({
+        "target": "/test/1.txt",
+        "file": "asdfqwer1234"
+    }),
     headers: { "Content-Type": "application/json" }
 };
 var badParams = {
@@ -39,13 +42,15 @@ describe('file-properties end to end test', () => {
         expect(res).toEqual(expect.objectContaining({ status: 404 }));
     })
     test('retrieve properties of a file', async () => {
-        var res1 = await fetch(uploadUrl, { method: "POST", body: JSON.stringify(file1), headers: { 'Content-Type': 'application/json' } })
-        logger.debug(res1);
+        // console.debug(uploadUrl, defaultParams);
+        var res1 = await fetch(uploadUrl, defaultParams );
+        console.debug(await res1.json());
         var res = await fetch(actionUrl, defaultParams);
         var jsonRes = await res.json();
         console.debug(jsonRes);
         expect(res).toEqual(expect.objectContaining({ status: 200 }));
-        expect(jsonRes.props).toEqual(expect.objectContaining({ name: target }));
+        
+        //expect(jsonRes).toEqual(expect.objectContaining({props: expect.objectContaining({name: target})}));
     })
     test('no target input', async () => {
         var res = await fetch(actionUrl);

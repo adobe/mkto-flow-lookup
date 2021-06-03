@@ -1,6 +1,6 @@
 const filesLib = require('@adobe/aio-lib-files')
 const { Core, Target } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs } = require('../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../utils')
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
@@ -25,7 +25,7 @@ async function main(params) {
 
 
         // log parameters, only if params.LOG_LEVEL === 'debug'
-        logger.debug(stringParameters(params))
+        //logger.debug(stringParameters(params))
         // extract the user Bearer token from the Authorization header
         //const token = getBearerToken(params)
 
@@ -33,17 +33,17 @@ async function main(params) {
             body: {}
         };
         try {
-            props = await files.getProperties(params.target);
-            logger.debug(props);
-            logger.info("keys:" + Object.keys(props));
-            if (!props) {
-                logger.debug("props empty")
-                return errorResponse(404, { message: "Not Found" }, logger);
-            } else {
-                logger.debug(props);
-                response["statusCode"] = 200;
-                response.body["props"] = props;
+            var props;
+            try {
+                props = await files.getProperties(params.target);
+            } catch (error) {
+                return handleFNF(error);
             }
+            logger.debug(props);
+            logger.debug(props);
+            response["statusCode"] = 200;
+            response.body["props"] = props;
+
         } catch (error) {
             logger.info("caught error:")
             return errorResponse(400, error, logger);
