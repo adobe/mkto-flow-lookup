@@ -17,7 +17,7 @@
     "jest": "^24.9.0"
   },
   "scripts": {
-    "test": "jest --passWithNoTests ./test",
+    "test": "jest --passWithNoTests --maxConcurrency=1 ./e2e ./test",
     "e2e": "jest --collectCoverage=false --testRegex ./e2e"
   },
   "engines": {
