@@ -8,40 +8,48 @@ packages:
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+        annotations:
+          # require-adobe-auth: true
       delete-file:
         function: actions\delete-file\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+        annotations:
+          # require-adobe-auth: true
       file-properties:
-        function: actions\delete-file\index.js
+        function: actions\file-properties\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+        annotations:
+          # require-adobe-auth: true
       list-files:
-        function: actions\delete-file\index.js
+        function: actions\list-files\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
-      generic:
-        function: actions\generic\index.js
-        web: 'yes'
-        runtime: 'nodejs:12'
-        inputs:
-          LOG_LEVEL: debug
-        annotations:
-          require-adobe-auth: true
-          final: true
-      publish-events:
-        function: actions\publish-events\index.js
-        web: 'yes'
-        runtime: 'nodejs:12'
-        inputs:
-          LOG_LEVEL: debug
-          apiKey: $SERVICE_API_KEY
-        annotations:
-          require-adobe-auth: true
-          final: true
+        # annotations:
+        #   require-adobe-auth: true
+      # generic:
+      #   function: actions\generic\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:12'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #   annotations:
+      #     require-adobe-auth: true
+      #     final: true
+      # publish-events:
+      #   function: actions\publish-events\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:12'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #     apiKey: $SERVICE_API_KEY
+      #   annotations:
+      #     require-adobe-auth: true
+      #     final: true

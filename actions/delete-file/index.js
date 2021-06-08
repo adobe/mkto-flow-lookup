@@ -39,7 +39,7 @@ async function main(params) {
       try {
         props = await files.getProperties(params.target);
       } catch (error) {
-        return handleFNF(error);
+        return await handleFNF(error);
       }
       logger.debug("deleting: " + props)
       await files.delete(params.target);

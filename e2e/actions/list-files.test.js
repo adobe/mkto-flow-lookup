@@ -11,7 +11,7 @@ const packagejson = JSON.parse(fs.readFileSync('package.json').toString());
 const runtimePackage = `${packagejson.name}-${packagejson.version}`
 const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
 const actionUrl = `${actionPrefix}/list-files`;
-const dir = "/dummy/";
+const dir = "/";
 const target = dir + "/list-files-test.txt";
 const file1 = {
     "target": target,
@@ -33,7 +33,7 @@ describe('list-files end to end test', () => {
         console.debug(badParams);
         var res = await fetch(actionUrl, badParams);
         console.debug(res);
-        expect(res).toEqual(expect.objectContaining({ status: 404 }));
+        expect(res).toEqual(expect.objectContaining({ status: 204 }));
     })
     test('list dir contents', async () => {
         var ulParams = { method: "POST", body: JSON.stringify(file1), headers: defaultParams.headers }

@@ -4,7 +4,7 @@ const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInpu
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
-    const files = await filesLib.init()
+    const files = await filesLib.init();
     // create a Logger
     const logger = Core.Logger('main', { level: params.LOG_LEVEL || 'info' })
 
@@ -37,7 +37,7 @@ async function main(params) {
             try {
                 props = await files.getProperties(params.target);
             } catch (error) {
-                return handleFNF(error);
+                return await handleFNF(error);
             }
             logger.debug(props);
             logger.debug(props);
