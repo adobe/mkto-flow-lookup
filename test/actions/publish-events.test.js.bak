@@ -18,7 +18,7 @@ Core.Logger.mockReturnValue(mockLoggerInstance)
 
 Events.init.mockReturnValue(mockEventsInstance)
 
-const action = require('./../../actions/publish-events/index.js')
+const action = require('../../actions/publish-events/index.js')
 
 beforeEach(() => {
   Events.init.mockClear() // only clears calls stats

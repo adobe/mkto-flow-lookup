@@ -1,6 +1,6 @@
 const filesLib = require('@adobe/aio-lib-files')
 const { Core, Target } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../../utils')
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
@@ -39,7 +39,6 @@ async function main(params) {
             } catch (error) {
                 return await handleFNF(error);
             }
-            logger.debug(props);
             logger.debug(props);
             response["statusCode"] = 200;
             response.body["props"] = props;

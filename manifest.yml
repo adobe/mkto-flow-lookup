@@ -3,7 +3,7 @@ packages:
     license: Apache-2.0
     actions:
       upload-file:
-        function: actions\upload-file\index.js
+        function: actions\v1\upload-file\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
@@ -11,7 +11,7 @@ packages:
         annotations:
           # require-adobe-auth: true
       delete-file:
-        function: actions\delete-file\index.js
+        function: actions\v1\delete-file\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
@@ -19,7 +19,15 @@ packages:
         annotations:
           # require-adobe-auth: true
       file-properties:
-        function: actions\file-properties\index.js
+        function: actions\v1\file-properties\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
+        annotations:
+          # require-adobe-auth: true
+      legacy-webhook:
+        function: actions\v1\legacy-webhook\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
@@ -27,7 +35,7 @@ packages:
         annotations:
           # require-adobe-auth: true
       list-files:
-        function: actions\list-files\index.js
+        function: actions\v1\list-files\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
@@ -35,7 +43,7 @@ packages:
         # annotations:
         #   require-adobe-auth: true
       # generic:
-      #   function: actions\generic\index.js
+      #   function: actions\v1\generic\index.js
       #   web: 'yes'
       #   runtime: 'nodejs:12'
       #   inputs:
@@ -44,7 +52,7 @@ packages:
       #     require-adobe-auth: true
       #     final: true
       # publish-events:
-      #   function: actions\publish-events\index.js
+      #   function: actions\v1\publish-events\index.js
       #   web: 'yes'
       #   runtime: 'nodejs:12'
       #   inputs:
