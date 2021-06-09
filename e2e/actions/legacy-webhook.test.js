@@ -16,17 +16,21 @@ const target = "/test/1.txt";
 
 describe("testing legacy Marketo webhook action", () => {
     test('', async () => {
-
-        var target = "test/testfile.txt"
+        console.log(actionUrl);
+        var target = "test/country-codes.csv"
         var params = {
             "target": target,
-            "file": "country,alpha-2,alpha-3,numeric\nZimbabwe,ZW,ZWE,716"
+            "file": "country,alpha-2,alpha-3,numeric\nZimbabwe,ZW,ZWE,716;"
         }
         var ulRes = await fetch(uploadUrl, {method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' }});
-
+        console.log(await ulRes.json())
         var res = await fetch(actionUrl, wh.getWHMockReq());
-
-        expect(res).toEqual(expect.objectContaining({status:200}))
+        console.log(res);
+        var jsonRes  = await fetch(actionUrl, wh.getWHMockReq());
+        var json = await jsonRes.json()
+        console.log(json);
+        expect(res).toEqual(expect.objectContaining({status:200}));
+        expect(json['country-code-2']).toEqual('ZW');
     })
 })
 

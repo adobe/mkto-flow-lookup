@@ -42,6 +42,12 @@ packages:
           LOG_LEVEL: debug
         # annotations:
         #   require-adobe-auth: true
+      dummy:
+        function: actions\v1\dummy\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
       # generic:
       #   function: actions\v1\generic\index.js
       #   web: 'yes'

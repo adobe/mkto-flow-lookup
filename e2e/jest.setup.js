@@ -1,4 +1,4 @@
-const { Config } = require('@adobe/aio-sdk').Core
+/* const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 
@@ -10,11 +10,11 @@ const runtimePackage = `${packagejson.name}-${packagejson.version}`
 const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
 const propsUrl = `${actionPrefix}/file-properties`;
 const uploadUrl = `${actionPrefix}/upload-file`
-const deleteUrl = `${actionPrefix}/delete-file`
+const deleteUrl = `${actionPrefix}/delete-file` */
 
 jest.setTimeout(10000)
 
-const dir = "test/"
+/* const dir = "test/"
 
 const t1 = dir + "1.txt";
 const t2 = dir + "2.txt";
@@ -31,7 +31,7 @@ const file2 = {
 const file3 = {
     "target": t3,
     "file": "asdfqwer1234"
-}
+} */
 
 beforeEach(async () => {
 
