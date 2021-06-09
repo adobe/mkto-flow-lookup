@@ -1,7 +1,11 @@
 
 function getWHMockReq() {
     var body = {
-        searches: "test/country-codes.csv,country,Zimbabwe,alpha-2,country-code-2;",
+        "table": "test/country-codes.csv",
+        "kn":"country",
+        "kv":"Zimbabwe",
+        "lookup":"alpha-2",
+        "resField": "country-code-2"
     };
 
     return {

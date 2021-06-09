@@ -15,7 +15,7 @@ const actionUrl = `${actionPrefix}/legacy-webhook`;
 const target = "/test/1.txt";
 
 describe("testing legacy Marketo webhook action", () => {
-    test('', async () => {
+    test('a', async () => {
         console.log(actionUrl);
         var target = "test/country-codes.csv"
         var params = {
