@@ -1,6 +1,12 @@
-# AIOFileman
+# mkto-flow-lookup
 
-Welcome to my Adobe I/O Application!
+This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  It includes a light API implementation of the AIO files library to support managing the list of available files.  
+
+- It currently reads files synchronously and has an unknown maximum file size when executed on a 256mb action
+- The SSFS API is not yet implemented
+- End-to-end tests cannot be run locally due to usage of the AIO Files library
+- AIO files is currently the only supported file store
+
 
 ## Setup
 
@@ -16,8 +22,12 @@ local serverless stack and also run your actions locally use the `aio app run --
 
 ## Test & Coverage
 
-- Run `aio app test` to run unit tests for ui and actions
+
+- `aio app test` is currently bugged on windows, see alternate instructions below
+- Run `aio app test` to run unit tests for ui and actions.  
 - Run `aio app test -e` to run e2e tests
+- Windows: `aio app run -v` in one terminal.  This will hot-reploy when you alter an action if you leave the terminal open
+- Windows: `npm test` in another terminal.
 
 ## Deploy & Cleanup
 
@@ -66,9 +76,11 @@ code.
 
 ## Debugging in VS Code
 
-While running your local server (`aio app run`), both UI and actions can be debugged, to do so open the vscode debugger
+~While running your local server (`aio app run`), both UI and actions can be debugged, to do so open the vscode debugger
 and select the debugging configuration called `WebAndActions`.
-Alternatively, there are also debug configs for only UI and each separate action.
+Alternatively, there are also debug configs for only UI and each separate action.~
+
+Doesn't work as currently implemented due to aio files lib dependency.
 
 ## Typescript support for UI
 
