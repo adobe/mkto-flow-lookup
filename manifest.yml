@@ -48,6 +48,18 @@ packages:
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+      validate:
+        function: actions\v1\validate\index.js
+        web: 'no'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
+      validate-test:
+        function: actions\v1\validate-test\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
       # generic:
       #   function: actions\v1\generic\index.js
       #   web: 'yes'

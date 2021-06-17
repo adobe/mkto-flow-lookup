@@ -5,6 +5,7 @@
   "dependencies": {
     "@adobe/aio-sdk": "^3.0.0",
     "@adobe/exc-app": "^0.2.17",
+    "ajv": "^6.12.6",
     "cloudevents-sdk": "^1.0.0",
     "form-data": "^2.5.1",
     "multipart-form-parser": "kepael/multipart-form-parser#master",
@@ -19,7 +20,7 @@
   },
   "scripts": {
     "test": "jest --passWithNoTests ./test",
-    "e2e": "jest --collectCoverage=false --maxConcurrency=1 --maxWorkers=1 --testRegex ./e2e/actions/",
+    "e2e": "jest --passWithNoTests --collectCoverage=false --maxConcurrency=1 --maxWorkers=1 --testRegex ./e2e/actions/",
     "wh": "jest .e2e/actions/legacy-webhook.test.js"
   },
   "engines": {
