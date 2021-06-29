@@ -20,7 +20,7 @@ describe("testing legacy Marketo webhook action", () => {
         var target = "test/country-codes.csv"
         var params = {
             "target": target,
-            "file": "country,alpha-2,alpha-3,numeric\nZimbabwe,ZW,ZWE,716;"
+            "file": "country,alpha-2,alpha-3,numeric\r\nZimbabwe,ZW,ZWE,716;"
         }
         var ulRes = await fetch(uploadUrl, {method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' }});
         console.log(await ulRes.json())

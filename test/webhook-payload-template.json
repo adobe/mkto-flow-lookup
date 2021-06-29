@@ -1,0 +1,7 @@
+{
+    "table": "{{my.table}}",
+    "kn": "{{my.keyName}}",
+    "kv": "{{my.keyValue}}",
+    "lookup": "{{my.lookup}}",
+    "resField": "{{my.resField}}"
+}

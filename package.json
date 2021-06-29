@@ -1,28 +1,31 @@
 {
-  "name": "mkto-flow-lookup",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "@adobe/aio-sdk": "^3.0.0",
-    "@adobe/exc-app": "^0.2.17",
-    "cloudevents-sdk": "^1.0.0",
-    "form-data": "^2.5.1",
-    "multipart-form-parser": "kepael/multipart-form-parser#master",
-    "node-fetch": "^2.6.0",
-    "papaparse": "^5.3.1",
-    "regenerator-runtime": "^0.13.5",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@openwhisk/wskdebug": "^1.3.0",
-    "jest": "^24.9.0"
-  },
-  "scripts": {
-    "test": "jest --passWithNoTests ./test",
-    "e2e": "jest --collectCoverage=false --maxConcurrency=1 --maxWorkers=1 --testRegex ./e2e/actions/",
-    "wh": "jest .e2e/actions/legacy-webhook.test.js"
-  },
-  "engines": {
-    "node": "^10 || ^12 || ^14"
+    "name": "mkto-flow-lookup",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+      "@adobe/aio-sdk": "^3.0.0",
+      "@adobe/exc-app": "^0.2.17",
+      "cloudevents-sdk": "^1.0.0",
+      "form-data": "^2.5.1",
+      "multipart-form-parser": "kepael/multipart-form-parser#master",
+      "node-fetch": "^2.6.0",
+      "papaparse": "^5.3.1",
+      "regenerator-runtime": "^0.13.5",
+      "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+      "@openwhisk/wskdebug": "^1.3.0",
+      "jest": "^25.2.2"
+    },
+    "scripts": {
+      "test": "jest --passWithNoTests ./test",
+      "e2e": "jest --collectCoverage=false --maxConcurrency=1 --maxWorkers=1 --testRegex ./e2e/actions/",
+      "wh": "jest .e2e/actions/legacy-webhook.test.js",
+      "validate-plus": "jest --passWithNoTests ./e2e/actions/validate.test.js ./e2e/actions/validate-test.test.js",
+      "validate-test-only": "jest --passWithNoTests ./e2e/actions/validate-test.test.js",
+      "scratch": "jest --passWithNoTests ./test/scratch.test.js"
+    },
+    "engines": {
+      "node": "^10 || ^12 || ^14"
+    }
   }
-}

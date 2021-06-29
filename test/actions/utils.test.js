@@ -37,6 +37,13 @@ describe('errorResponse', () => {
   })
 })
 
+/* describe('getActionUrl', () =>{
+  test('generate correct action url', () => {
+    const targetUrl = "https://208192-aiofileman.adobeio-static.net/api/v1/web/mkto-flow-lookup-0.0.1/validate";
+    expect(utils.getActionUrl('validate')).toEqual(targetUrl);
+  })
+}) */
+
 describe('stringParameters', () => {
   test('no auth header', () => {
     const params = {
