@@ -11,41 +11,40 @@ const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePacka
 
 var openwhisk = require('openwhisk');
 
-function getHostname(){
+function getHostname() {
   return hostname;
 }
 
-function getRuntimePkgName(){
+function getRuntimePkgName() {
   return runtimePackage;
 }
 
-function getActionPrefix(){
+function getActionPrefix() {
   return actionPrefix;
 };
 
-function getActionUrl(actionName){
-  return getActionPrefix()+ "/" + actionName;
-}
-
-async function validateObject(schemaName, object){
+async function validateSchema(schemaName, object) {
   var ow;
-        try{
-            ow = openwhisk();
-        }catch(error){
-            return {
-                "body": error
-            }
-        }
-        
-        var validRes =  await ow.actions.invoke({
-            name: 'mkto-flow-lookup-0.0.1/validate',
-            blocking: true,
-            result: true,
-            params: {
-                "schemaName": "test-schema",
-                "object": {"foo": 1, "bar":"baz"}
-            }
-        });
+  try {
+    ow = openwhisk();
+  } catch (error) {
+    return {
+      "body": error
+    }
+  }
+
+  var validRes = await ow.actions.invoke({
+    //TODO fix action name acqusition
+    name: 'mkto-flow-lookup-0.0.1/validate',
+    blocking: true,
+    result: true,
+    params: {
+      "schemaName": "test-schema",
+      "object": { "foo": 1, "bar": "baz" }
+    }
+  });
+
+  return validRes.body.success
 }
 
 /**
@@ -58,7 +57,7 @@ async function validateObject(schemaName, object){
  * @returns {string}
  *
  */
-function stringParameters (params) {
+function stringParameters(params) {
   // hide authorization token without overriding params
   let headers = params.__ow_headers || {}
   if (headers.authorization) {
@@ -80,7 +79,7 @@ function stringParameters (params) {
  * @returns {array}
  * @private
  */
-function getMissingKeys (obj, required) {
+function getMissingKeys(obj, required) {
   return required.filter(r => {
     const splits = r.split('.')
     const last = splits[splits.length - 1]
@@ -103,7 +102,7 @@ function getMissingKeys (obj, required) {
  * @returns {string} if the return value is not null, then it holds an error message describing the missing inputs.
  *
  */
-function checkMissingRequestInputs (params, requiredParams = [], requiredHeaders = []) {
+function checkMissingRequestInputs(params, requiredParams = [], requiredHeaders = []) {
   let errorMessage = null
 
   // input headers are always lowercase
@@ -137,10 +136,10 @@ function checkMissingRequestInputs (params, requiredParams = [], requiredHeaders
  * @returns {string|undefined} the token string or undefined if not set in request headers.
  *
  */
-function getBearerToken (params) {
+function getBearerToken(params) {
   if (params.__ow_headers &&
-      params.__ow_headers.authorization &&
-      params.__ow_headers.authorization.startsWith('Bearer ')) {
+    params.__ow_headers.authorization &&
+    params.__ow_headers.authorization.startsWith('Bearer ')) {
     return params.__ow_headers.authorization.substring('Bearer '.length)
   }
   return undefined
@@ -159,7 +158,7 @@ function getBearerToken (params) {
  * @returns {object} the error object, ready to be returned from the action main's function.
  *
  */
-function errorResponse (statusCode, message, logger) {
+function errorResponse(statusCode, message, logger) {
   if (logger && typeof logger.info === 'function') {
     logger.info(`${statusCode}: ${message}`)
   }
@@ -183,12 +182,12 @@ function errorResponse (statusCode, message, logger) {
 } */
 
 //TODO, replace w/ multipart library implementation
-async function extractBoundary(headerString){
+async function extractBoundary(headerString) {
   var parts = headerString.split(";");
   var boundary;
   parts.forEach(element => {
-    if(element.indexOf("boundary")> -1){
-      boundary =  element.split("=")[1];
+    if (element.indexOf("boundary") > -1) {
+      boundary = element.split("=")[1];
     }
   });
   return boundary;
@@ -203,16 +202,16 @@ async function extractBoundary(headerString){
 * @returns The value of the desired header
 */
 
-async function findHeaderIgnoreCase(headers, key){
+async function findHeaderIgnoreCase(headers, key) {
   return headers[Object.keys(headers)
     .find(k => k.toLowerCase() === key.toLowerCase())
   ];
 }
 
-async function handleFNF(error, logger){
-  if (error.code == "ERROR_FILE_NOT_EXISTS"){
+async function handleFNF(error, logger) {
+  if (error.code == "ERROR_FILE_NOT_EXISTS") {
     return errorResponse(404, error, logger);
-  }else throw error;
+  } else throw error;
 }
 
 module.exports = {
@@ -226,5 +225,5 @@ module.exports = {
   getActionPrefix,
   getHostname,
   getRuntimePkgName,
-  getActionUrl
+  validateSchema
 }
