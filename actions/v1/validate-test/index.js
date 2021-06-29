@@ -4,6 +4,8 @@ const { stringParameters, errorResponse, validateSchema } = require('../../utils
 
 var openwhisk = require('openwhisk');
 
+
+/* Testing action to facilitate e2e testing of validator function */
 async function main(params) {
 
     const logger = Core.Logger('main', { level: params.LOG_LEVEL || 'info' });

@@ -23,6 +23,7 @@ function getActionPrefix() {
   return actionPrefix;
 };
 
+/* function to invoke validate action, passing a schemaName and an object to validate whether it conforms to schema*/
 async function validateSchema(schemaName, object) {
   var ow;
   try {
