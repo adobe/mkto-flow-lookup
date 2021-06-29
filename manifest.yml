@@ -42,15 +42,9 @@ packages:
           LOG_LEVEL: debug
         # annotations:
         #   require-adobe-auth: true
-      dummy:
-        function: actions\v1\dummy\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
       validate:
         function: actions\v1\validate\index.js
-        web: 'no'
+        web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug

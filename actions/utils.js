@@ -1,4 +1,52 @@
 
+const { Config } = require('@adobe/aio-sdk').Core
+const fs = require('fs')
+
+// get action url
+const namespace = Config.get('runtime.namespace');
+const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
+const packagejson = JSON.parse(fs.readFileSync('../package.json').toString());
+const runtimePackage = `${packagejson.name}-${packagejson.version}`
+const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
+
+var openwhisk = require('openwhisk');
+
+function getHostname(){
+  return hostname;
+}
+
+function getRuntimePkgName(){
+  return runtimePackage;
+}
+
+function getActionPrefix(){
+  return actionPrefix;
+};
+
+function getActionUrl(actionName){
+  return getActionPrefix()+ "/" + actionName;
+}
+
+async function validateObject(schemaName, object){
+  var ow;
+        try{
+            ow = openwhisk();
+        }catch(error){
+            return {
+                "body": error
+            }
+        }
+        
+        var validRes =  await ow.actions.invoke({
+            name: 'mkto-flow-lookup-0.0.1/validate',
+            blocking: true,
+            result: true,
+            params: {
+                "schemaName": "test-schema",
+                "object": {"foo": 1, "bar":"baz"}
+            }
+        });
+}
 
 /**
  *
@@ -174,5 +222,9 @@ module.exports = {
   checkMissingRequestInputs,
   extractBoundary,
   findHeaderIgnoreCase,
-  handleFNF: handleFNF
+  handleFNF,
+  getActionPrefix,
+  getHostname,
+  getRuntimePkgName,
+  getActionUrl
 }
