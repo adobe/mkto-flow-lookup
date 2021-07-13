@@ -7,6 +7,6 @@ describe('local tests for validate function', () => {
             "object": {"foo": 1, "bar":"baz"}
         }
         var res = await validate.main(mockParams);
-        expect(res).toEqual(expect.objectContaining({success:true}))
+        expect(res).toEqual(expect.objectContaining({body:expect.objectContaining({success:true})}))
     })
 })

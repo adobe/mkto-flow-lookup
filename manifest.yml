@@ -2,54 +2,60 @@ packages:
   __APP_PACKAGE__:
     license: Apache-2.0
     actions:
-      upload-file:
-        function: actions\v1\upload-file\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
-        annotations:
-          # require-adobe-auth: true
-      delete-file:
-        function: actions\v1\delete-file\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
-        annotations:
-          # require-adobe-auth: true
-      file-properties:
-        function: actions\v1\file-properties\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
-        annotations:
-          # require-adobe-auth: true
-      legacy-webhook:
-        function: actions\v1\legacy-webhook\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
-        annotations:
-          # require-adobe-auth: true
-      list-files:
-        function: actions\v1\list-files\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
-        # annotations:
-        #   require-adobe-auth: true
-      validate:
-        function: actions\v1\validate\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
-      validate-test:
-        function: actions\v1\validate-test\index.js
+      # upload-file:
+      #   function: actions\v1\upload-file\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #   annotations:
+      #     # require-adobe-auth: true
+      # delete-file:
+      #   function: actions\v1\delete-file\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #   annotations:
+      #     # require-adobe-auth: true
+      # file-properties:
+      #   function: actions\v1\file-properties\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #   annotations:
+      #     # require-adobe-auth: true
+      # legacy-webhook:
+      #   function: actions\v1\legacy-webhook\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #   annotations:
+      #     # require-adobe-auth: true
+      # list-files:
+      #   function: actions\v1\list-files\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #   # annotations:
+      #   #   require-adobe-auth: true
+      # validate:
+      #   function: actions\v1\validate\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      # validate-test:
+      #   function: actions\v1\validate-test\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      vtest2:
+        function: actions\v1\vtest2\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:

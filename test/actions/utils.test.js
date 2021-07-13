@@ -116,3 +116,28 @@ describe('getBearerToken', () => {
     expect(utils.getBearerToken({ __ow_headers: { authorization: 'Bearer fake Bearer fake' } })).toEqual('fake Bearer fake')
   })
 })
+
+describe('validateSchema', () => {
+  const ts = {
+    type: "object",
+    properties: {
+      foo: { type: "integer" },
+      bar: { type: "string" }
+    },
+    required: ["foo"],
+    additionalProperties: false,
+  }
+  test('validate a simple object which conforms to the given schema', async () => {
+    var obj = {"foo": 1, "bar": "baz"};
+    var result = await utils.validateSchema(ts, obj);
+    console.log(result);
+    expect(result).toEqual(true);
+  })
+  test('validate a simple object that does not conform to the given schema', async ()=> {
+    var obj = {"foo": 1, "bar": 11};
+    var result = await utils.validateSchema(ts, obj);
+    console.log(result);
+    expect(result).toEqual(false);
+  }
+  )
+})

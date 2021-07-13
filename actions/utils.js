@@ -2,6 +2,9 @@
 const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 
+const AJV = require('ajv');
+const ajv = new AJV();
+
 // get action url
 const namespace = Config.get('runtime.namespace');
 const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
@@ -24,7 +27,7 @@ function getActionPrefix() {
 };
 
 /* function to invoke validate action, passing a schemaName and an object to validate whether it conforms to schema*/
-async function validateSchema(schemaName, object) {
+/* async function validateSchema(schemaName, object) {
   var ow;
   try {
     ow = openwhisk();
@@ -46,7 +49,7 @@ async function validateSchema(schemaName, object) {
   });
 
   return validRes.body.success
-}
+} */
 
 /**
  *
@@ -194,7 +197,7 @@ async function extractBoundary(headerString) {
   return boundary;
 }
 
-/* 
+/**  
 * Searches headers list for a given header regardless of case
 * 
 * @param headers {array} Headers list
@@ -213,6 +216,20 @@ async function handleFNF(error, logger) {
   if (error.code == "ERROR_FILE_NOT_EXISTS") {
     return errorResponse(404, error, logger);
   } else throw error;
+}
+
+/**
+ * Used to validate incoming requests
+ * 
+ * @param {object} schema Schema to validate against
+ * @param {object} object Object to be validated
+ * @returns {boolean}
+ */
+
+async function validateSchema(schema, object){
+  var validator = ajv.compile(schema);
+  var result = validator(object);
+  return result;
 }
 
 module.exports = {
