@@ -4,6 +4,9 @@
 
 const utils = require('../../actions/utils')
 
+const mockAsyncReq = require("../mocks/mockAsyncRequest");
+
+
 test('interface', () => {
   expect(typeof utils.errorResponse).toBe('function')
   expect(typeof utils.stringParameters).toBe('function')
@@ -116,3 +119,37 @@ describe('getBearerToken', () => {
     expect(utils.getBearerToken({ __ow_headers: { authorization: 'Bearer fake Bearer fake' } })).toEqual('fake Bearer fake')
   })
 })
+
+describe('validateSchema', () => {
+  test('test swagger validation', async () => {
+    var {schemaKey} = require('../../actions/flow/v1/submitAsyncAction');
+    var result = utils.validateSchema(schemaKey, mockAsyncReq);
+    expect(result).toEqual(true);
+})
+})
+
+//Old tests
+/* describe('validateSchema', () => {
+  const ts = {
+    type: "object",
+    properties: {
+      foo: { type: "integer" },
+      bar: { type: "string" }
+    },
+    required: ["foo"],
+    additionalProperties: false,
+  }
+  test('validate a simple object which conforms to the given schema', async () => {
+    var obj = {"foo": 1, "bar": "baz"};
+    var result = await utils.validateSchema(ts, obj);
+    console.log(result);
+    expect(result).toEqual(true);
+  })
+  test('validate a simple object that does not conform to the given schema', async ()=> {
+    var obj = {"foo": 1, "bar": 11};
+    var result = await utils.validateSchema(ts, obj);
+    console.log(result);
+    expect(result).toEqual(false);
+  }
+  )
+}) */

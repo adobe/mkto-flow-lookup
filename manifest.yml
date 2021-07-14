@@ -42,18 +42,36 @@ packages:
           LOG_LEVEL: debug
         # annotations:
         #   require-adobe-auth: true
-      validate:
-        function: actions\v1\validate\index.js
+      getServiceDefinition:
+        function: actions\files\v1\getServiceDefinition\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
-      validate-test:
-        function: actions\v1\validate-test\index.js
+      submitAsyncAction:
+        function: actions\flow\v1\submitAsyncAction\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+      # validate:
+      #   function: actions\v1\validate\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      # validate-test:
+      #   function: actions\v1\validate-test\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      # vtest2:
+      #   function: actions\v1\vtest2\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
       # generic:
       #   function: actions\v1\generic\index.js
       #   web: 'yes'

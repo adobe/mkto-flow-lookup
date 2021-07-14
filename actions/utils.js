@@ -2,6 +2,9 @@
 const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 
+const AJV = require('ajv');
+const ajv = new AJV({unknownFormats: ["int32", "int64"]});
+
 // get action url
 const namespace = Config.get('runtime.namespace');
 const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
@@ -9,7 +12,8 @@ const packagejson = JSON.parse(fs.readFileSync('../package.json').toString());
 const runtimePackage = `${packagejson.name}-${packagejson.version}`
 const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
 
-var openwhisk = require('openwhisk');
+const {swagger} = require('../resources/CFA-Swagger/openapi');
+ajv.addSchema(swagger, 'cfa-swagger');
 
 function getHostname() {
   return hostname;
@@ -24,7 +28,7 @@ function getActionPrefix() {
 };
 
 /* function to invoke validate action, passing a schemaName and an object to validate whether it conforms to schema*/
-async function validateSchema(schemaName, object) {
+/* async function validateSchema(schemaName, object) {
   var ow;
   try {
     ow = openwhisk();
@@ -46,7 +50,7 @@ async function validateSchema(schemaName, object) {
   });
 
   return validRes.body.success
-}
+} */
 
 /**
  *
@@ -194,7 +198,7 @@ async function extractBoundary(headerString) {
   return boundary;
 }
 
-/* 
+/**  
 * Searches headers list for a given header regardless of case
 * 
 * @param headers {array} Headers list
@@ -213,6 +217,25 @@ async function handleFNF(error, logger) {
   if (error.code == "ERROR_FILE_NOT_EXISTS") {
     return errorResponse(404, error, logger);
   } else throw error;
+}
+
+/**
+ * Used to validate incoming requests
+ * 
+ * @param {object} schemaKeyRef Schema reference to validate against
+ * @param {object} object Object to be validated
+ * 
+ * @throws {error} List validation message
+ * 
+ * @returns {boolean}
+ */
+
+function validateSchema(schemaKeyRef, obj){
+  var valid = ajv.validate(schemaKeyRef, obj);
+  if(ajv.errors && ajv.errors.length > 0){
+    throw new Error(ajv.errorsText(ajv.errors))
+  }
+  return valid;
 }
 
 module.exports = {
