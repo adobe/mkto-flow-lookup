@@ -4,6 +4,9 @@
 
 const utils = require('../../actions/utils')
 
+const mockAsyncReq = require("../mocks/mockAsyncRequest");
+
+
 test('interface', () => {
   expect(typeof utils.errorResponse).toBe('function')
   expect(typeof utils.stringParameters).toBe('function')
@@ -118,6 +121,15 @@ describe('getBearerToken', () => {
 })
 
 describe('validateSchema', () => {
+  test('test swagger validation', async () => {
+    var {schemaKey} = require('../../actions/flow/v1/submitAsyncAction');
+    var result = utils.validateSchema(schemaKey, mockAsyncReq);
+    expect(result).toEqual(true);
+})
+})
+
+//Old tests
+/* describe('validateSchema', () => {
   const ts = {
     type: "object",
     properties: {
@@ -140,4 +152,4 @@ describe('validateSchema', () => {
     expect(result).toEqual(false);
   }
   )
-})
+}) */

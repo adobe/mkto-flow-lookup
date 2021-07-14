@@ -3,7 +3,7 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 
 const AJV = require('ajv');
-const ajv = new AJV();
+const ajv = new AJV({unknownFormats: ["int32", "int64"]});
 
 // get action url
 const namespace = Config.get('runtime.namespace');
@@ -12,7 +12,8 @@ const packagejson = JSON.parse(fs.readFileSync('../package.json').toString());
 const runtimePackage = `${packagejson.name}-${packagejson.version}`
 const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
 
-var openwhisk = require('openwhisk');
+const {swagger} = require('../resources/CFA-Swagger/openapi');
+ajv.addSchema(swagger, 'cfa-swagger');
 
 function getHostname() {
   return hostname;
@@ -221,15 +222,20 @@ async function handleFNF(error, logger) {
 /**
  * Used to validate incoming requests
  * 
- * @param {object} schema Schema to validate against
+ * @param {object} schemaKeyRef Schema reference to validate against
  * @param {object} object Object to be validated
+ * 
+ * @throws {error} List validation message
+ * 
  * @returns {boolean}
  */
 
-async function validateSchema(schema, object){
-  var validator = ajv.compile(schema);
-  var result = validator(object);
-  return result;
+function validateSchema(schemaKeyRef, obj){
+  var valid = ajv.validate(schemaKeyRef, obj);
+  if(ajv.errors && ajv.errors.length > 0){
+    throw new Error(ajv.errorsText(ajv.errors))
+  }
+  return valid;
 }
 
 module.exports = {

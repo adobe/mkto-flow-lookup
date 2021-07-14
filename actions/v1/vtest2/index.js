@@ -16,14 +16,7 @@ async function main(params) {
     logger.debug(stringParameters(params));
 
     const state = await stateLib.init();
-
-    //this works, but the other doesn't, please, kill me
-    // await state.put("foo", true);
-    // var get = await state.get("foo");
-    // var result = get.value;
-
-
-    //does not work
+    
     var ts = {
         type: "object",
         properties: {
