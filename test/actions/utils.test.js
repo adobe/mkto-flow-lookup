@@ -4,8 +4,7 @@
 
 const utils = require('../../actions/utils')
 
-const mockAsyncReq = require("../mocks/mockAsyncRequest");
-
+const {mockSingleLead} = require("../mocks/mockAsyncRequest");
 
 test('interface', () => {
   expect(typeof utils.errorResponse).toBe('function')
@@ -123,7 +122,7 @@ describe('getBearerToken', () => {
 describe('validateSchema', () => {
   test('test swagger validation', async () => {
     var {schemaKey} = require('../../actions/flow/v1/submitAsyncAction');
-    var result = utils.validateSchema(schemaKey, mockAsyncReq);
+    var result = utils.validateSchema(schemaKey, mockSingleLead);
     expect(result).toEqual(true);
 })
 })

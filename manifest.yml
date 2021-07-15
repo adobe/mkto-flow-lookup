@@ -43,13 +43,25 @@ packages:
         # annotations:
         #   require-adobe-auth: true
       getServiceDefinition:
-        function: actions\files\v1\getServiceDefinition\index.js
+        function: actions\flow\v1\getServiceDefinition\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
       submitAsyncAction:
         function: actions\flow\v1\submitAsyncAction\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
+      executeCallback:
+        function: actions\flow\v1\executeCallback\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
+      mockCallbackResponse:
+        function: actions\flow\v1\mockCallbackResponse\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:

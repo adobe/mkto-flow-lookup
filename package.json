@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "@adobe/aio-lib-core-config": "^2.0.1",
         "@adobe/aio-lib-state": "^1.1.0",
         "@adobe/aio-sdk": "^3.0.0",
         "@adobe/exc-app": "^0.2.17",
@@ -22,10 +23,7 @@
         "test": "jest --passWithNoTests ./test",
         "e2e": "jest --collectCoverage=false --maxConcurrency=1 --maxWorkers=1 --testRegex ./e2e/actions/",
         "wh": "jest .e2e/actions/legacy-webhook.test.js",
-        "validate-plus": "jest --passWithNoTests ./e2e/actions/validate.test.js ./e2e/actions/validate-test.test.js",
-        "validate-test-only": "jest --passWithNoTests ./e2e/actions/validate-test.test.js",
-        "scratch": "jest --passWithNoTests ./test/scratch.test.js",
-        "vtest2": "jest --passWithNoTests ./e2e/actions/vtest2.test.js"
+        "flow-e2e": "jest --passWithNoTests ./e2e/actions/flow/"
     },
     "engines": {
         "node": "^10 || ^12 || ^14"
