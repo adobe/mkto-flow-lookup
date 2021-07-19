@@ -54,6 +54,18 @@ packages:
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+      executeCallback:
+        function: actions\flow\v1\executeCallback\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
+      mockCallbackResponse:
+        function: actions\flow\v1\mockCallbackResponse\index.js
+        web: 'yes'
+        runtime: 'nodejs:14'
+        inputs:
+          LOG_LEVEL: debug
       # validate:
       #   function: actions\v1\validate\index.js
       #   web: 'yes'

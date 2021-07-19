@@ -1,14 +1,14 @@
 const { Core } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../utils')
+const fetch = require('node-fetch')
+
 
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
 
-const schemaKey = "#/components/schemas/async";
+const actionName = "executeCallback";
 
-const cbActionName = require('../executeCallback').actionName;
-
-var openwhisk = require('openwhisk');
+const cbSchema = "#/components/schemas/flowCallBack"
 
 async function main(params) {
     const logger = Core.Logger('main', { level: params.LOG_LEVEL || 'info' })
@@ -19,39 +19,6 @@ async function main(params) {
     // log parameters, only if params.LOG_LEVEL === 'debug'
     logger.debug(stringParameters(params))
 
-    try {
-        validateSchema(schemaKey, params);
-    } catch (error) {
-        logger.info(error)
-        return (400, error, logger);
-    }
-
-    var ow = openwhisk();
-
-    try {
-        await owClient.actions.invoke({
-            name: getRuntimePkgName() + '/' + cbActionName,
-            blocking: false,
-            result: false,
-            params: params
-        })
-    } catch (error) {
-        logger.info(error);
-        return{
-            "statusCode": 500,
-            "body":{
-                "error":{
-                    "message": "Callback creation failed",
-                    "details": error
-                }
-            }
-        }
-    }
-
-    return {
-        "statusCode": 201
-    }
-
     //Move to secondary action
     const files = await filesLib.init();
 
@@ -60,7 +27,7 @@ async function main(params) {
     var tableName = params.objectData[0].flowStepContext.table;
     var table;
     try {
-        table = await files.read(table);
+        table = await files.read(tableName);
     } catch (error) {
         logger.info(error);
         return errorResponse(400, error, logger)
@@ -74,15 +41,19 @@ async function main(params) {
     var lookup = params.objectData[0].flowStepContext.lookup;
     var results = lts.search(table, keyName, Arrya.from(keyValues), lookup);
 
-    var response = {
-        "body": {
-            "munchkinId": params.subscription.munchkinId,
-            "token": params.token,
-            "time": Date.now(),
-            "objectData": [
-            ]
-        }
-    }
+    var cbData = {
+        "munchkinId": params.subscription.munchkinId,
+        "token": params.token,
+        "time": Date.now(),
+        "objectData": [
+        ]
+    };
+    var cbReq = {
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": {}
+    };
 
     params.objectData.forEach((obj) => {
         var kv = obj.objectContext[obj.flowStepContext.keyField];
@@ -96,19 +67,35 @@ async function main(params) {
             data.leadData[obj.flowStepContext.resField] = results[kv];
             data.activityData["returnVal"] = results[kv];
             data.activityData["success"] = true;
-            response.objectData.push(data)
+            cbData.objectData.push(data)
         } else {
             data.activityData["success"] = false;
             data.activityData["reason"] = "No match found for given key name and value"
+            cbData.objectData.push(data)
         }
 
     })
 
-    response["statusCode"] = 20
-    return
+    cbReq["body"] = cbData;
+    try {
+        validateSchema(cbSchema, cbReq)
+    } catch (error) {
+        logger.info(error);
+        return errorResponse(500, error, logger)
+    }
+
+    var cbRes;
+    try {
+        cbRes = await fetch(params.callbackUrl, {body: cbReq, "headers": {"Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on"}, method: "POST"})
+    } catch (error) {
+        logger.ingo(error);
+        return errorResponse(500, error, logger)
+    }
+    
+    return cbRes;
+
 }
 
 module.exports = {
-    main,
-    schemaKey
+    main
 }
