@@ -9,7 +9,7 @@
         "@adobe/exc-app": "^0.2.17",
         "cloudevents-sdk": "^1.0.0",
         "form-data": "^2.5.1",
-        "multipart-form-parser": "kepael/multipart-form-parser#master",
+        "multipart-form-parser": "kelkingt/multipart-form-parser#master",
         "node-fetch": "^2.6.0",
         "papaparse": "^5.3.1",
         "regenerator-runtime": "^0.13.5",
