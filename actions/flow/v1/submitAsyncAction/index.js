@@ -1,7 +1,7 @@
 const { Core } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../utils')
 
-const lts = require("../../../lib/lookupTableSearch.js");
+const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
 
 const schemaKey = "#/components/schemas/async";
