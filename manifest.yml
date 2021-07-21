@@ -42,12 +42,12 @@ packages:
           LOG_LEVEL: debug
         # annotations:
         #   require-adobe-auth: true
-      getServiceDefinition:
-        function: actions\flow\v1\getServiceDefinition\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
+      # getServiceDefinition:
+      #   function: actions\flow\v1\getServiceDefinition\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
       submitAsyncAction:
         function: actions\flow\v1\submitAsyncAction\index.js
         web: 'yes'
