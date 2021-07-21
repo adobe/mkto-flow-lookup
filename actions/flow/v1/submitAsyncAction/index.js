@@ -1,5 +1,5 @@
 const { Core } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema, getRuntimePkgName } = require('../../../utils')
 
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
@@ -23,24 +23,35 @@ async function main(params) {
         validateSchema(schemaKey, params);
     } catch (error) {
         logger.info(error)
-        return (400, error, logger);
+        return errorResponse(400, error, logger);
     }
 
-    var ow = openwhisk();
-
+    var ow;
     try {
-        await owClient.actions.invoke({
-            name: getRuntimePkgName() + '/' + cbActionName,
+        ow = openwhisk();
+    } catch (error) {
+        logger.info(error);
+        return errorResponse(500, error, logger)
+    }
+
+    var activationId;
+    try {
+        var actionNameStr = getRuntimePkgName() + '/' + cbActionName;
+        logger.debug(actionNameStr)
+        var activation = await ow.actions.invoke({
+            name: actionNameStr,
             blocking: false,
             result: false,
             params: params
         })
+        activationId = activation.activationId;
+        logger.debug(activationId);
     } catch (error) {
         logger.info(error);
-        return{
+        return {
             "statusCode": 500,
-            "body":{
-                "error":{
+            "body": {
+                "error": {
                     "message": "Callback creation failed",
                     "details": error
                 }
@@ -49,63 +60,13 @@ async function main(params) {
     }
 
     return {
-        "statusCode": 201
-    }
-
-    //Move to secondary action
-    const files = await filesLib.init();
-
-    //TODO support tokenized/multiple searches per invocation
-
-    var tableName = params.objectData[0].flowStepContext.table;
-    var table;
-    try {
-        table = await files.read(table);
-    } catch (error) {
-        logger.info(error);
-        return errorResponse(400, error, logger)
-    }
-
-    var keyName = params.objectData[0].flowStepContext.keyName;
-    var keyValues = new Set();
-    params.objectData.forEach((obj) => {
-        keyValues.add(obj.objectContext[obj.flowStepContext.keyField])
-    })
-    var lookup = params.objectData[0].flowStepContext.lookup;
-    var results = lts.search(table, keyName, Arrya.from(keyValues), lookup);
-
-    var response = {
-        "body": {
-            "munchkinId": params.subscription.munchkinId,
-            "token": params.token,
-            "time": Date.now(),
-            "objectData": [
-            ]
+        "statusCode": 201,
+        "body": "Accepted:\n- Webhook created",
+        "headers": {
+            "Content-Type": "text/plain",
+            "X-CB-Activation-Id": activationId
         }
     }
-
-    params.objectData.forEach((obj) => {
-        var kv = obj.objectContext[obj.flowStepContext.keyField];
-        var data = {
-            "leadData": {
-                "id": obj.objectContext.id
-            },
-            "activityData": {}
-        }
-        if (results && results[kv]) {
-            data.leadData[obj.flowStepContext.resField] = results[kv];
-            data.activityData["returnVal"] = results[kv];
-            data.activityData["success"] = true;
-            response.objectData.push(data)
-        } else {
-            data.activityData["success"] = false;
-            data.activityData["reason"] = "No match found for given key name and value"
-        }
-
-    })
-
-    response["statusCode"] = 20
-    return
 }
 
 module.exports = {

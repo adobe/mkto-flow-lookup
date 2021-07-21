@@ -97,5 +97,6 @@ async function main(params) {
 }
 
 module.exports = {
-    main
+    main,
+    actionName
 }

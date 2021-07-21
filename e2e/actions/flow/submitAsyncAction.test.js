@@ -1,14 +1,14 @@
-const Config = require('@adobe/aio-lib-core-config')
+//const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
-const { uploadUrl } = require('../../constants');
+const { uploadUrl, actionPrefix } = require('../../constants');
 const { mockSingleLead } = require("../../../test/mocks/mockAsyncRequest");
 
-const namespace = Config.get('runtime.namespace');
-const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
-const packagejson = JSON.parse(fs.readFileSync('package.json').toString());
-const runtimePackage = `${packagejson.name}-${packagejson.version}`
-const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
+// const namespace = Config.get('runtime.namespace');
+// const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
+// const packagejson = JSON.parse(fs.readFileSync('package.json').toString());
+// const runtimePackage = `${packagejson.name}-${packagejson.version}`
+// const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
 const actionUrl = `${actionPrefix}/submitAsyncAction`;
 
 describe('submitAsyncAction e2e test', () => {
@@ -20,10 +20,12 @@ describe('submitAsyncAction e2e test', () => {
     
     test('submit async w/ valid params', async () => {
         var ulRes = await fetch(uploadUrl, { method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' } });
-        var res = await fetch(actionUrl, { headers: { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" }, body: mockSingleLead,  method: "POST" })
+        var res = await fetch(actionUrl, { headers: { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" }, body: JSON.stringify(mockSingleLead),  method: "POST" })
+        console.log("cb url: ", mockSingleLead.callbackUrl)
         console.log(res);
-        var json = await res.json();
-        console.log(json);
+        console.log(await res.text())
+        // var json = await res.json();
+        //console.log(json);
         expect(res).toEqual(expect.objectContaining({ status: 201 }))
     })
 })

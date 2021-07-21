@@ -20,7 +20,7 @@ function getHostname() {
 }
 
 function getRuntimePkgName() {
-  return runtimePackage;
+  return process.env.__OW_ACTION_NAME.split('/')[2];
 }
 
 function getActionPrefix() {
