@@ -3,7 +3,7 @@
 This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  It includes a light API implementation of the AIO files library to support managing the list of available files.  
 
 - It currently reads files synchronously and has an unknown maximum file size when executed on a 256mb action
-- The SSFS API is not yet implemented
+- The SSFS API is partially implemented.  Async submission works and the callback produces correct results and validates
 - End-to-end tests cannot be run locally due to usage of the AIO Files library
 - AIO files is currently the only supported file store
 
