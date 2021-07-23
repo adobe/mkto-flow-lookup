@@ -25,6 +25,6 @@ describe('executeCallback e2e test', () => {
         console.log(res);
         var json = await res.json();
         console.log(json)
-        expect(json.objectData[0]).toEqual(expect.objectContaining({"country-code-2": "ZW"}))
+        expect(json.objectData[0].leadData).toEqual(expect.objectContaining({"country-code-2": "ZW", "id": 1000000}))
     })
 })
