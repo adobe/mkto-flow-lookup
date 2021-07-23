@@ -1,7 +1,7 @@
 //const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
-const {uploadUrl, actionPrefix} = require('../../constants');
+const {uploadUrl, actionPrefix} = require('../../../lib/constants');
 const {mockSingleLead} = require('../../../test/mocks/mockAsyncRequest')
 
 // get action url

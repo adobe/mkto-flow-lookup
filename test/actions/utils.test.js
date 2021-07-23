@@ -4,7 +4,7 @@
 
 const utils = require('../../actions/utils')
 
-const {mockSingleLead} = require("../mocks/mockAsyncRequest");
+const {mockSingleLead} = require("../../mocks/mockAsyncRequest");
 
 test('interface', () => {
   expect(typeof utils.errorResponse).toBe('function')

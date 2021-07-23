@@ -4,7 +4,7 @@ const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInpu
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
 
-const schemaKey = "#/components/schemas/async";
+const reqSchemaKey = "#/components/schemas/async";
 
 const cbActionName = require('../executeCallback').actionName;
 
@@ -20,7 +20,7 @@ async function main(params) {
     logger.debug(stringParameters(params))
 
     try {
-        validateSchema(schemaKey, params);
+        validateSchema(reqSchemaKey, params);
     } catch (error) {
         logger.info(error)
         return errorResponse(400, error, logger);
@@ -71,5 +71,5 @@ async function main(params) {
 
 module.exports = {
     main,
-    schemaKey
+    schemaKey: reqSchemaKey
 }
