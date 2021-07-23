@@ -1,4 +1,4 @@
-const {validateSchema} = require('../../actions/utils')
+const {validateSchema} = require('../../lib/actionUtils')
 const {sdf} = require('../../actions/flow/v1/getServiceDefinition/serviceDefinition')
 
 describe('getServiceDefinition local', () =>{

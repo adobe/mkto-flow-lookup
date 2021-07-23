@@ -1,6 +1,6 @@
 const fs = require('fs')
 const fetch = require('node-fetch')
-const { uploadUrl, actionPrefix, defaultHeaders } = require('../../constants');
+const { uploadUrl, actionPrefix, defaultHeaders } = require('../../../lib/constants');
 const { mockSingleLead } = require("../../../test/mocks/mockCallbackRequest");
 const actionUrl = `${actionPrefix}/mockCallbackResponse`
 

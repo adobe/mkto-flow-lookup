@@ -1,10 +1,9 @@
 const { Core } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema, getRuntimePkgName } = require('../../../utils')
-
-const lts = require("../../../../lib/lookupTableSearch.js");
-const filesLib = require('@adobe/aio-lib-files');
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema, getRuntimePkgName } = require('../../../../lib/actionUtils')
 
 const reqSchemaKey = "#/components/schemas/async";
+
+const actionName = "submitAsyncAction";
 
 const cbActionName = require('../executeCallback').actionName;
 
@@ -71,5 +70,6 @@ async function main(params) {
 
 module.exports = {
     main,
-    schemaKey: reqSchemaKey
+    reqSchemaKey,
+    actionName
 }

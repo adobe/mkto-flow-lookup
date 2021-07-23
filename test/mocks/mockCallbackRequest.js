@@ -1,4 +1,4 @@
-const { actionPrefix } = require('../../e2e/constants')
+const { actionPrefix } = require('../../lib/constants')
 const mockCallbackUrl = `${actionPrefix}/mockCallbackResponse`;
 
 const mockSingleLead = {

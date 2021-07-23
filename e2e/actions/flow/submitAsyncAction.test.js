@@ -1,9 +1,8 @@
 const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
-const { uploadUrl, actionPrefix } = require('../../constants');
+const { uploadUrl, actionPrefix } = require('../../../lib/constants');
 const { mockSingleLead } = require("../../../test/mocks/mockAsyncRequest");
-const {findHeaderIgnoreCase} = require("../../../actions/utils");
 
 // const namespace = Config.get('runtime.namespace');
 // const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
@@ -31,7 +30,7 @@ describe('submitAsyncAction e2e test', () => {
         console.log(res);
         // console.log(await res.text())
         // var json = await res.json();
-        //console.log(json);
+        // console.log(json);
         expect(res).toEqual(expect.objectContaining({ status: 201 }))
         //"X-CB-Activation-Id"
         console.log("cbActId: ", cbActId);

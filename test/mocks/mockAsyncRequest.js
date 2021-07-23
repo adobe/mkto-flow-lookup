@@ -1,4 +1,4 @@
-const {actionPrefix} = require('../../e2e/constants')
+const {actionPrefix} = require('../../lib/constants')
 
 // const namespace = Config.get('runtime.namespace');
 // const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';

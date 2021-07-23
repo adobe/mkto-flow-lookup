@@ -1,7 +1,7 @@
 const lts = require("../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
 const { Core } = require('@adobe/aio-sdk');
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../../utils');
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../../../lib/actionUtils')
 
 //TODO
 //handle newline correctly

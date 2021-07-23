@@ -2,7 +2,7 @@ const filesLib = require('@adobe/aio-lib-files');
 
 const fetch = require('node-fetch')
 const { Core, Target } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../../../lib/actionUtils')
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {

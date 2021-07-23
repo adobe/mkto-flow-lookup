@@ -1,7 +1,7 @@
 const { Core } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../../lib/actionUtils.js')
 
-const sdf = require("./serviceDefinition")
+const {sdf} = require("../../../../lib/serviceDefinition.js")
 
 const actionName = "getServiceDefinition";
 const respSchemaKey = "#/components/schemas/serviceDefinition";
@@ -18,7 +18,7 @@ async function main(params){
     try {
         validateSchema(respSchemaKey, sdf);
     } catch (error) {
-        
+        return errorResponse(400, error, logger)
     }
     return{
         statuscode: 200,
@@ -29,5 +29,5 @@ async function main(params){
 module.exports ={
     main,
     actionName,
-    schemaKey
+    respSchemaKey
 }
