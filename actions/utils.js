@@ -20,7 +20,7 @@ function getHostname() {
 }
 
 function getRuntimePkgName() {
-  return runtimePackage;
+  return process.env.__OW_ACTION_NAME.split('/')[2];
 }
 
 function getActionPrefix() {
@@ -155,7 +155,7 @@ function getBearerToken(params) {
  *
  * @param {number} statusCode the error status code.
  *        e.g. 400
- * @param {string} message the error message.
+ * @param {string} error the error.
  *        e.g. 'missing xyz parameter'
  * @param {*} [logger] an optional logger instance object with an `info` method
  *        e.g. `new require('@adobe/aio-sdk').Core.Logger('name')`
@@ -163,15 +163,15 @@ function getBearerToken(params) {
  * @returns {object} the error object, ready to be returned from the action main's function.
  *
  */
-function errorResponse(statusCode, message, logger) {
+function errorResponse(statusCode, error, logger) {
   if (logger && typeof logger.info === 'function') {
-    logger.info(`${statusCode}: ${message}`)
+    logger.info(`${statusCode}: ${error}`)
   }
   return {
     error: {
       statusCode,
       body: {
-        error: message
+        error
       }
     }
   }

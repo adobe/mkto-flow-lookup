@@ -30,6 +30,8 @@ const file3 = {
     "file": "asdfqwer1234"
 }
 
+var defaultHeaders = {"Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on"}
+
 
 module.exports = {
     namespace,
