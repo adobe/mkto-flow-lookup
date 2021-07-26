@@ -2,7 +2,7 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
-const { namespace, hostname, packagejson, runtimePackage, propsUrl, uploadUrl, deleteUrl, actionPrefix } = require("../constants.js");
+const { namespace, hostname, packagejson, runtimePackage, propsUrl, uploadUrl, deleteUrl, actionPrefix } =  require('../../lib/constants');
 
 // get action url
 /* const namespace = Config.get('runtime.namespace');
@@ -36,25 +36,25 @@ var badParams = {
 
 describe('file-properties end to end test', () => {
     test('look for fake file', async () => {
-        console.debug(badParams);
+        // console.debug(badParams);
         var res = await fetch(actionUrl, badParams);
-        console.debug(res);
+        // console.debug(res);
         expect(res).toEqual(expect.objectContaining({ status: 404 }));
     })
     test('retrieve properties of a file', async () => {
         // console.debug(uploadUrl, defaultParams);
         var res1 = await fetch(uploadUrl, defaultParams );
-        console.debug(await res1.json());
+        // console.debug(await res1.json());
         var res = await fetch(actionUrl, defaultParams);
-        var jsonRes = await res.json();
-        console.debug(jsonRes);
+        // var jsonRes = await res.json();
+        // console.debug(jsonRes);
         expect(res).toEqual(expect.objectContaining({ status: 200 }));
         
         //expect(jsonRes).toEqual(expect.objectContaining({props: expect.objectContaining({name: target})}));
     })
     test('no target input', async () => {
         var res = await fetch(actionUrl);
-        console.debug(res);
+        // console.debug(res);
         expect(res).toEqual(expect.objectContaining({ status: 400 }));
     })
 })

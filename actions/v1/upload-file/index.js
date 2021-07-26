@@ -1,7 +1,7 @@
 const filesLib = require('@adobe/aio-lib-files');
 const parser = require('multipart-form-parser');
 const { Core, Target } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, extractBoundary, findHeaderIgnoreCase } = require('../../utils')
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, extractBoundary, findHeaderIgnoreCase } = require('../../../lib/actionUtils')
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {

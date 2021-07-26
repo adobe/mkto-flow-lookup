@@ -9,7 +9,7 @@
         "@adobe/exc-app": "^0.2.17",
         "cloudevents-sdk": "^1.0.0",
         "form-data": "^2.5.1",
-        "multipart-form-parser": "kelkingt/multipart-form-parser#master",
+        "multipart-form-parser": "../source/multipart-form-parser",
         "node-fetch": "^2.6.0",
         "papaparse": "^5.3.1",
         "regenerator-runtime": "^0.13.5",
@@ -23,7 +23,8 @@
         "test": "jest --passWithNoTests ./test",
         "e2e": "jest --collectCoverage=false --maxConcurrency=1 --maxWorkers=1 --testRegex ./e2e/actions/",
         "wh": "jest .e2e/actions/legacy-webhook.test.js",
-        "flow-e2e": "jest --passWithNoTests ./e2e/actions/flow/"
+        "flow-e2e": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/",
+        "sdf": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/getServiceDefinition.test.js"
     },
     "engines": {
         "node": "^10 || ^12 || ^14"

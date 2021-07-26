@@ -2,7 +2,7 @@
 * <license header>
 */
 
-const utils = require('../../actions/utils')
+const utils = require('../../lib/actionUtils')
 
 const {mockSingleLead} = require("../mocks/mockAsyncRequest");
 
@@ -121,34 +121,9 @@ describe('getBearerToken', () => {
 
 describe('validateSchema', () => {
   test('test swagger validation', async () => {
-    var {schemaKey} = require('../../actions/flow/v1/submitAsyncAction');
-    var result = utils.validateSchema(schemaKey, mockSingleLead);
+    var {reqSchemaKey} = require('../../actions/flow/v1/submitAsyncAction');
+    var result = utils.validateSchema(reqSchemaKey, mockSingleLead);
     expect(result).toEqual(true);
 })
 })
 
-//Old tests
-/* describe('validateSchema', () => {
-  const ts = {
-    type: "object",
-    properties: {
-      foo: { type: "integer" },
-      bar: { type: "string" }
-    },
-    required: ["foo"],
-    additionalProperties: false,
-  }
-  test('validate a simple object which conforms to the given schema', async () => {
-    var obj = {"foo": 1, "bar": "baz"};
-    var result = await utils.validateSchema(ts, obj);
-    console.log(result);
-    expect(result).toEqual(true);
-  })
-  test('validate a simple object that does not conform to the given schema', async ()=> {
-    var obj = {"foo": 1, "bar": 11};
-    var result = await utils.validateSchema(ts, obj);
-    console.log(result);
-    expect(result).toEqual(false);
-  }
-  )
-}) */

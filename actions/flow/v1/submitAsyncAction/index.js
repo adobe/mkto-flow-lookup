@@ -1,10 +1,9 @@
 const { Core } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema, getRuntimePkgName } = require('../../../utils')
+const { errorResponse, stringParameters, validateSchema, getRuntimePkgName } = require('../../../../lib/actionUtils')
 
-const lts = require("../../../../lib/lookupTableSearch.js");
-const filesLib = require('@adobe/aio-lib-files');
+const reqSchemaKey = "#/components/schemas/async";
 
-const schemaKey = "#/components/schemas/async";
+const actionName = "submitAsyncAction";
 
 const cbActionName = require('../executeCallback').actionName;
 
@@ -20,7 +19,7 @@ async function main(params) {
     logger.debug(stringParameters(params))
 
     try {
-        validateSchema(schemaKey, params);
+        validateSchema(reqSchemaKey, params);
     } catch (error) {
         logger.info(error)
         return errorResponse(400, error, logger);
@@ -36,7 +35,7 @@ async function main(params) {
 
     var activationId;
     try {
-        var actionNameStr = getRuntimePkgName() + '/' + cbActionName;
+        var actionNameStr = getRuntimePkgName(process.env) + '/' + cbActionName;
         logger.debug(actionNameStr)
         var activation = await ow.actions.invoke({
             name: actionNameStr,
@@ -71,5 +70,6 @@ async function main(params) {
 
 module.exports = {
     main,
-    schemaKey
+    reqSchemaKey,
+    actionName
 }
