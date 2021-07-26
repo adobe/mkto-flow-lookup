@@ -22,9 +22,9 @@ describe('executeCallback e2e test', () => {
     test('exec w/ valid params', async () => {
         var ulRes = await fetch(uploadUrl, { method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' } });
         var res = await fetch(actionUrl, {"headers": {"Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on"}, body: JSON.stringify(mockSingleLead), method: "POST"})
-        console.log(res);
+        // console.log(res);
         var json = await res.json();
-        console.log(json)
+        // console.log(json)
         expect(json.objectData[0].leadData).toEqual(expect.objectContaining({"country-code-2": "ZW", "id": 1000000}))
     })
 })

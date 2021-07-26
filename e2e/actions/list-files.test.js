@@ -2,7 +2,7 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
-const {  uploadUrl } = require("../constants");
+const {  uploadUrl } =  require('../../lib/constants');
 
 // get action url
 const namespace = Config.get('runtime.namespace');

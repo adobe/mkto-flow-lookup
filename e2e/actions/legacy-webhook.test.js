@@ -2,7 +2,7 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
-const {uploadUrl} = require('../constants');
+const {uploadUrl} =  require('../../lib/constants');
 const wh = require('../webhook-helper');
 
 // get action url

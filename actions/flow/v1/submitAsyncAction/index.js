@@ -1,5 +1,5 @@
 const { Core } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema, getRuntimePkgName } = require('../../../../lib/actionUtils')
+const { errorResponse, stringParameters, validateSchema, getRuntimePkgName } = require('../../../../lib/actionUtils')
 
 const reqSchemaKey = "#/components/schemas/async";
 
@@ -35,7 +35,7 @@ async function main(params) {
 
     var activationId;
     try {
-        var actionNameStr = getRuntimePkgName() + '/' + cbActionName;
+        var actionNameStr = getRuntimePkgName(process.env) + '/' + cbActionName;
         logger.debug(actionNameStr)
         var activation = await ow.actions.invoke({
             name: actionNameStr,
