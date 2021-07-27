@@ -22,12 +22,13 @@ describe('submitAsyncAction e2e test', () => {
     var cbActId;
     test('submit async w/ valid params', async () => {
         var ulRes = await fetch(uploadUrl, { method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' } });
+        // console.log(JSON.stringify(mockSingleLead))
         var res = await fetch(actionUrl, { headers: { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" }, body: JSON.stringify(mockSingleLead),  method: "POST" })
-        console.log(res.headers);
+        // console.log(res.headers);
         //get callback activation id
         cbActId = await res.headers.get("X-CB-Activation-Id");
-        console.log("cb act id: ", cbActId)
-        console.log(res);
+        // console.log("cb act id: ", cbActId)
+        // console.log(res);
         // console.log(await res.text())
         // var json = await res.json();
         // console.log(json);

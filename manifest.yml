@@ -78,6 +78,8 @@ packages:
           runtime: 'nodejs:14'
           inputs:
             LOG_LEVEL: debug
+          annotations:
+            require-adobe-auth: true
       # generic:
       #   function: actions\v1\generic\index.js
       #   web: 'yes'
