@@ -66,8 +66,14 @@ packages:
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
-      openApi.json:
+      serviceSwagger:
           function: actions\flow\v1\openapi\index.js
+          web: 'yes'
+          runtime: 'nodejs:14'
+          inputs:
+            LOG_LEVEL: debug
+      fileSwagger:
+          function: actions\v1\openapi\index.js
           web: 'yes'
           runtime: 'nodejs:14'
           inputs:
