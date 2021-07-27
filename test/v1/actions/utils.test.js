@@ -2,9 +2,9 @@
 * <license header>
 */
 
-const utils = require('../../lib/actionUtils')
+const utils = require('../../../lib/actionUtils')
 
-const {mockSingleLead} = require("../mocks/mockAsyncRequest");
+const {mockSingleLead} = require("../../mocks/mockAsyncRequest");
 
 test('interface', () => {
   expect(typeof utils.errorResponse).toBe('function')
@@ -121,7 +121,7 @@ describe('getBearerToken', () => {
 
 describe('validateSchema', () => {
   test('test swagger validation', async () => {
-    var {reqSchemaKey} = require('../../actions/flow/v1/submitAsyncAction');
+    var {reqSchemaKey} = require('../../../actions/flow/v1/submitAsyncAction');
     var result = utils.validateSchema(reqSchemaKey, mockSingleLead);
     expect(result).toEqual(true);
 })

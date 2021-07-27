@@ -1,5 +1,5 @@
 module.exports ={
-    "swagger": {
+    swagger: {
         "openapi": "3.0.1",
         "info": {
           "title": "SSFA",
