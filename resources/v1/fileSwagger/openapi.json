@@ -1,0 +1,219 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "AIO File Manager",
+      "description": "This is a POC implementation offile management for aio runtime",
+      "termsOfService": "https://documents.marketo.com/legal/eusa/us/2012-08-28/",
+      "license": {
+        "name": "Marketo API License",
+        "url": "https://developers.marketo.com/api-license/"
+      },
+      "version": "0.1.0"
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "https://swagger.io"
+    },
+    "paths": {
+      "/upload-file": {
+        "description": "",
+        "post": {
+          "operationId": "upload-file",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/uploadFile"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "File accepted"
+            },
+            "400": {
+              "description": "Bad Request:\n- Expected parameters were missing from the request or were invalid or Invalid document structure"
+            },
+            "401": {
+              "description": "Unauthorized:\n- The API credentials which Marketo has are not authorized to undertake the action"
+            },
+            "403": {
+              "description": "Forbidden:\n- Authentication Failed"
+            },
+            "429": {
+              "description": "Too Many Requests:\n- The service has received too many requests and should retry w/ an appropriate strategy"
+            },
+            "500": {
+              "description": "Internal Server Error:\n- Invoking the service failed for an unknown reason"
+            }
+          }
+        }
+      },
+      "/file-properties": {
+        "description": "",
+        "post": {
+          "operationId": "file-properties",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fileProps"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+                "description":"File found, returning properties"
+            },
+            "400": {
+              "description": "Bad Request:\n- Expected parameters were missing from the request or were invalid or Invalid document structure"
+            },
+            "401": {
+              "description": "Unauthorized:\n- The API credentials which Marketo has are not authorized to undertake the action"
+            },
+            "403": {
+              "description": "Forbidden:\n- Authentication Failed"
+            },
+            "429": {
+              "description": "Too Many Requests:\n- The service has received too many requests and should retry w/ an appropriate strategy"
+            },
+            "500": {
+              "description": "Internal Server Error:\n- Invoking the service failed for an unknown reason"
+            }
+          }
+        }
+      },
+      "/list-files": {
+        "description": "",
+        "post": {
+          "operationId": "list-files",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/listFiles"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Returns a list of files in the given directory"
+            },
+            "400": {
+              "description": "Bad Request:\n- Expected parameters were missing from the request or were invalid or Invalid document structure"
+            },
+            "401": {
+              "description": "Unauthorized:\n- The API credentials which Marketo has are not authorized to undertake the action"
+            },
+            "403": {
+              "description": "Forbidden:\n- Authentication Failed"
+            },
+            "429": {
+              "description": "Too Many Requests:\n- The service has received too many requests and should retry w/ an appropriate strategy"
+            },
+            "500": {
+              "description": "Internal Server Error:\n- Invoking the service failed for an unknown reason"
+            }
+          }
+        }
+      },
+      "/delete-file": {
+        "description": "",
+        "post": {
+          "operationId": "delete-file",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/deleteFile"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "File deleted"
+            },
+            "400": {
+              "description": "Bad Request:\n- Expected parameters were missing from the request or were invalid or Invalid document structure"
+            },
+            "401": {
+              "description": "Unauthorized:\n- The API credentials which Marketo has are not authorized to undertake the action"
+            },
+            "403": {
+              "description": "Forbidden:\n- Authentication Failed"
+            },
+            "429": {
+              "description": "Too Many Requests:\n- The service has received too many requests and should retry w/ an appropriate strategy"
+            },
+            "500": {
+              "description": "Internal Server Error:\n- Invoking the service failed for an unknown reason"
+            }
+          }
+        }
+      }
+      
+    },
+    "components": {
+      "schemas": {
+          "uploadFile":{
+              "type": "object",
+              "required": [ "target", "file"],
+              "properties": {
+                  "target":{
+                      "type": "string",
+                      "description": "path to upload the file to"
+                  },
+                  "file":{
+                      "type": "string",
+                      "description": "File Contents"
+                  }
+                }
+          },
+          "fileProps":{
+            "type": "object",
+            "required": [ "target"],
+            "properties": {
+                "target":{
+                    "type": "string",
+                    "description": "path of the target file"
+                }
+            }
+        },
+        "listFiles":{
+            "type": "object",
+            "required": [ "target", "file"],
+            "properties": {
+                "target":{
+                    "type": "string",
+                    "description": "path of the target directory"
+                }
+            }
+        },
+        "deleteFile":{
+            "type": "object",
+            "required": [ "target"],
+            "properties": {
+                "target":{
+                    "type": "string",
+                    "description": "path of the file to delete"
+                }
+            }
+        }
+      },
+      "securitySchemes": {
+        "apiKey": {
+          "type": "apiKey",
+          "name": "X-API-KEY",
+          "in": "header"
+        }
+      }
+    }
+  }

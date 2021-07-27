@@ -1,6 +1,6 @@
 const { Core } = require('@adobe/aio-sdk')
-const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../../lib/actionUtils')
-const {swagger} = require("../../../../resources/v1/svcSwagger")
+const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../lib/actionUtils')
+const {swagger} = require("../../../resources/v1/fileSwagger")
 
 function main(params) {
     const logger = Core.Logger('main', { level: params.LOG_LEVEL || 'info' })
