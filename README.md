@@ -3,7 +3,7 @@
 This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  It includes a light API implementation of the AIO files library to support managing the list of available files.  
 
 - It currently reads files synchronously and has an unknown maximum file size when executed on a 256mb action
-- The SSFS API is partially implemented.  Async submission works and the callback produces correct results and validates.  Service Definition is implemented
+- The SSFS API is fully implemented.  Async submission works and the callback produces correct results and validates.  Service Definition is implemented
 - End-to-end tests cannot be run locally due to usage of the AIO Files library
 - AIO files is currently the only supported file store
 - lookup search is exact match only
@@ -75,23 +75,3 @@ code.
      install the required dependencies within that directory and zip the folder
      before deploying it as a zipped action. Use this method if you want to keep
      your action's dependencies separated.
-
-## Debugging in VS Code
-
-~While running your local server (`aio app run`), both UI and actions can be debugged, to do so open the vscode debugger
-and select the debugging configuration called `WebAndActions`.
-Alternatively, there are also debug configs for only UI and each separate action.~
-
-Doesn't work as currently implemented due to aio files lib dependency.
-
-## Typescript support for UI
-
-To use typescript use `.tsx` extension for react components and add a `tsconfig.json` 
-and make sure you have the below config added
-```
- {
-  "compilerOptions": {
-      "jsx": "react"
-    }
-  } 
-```
