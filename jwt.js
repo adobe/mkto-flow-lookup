@@ -1,0 +1,1 @@
+module.exports = {"exp":1627510052,"iss":"F28222C85C46D8530A495EB6@AdobeOrg","sub":"CA32186660ABE7BE0A495C60@techacct.adobe.com","https://ims-na1.adobelogin.com/s/ent_adobeio_sdk":true,"aud":"https://ims-na1.adobelogin.com/c/eb8789d67ca04137a5f6b01857207ec1"}

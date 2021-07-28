@@ -24,7 +24,8 @@
         "e2e": "jest --collectCoverage=false --maxConcurrency=1 --maxWorkers=1 --testRegex ./e2e/actions/",
         "wh": "jest .e2e/actions/legacy-webhook.test.js",
         "flow-e2e": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/",
-        "sdf": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/getServiceDefinition.test.js"
+        "sdf": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/getServiceDefinition.test.js",
+        "bearerString": "node scripts/printBearerTokenString.js"
     },
     "engines": {
         "node": "^10 || ^12 || ^14"
