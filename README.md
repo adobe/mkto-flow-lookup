@@ -13,6 +13,7 @@ This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  I
 
 - [Get IO runtime credentials.](https://www.adobe.io/apis/experienceplatform/runtime/docs.html#!adobedocs/adobeio-runtime/master/getting_started.md) then Populate the `.env` file in the project root and fill it as shown [below](#env)
 - clone https://git.corp.adobe.com/kelkingt/multipart-form-parser and add as a local dependency.  e.g if you have /source/mkto-flow-lookup for this repo, /source/multi-part-form-parser.  looking to fix this by getting it published to npm, but living with it rn
+- you'll need an Access Token to run the tests.  tests expect this to be in '.secrets/auth' and for the module to have an "access_token" property containing the access token string.  Instructions here: https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/JWT/JWT.md
 
 ## Local Dev
 
