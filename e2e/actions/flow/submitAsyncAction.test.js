@@ -3,12 +3,8 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 const { uploadUrl, actionPrefix } = require('../../../lib/constants');
 const { mockSingleLead } = require("../../../test/mocks/mockAsyncRequest");
+const {addAuthHeaders} = require("../../../test/lib/testUtils")
 
-// const namespace = Config.get('runtime.namespace');
-// const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
-// const packagejson = JSON.parse(fs.readFileSync('package.json').toString());
-// const runtimePackage = `${packagejson.name}-${packagejson.version}`
-// const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}`
 const actionUrl = `${actionPrefix}/submitAsyncAction`;
 
 describe('submitAsyncAction e2e test', () => {
@@ -21,9 +17,13 @@ describe('submitAsyncAction e2e test', () => {
     var ow = openwhisk({"api_key": Config.get("runtime.auth"), "apihost": Config.get("runtime.apihost")});
     var cbActId;
     test('submit async w/ valid params', async () => {
-        var ulRes = await fetch(uploadUrl, { method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' } });
+        var ulHeaders = { 'Content-Type': 'application/json' };
+        addAuthHeaders(ulHeaders);
+        var ulRes = await fetch(uploadUrl, { method: "POST", body: JSON.stringify(params), headers:  ulHeaders});
         // console.log(JSON.stringify(mockSingleLead))
-        var res = await fetch(actionUrl, { headers: { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" }, body: JSON.stringify(mockSingleLead),  method: "POST" })
+        var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" };
+        addAuthHeaders(headers)
+        var res = await fetch(actionUrl, { headers: headers, body: JSON.stringify(mockSingleLead),  method: "POST" })
         // console.log(res.headers);
         //get callback activation id
         cbActId = await res.headers.get("X-CB-Activation-Id");
@@ -37,7 +37,7 @@ describe('submitAsyncAction e2e test', () => {
     })
     test('validate callback activation', async ()=>{
         var cbAct = await ow.activations.get(cbActId);
-        console.log("cbAct: ", cbAct);
+        // console.log("cbAct: ", cbAct);
         expect(cbAct.response.result.body.objectData[0].leadData).toEqual(expect.objectContaining({"country-code-2": "ZW", "id": 1000000}));
     })
 })

@@ -3,13 +3,7 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
 const { namespace, hostname, packagejson, runtimePackage, propsUrl, uploadUrl, deleteUrl, actionPrefix } =  require('../../lib/constants');
-
-// get action url
-/* const namespace = Config.get('runtime.namespace');
-const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
-const packagejson = JSON.parse(fs.readFileSync('package.json').toString());
-const runtimePackage = `${packagejson.name}-${packagejson.version}`
-const actionPrefix = `https://${namespace}.${hostname}/api/v1/web/${runtimePackage}` */
+const {addAuthHeaders} = require("../../test/lib/testUtils")
 const actionUrl = propsUrl;
 
 const dir = "/test/"
@@ -37,12 +31,14 @@ var badParams = {
 describe('file-properties end to end test', () => {
     test('look for fake file', async () => {
         // console.debug(badParams);
+        addAuthHeaders(badParams.headers)
         var res = await fetch(actionUrl, badParams);
         // console.debug(res);
         expect(res).toEqual(expect.objectContaining({ status: 404 }));
     })
     test('retrieve properties of a file', async () => {
         // console.debug(uploadUrl, defaultParams);
+        addAuthHeaders(defaultParams.headers)
         var res1 = await fetch(uploadUrl, defaultParams );
         // console.debug(await res1.json());
         var res = await fetch(actionUrl, defaultParams);
@@ -53,7 +49,8 @@ describe('file-properties end to end test', () => {
         //expect(jsonRes).toEqual(expect.objectContaining({props: expect.objectContaining({name: target})}));
     })
     test('no target input', async () => {
-        var res = await fetch(actionUrl);
+        addAuthHeaders(defaultParams.headers)
+        var res = await fetch(actionUrl,{headers: defaultParams.headers});
         // console.debug(res);
         expect(res).toEqual(expect.objectContaining({ status: 400 }));
     })

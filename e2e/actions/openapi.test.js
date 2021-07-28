@@ -2,22 +2,17 @@ const fetch = require('node-fetch')
 const { uploadUrl, actionPrefix } = require('../../lib/constants');
 const { getInitializationError } = require('../../test/lib/testUtils');
 const actionUrl = `${actionPrefix}/fileSwagger`
-const jwt = require('../../lib/jsonWebToken')
-const auth = require('../../.secrets/auth')
 
 const { Config } = require('@adobe/aio-sdk').Core
 
-const orgId = Config.get("ims.contexts.aio-4566206088344642952.ims_org_id")
 
 
 describe('e2e tests for serving swagger definition', () => {
 
 
     test('metaschema validation', async () => {
-        var authToken = auth.access_token;
-        console.debug("apiKey: ", authToken);
-        console.debug("orgId: ", orgId)
-        var res = await fetch(actionUrl, { headers: { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on", "x-gw-ims-org-id": orgId, "Authorization": `Bearer ${authToken}` }, method: "GET" })
+        var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on"}
+        var res = await fetch(actionUrl, { headers: headers, method: "GET" })
         //console.log(res)
         if (res.status >= 400) {
             var activationId = await res.headers.get('x-openwhisk-activation-id');
@@ -26,28 +21,28 @@ describe('e2e tests for serving swagger definition', () => {
         }
         expect(res).toEqual(expect.objectContaining({ status: 200 }));
     })
-    test('auth should fail w/ 401', async () => {
-        var res = await fetch(actionUrl, {
-            headers: {
-                "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on",
-                //"x-gw-ims-org-id": orgId, 
-                //"Authorization": "Bearer " + "badtoken" 
-            }, method: "GET"
-        });
-        // console.log(await res.json())
-        expect(res).toEqual(expect.objectContaining({ status: 401 }))
-    }),
-        test('auth should fail w/ 403', async () => {
-            var res = await fetch(actionUrl, {
-                headers: {
-                    "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on",
-                    "x-gw-ims-org-id": orgId,
-                    "Authorization": "Bearer " + "badtokenaaaaaaaaaaaaaaaaaaaagggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
-                }, method: "GET"
-            });
-            console.log("403 json: " + JSON.stringify(await res.json()))
-            expect(res).toEqual(expect.objectContaining({ status: 403 }))
-        })
+    // test('auth should fail w/ 401', async () => {
+    //     var res = await fetch(actionUrl, {
+    //         headers: {
+    //             "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on",
+    //             //"x-gw-ims-org-id": orgId, 
+    //             //"Authorization": "Bearer " + "badtoken" 
+    //         }, method: "GET"
+    //     });
+    //     // console.log(await res.json())
+    //     expect(res).toEqual(expect.objectContaining({ status: 401 }))
+    // }),
+    //     test('auth should fail w/ 403', async () => {
+    //         var res = await fetch(actionUrl, {
+    //             headers: {
+    //                 "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on",
+    //                 "x-gw-ims-org-id": orgId,
+    //                 "Authorization": "Bearer " + "badtokenaaaaaaaaaaaaaaaaaaaagggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
+    //             }, method: "GET"
+    //         });
+    //         console.log("403 json: " + JSON.stringify(await res.json()))
+    //         expect(res).toEqual(expect.objectContaining({ status: 403 }))
+    //     })
     // test('auth should succeed', async () => {
     //     var res = await fetch(actionUrl, { headers: { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on", "x-gw-ims-org-id": orgId, "Authorization": "Bearer " + apiKey }, method: "POST" });
     //     expect(res).toEqual(expect.objectContaining({status: 200}));

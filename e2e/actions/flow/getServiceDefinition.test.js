@@ -5,6 +5,8 @@ const { uploadUrl, actionPrefix } = require('../../../lib/constants');
 const { mockSingleLead } = require("../../../test/mocks/mockAsyncRequest");
 const {validateSchema} = require("../../../lib/actionUtils");
 const {getInitializationError} = require('../../../test/lib/testUtils');
+const {addAuthHeaders} = require("../../../test/lib/testUtils")
+
 
 const actionUrl = `${actionPrefix}/getServiceDefinition`
 
@@ -14,7 +16,9 @@ const {respSchemaKey, sdf, getSdf} = require('../../../actions/flow/v1/getServic
 describe('getServiceDefinition e2e test', () => {
 
     test('get sdf and validate', async () => {
-        var res = await fetch(actionUrl, {"Method": "POST", "headers": { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" }});
+        var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" };
+        addAuthHeaders(headers)
+        var res = await fetch(actionUrl, {"Method": "POST", "headers": headers});
         // console.log(res);
         if(res.status == 400){
             var activationId = await res.headers.get('x-openwhisk-activation-id');
