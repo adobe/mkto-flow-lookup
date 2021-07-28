@@ -9,7 +9,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-          # require-adobe-auth: true
+          require-adobe-auth: true
       delete-file:
         function: actions\v1\delete-file\index.js
         web: 'yes'
@@ -17,7 +17,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-          # require-adobe-auth: true
+          require-adobe-auth: true
       file-properties:
         function: actions\v1\file-properties\index.js
         web: 'yes'
@@ -25,7 +25,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-          # require-adobe-auth: true
+          require-adobe-auth: true
       legacy-webhook:
         function: actions\v1\legacy-webhook\index.js
         web: 'yes'
@@ -33,39 +33,47 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-          # require-adobe-auth: true
+          require-adobe-auth: true
       list-files:
         function: actions\v1\list-files\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
-        # annotations:
-        #   require-adobe-auth: true
+        annotations:
+          require-adobe-auth: true
       getServiceDefinition:
         function: actions\flow\v1\getServiceDefinition\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+        annotations:
+          require-adobe-auth: true
       submitAsyncAction:
         function: actions\flow\v1\submitAsyncAction\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+        annotations:
+          require-adobe-auth: true
       executeCallback:
         function: actions\flow\v1\executeCallback\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+        annotations:
+          require-adobe-auth: true
       mockCallbackResponse:
         function: actions\flow\v1\mockCallbackResponse\index.js
         web: 'yes'
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
+        annotations:
+          require-adobe-auth: true
       serviceSwagger:
           function: actions\flow\v1\openapi\index.js
           web: 'yes'
@@ -76,8 +84,10 @@ packages:
           function: actions\v1\openapi\index.js
           web: 'yes'
           runtime: 'nodejs:14'
-          inputs:
-            LOG_LEVEL: debug
+          # inputs:
+          #   LOG_LEVEL: debug
+          # annotations:
+          #   require-adobe-auth: true
       # generic:
       #   function: actions\v1\generic\index.js
       #   web: 'yes'

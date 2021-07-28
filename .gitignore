@@ -41,3 +41,5 @@ logs
 scratch
 .parcel-cache
 .archive
+jwt.js
+.secrets

@@ -1,4 +1,0 @@
-{
-    "target":"test/test.txt",
-    "file":"file"
-}

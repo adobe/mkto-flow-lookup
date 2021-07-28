@@ -1,6 +1,7 @@
 const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
+const testUtils = require("../../test/lib/testUtils")
 
 // get action url
 const namespace = Config.get('runtime.namespace');
@@ -16,10 +17,13 @@ describe('upload-file end to end test', () => {
             "target": target,
             "file": "asdfqwer1234"
         }
-        var res = await fetch(actionUrl, {method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' }});
+        headers = { 'Content-Type': 'application/json' };
+        testUtils.addAuthHeaders(headers);
+        // console.log(headers)
+        var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(params), headers: headers });
         var jsonRes = await res.json();
-        console.debug(jsonRes);
-        expect(res).toEqual(expect.objectContaining({status:200}))
-        expect(jsonRes.props).toEqual(expect.objectContaining({name: target}))
+        // console.debug(jsonRes);
+        expect(res).toEqual(expect.objectContaining({ status: 200 }))
+        expect(jsonRes.props).toEqual(expect.objectContaining({ name: target }))
     })
 })
