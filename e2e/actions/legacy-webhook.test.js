@@ -4,6 +4,7 @@ const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
 const {uploadUrl} =  require('../../lib/constants');
 const wh = require('../webhook-helper');
+const {addAuthHeaders} = require("../../test/lib/testUtils")
 
 // get action url
 const namespace = Config.get('runtime.namespace');
@@ -15,21 +16,24 @@ const actionUrl = `${actionPrefix}/legacy-webhook`;
 const target = "/test/1.txt";
 
 describe("testing legacy Marketo webhook action", () => {
-    test('a', async () => {
-        console.log(actionUrl);
+    test('testing webhook happy path', async () => {
+        // console.log(actionUrl);
         var target = "test/country-codes.csv"
         var params = {
             "target": target,
             "file": "country,alpha-2,alpha-3,numeric\r\nZimbabwe,ZW,ZWE,716;"
         }
-        var ulRes = await fetch(uploadUrl, {method: "POST", body: JSON.stringify(params), headers: { 'Content-Type': 'application/json' }});
-        console.log(await ulRes.json())
-        var res = await fetch(actionUrl, wh.getWHMockReq());
-        console.log(res);
-        var jsonRes  = await fetch(actionUrl, wh.getWHMockReq());
-        var json = await jsonRes.json()
-        console.log(json);
+        headers = { 'Content-Type': 'application/json' }
+        addAuthHeaders(headers);
+        var ulRes = await fetch(uploadUrl, {method: "POST", body: JSON.stringify(params), headers: headers});
+        // console.log(await ulRes.json())
+        var whParams = wh.getWHMockReq();
+        addAuthHeaders(whParams.headers)
+        var res = await fetch(actionUrl, whParams);
+        // console.log(res);
         expect(res).toEqual(expect.objectContaining({status:200}));
+        var json = await res.json();
+        // console.log(json);
         expect(json['country-code-2']).toEqual('ZW');
     })
 })

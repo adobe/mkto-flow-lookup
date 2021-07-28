@@ -3,6 +3,7 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
 const {  uploadUrl } =  require('../../lib/constants');
+const {addAuthHeaders} = require("../../test/lib/testUtils")
 
 // get action url
 const namespace = Config.get('runtime.namespace');
@@ -30,23 +31,29 @@ var badParams = {
 
 describe('list-files end to end test', () => {
     test('look for fake dir', async () => {
-        console.debug(badParams);
+        // console.debug(badParams);
+        addAuthHeaders(badParams.headers)
         var res = await fetch(actionUrl, badParams);
-        console.debug(res);
+        // console.debug(res);
         expect(res).toEqual(expect.objectContaining({ status: 204 }));
     })
     test('list dir contents', async () => {
+        addAuthHeaders(defaultParams.headers)
+        
         var ulParams = { method: "POST", body: JSON.stringify(file1), headers: defaultParams.headers }
+        addAuthHeaders(ulParams.headers)
         var res1 = await fetch(uploadUrl, ulParams);
-        console.debug(await res1.json());
+        // console.debug(await res1.json());
         var res = await fetch(actionUrl, defaultParams);
         expect(res.status).toBeGreaterThanOrEqual(200);
         expect(res.status).toBeLessThanOrEqual(204);
 
     })
     test('no target input', async () => {
-        var res = await fetch(actionUrl);
-        console.debug(await res.json());
+        var headers = {}
+        addAuthHeaders(headers)
+        var res = await fetch(actionUrl, {headers:headers});
+        // console.debug(await res.json());
         expect(res).toEqual(expect.objectContaining({ status: 400 }));
     })
 })
