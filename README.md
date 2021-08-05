@@ -6,6 +6,7 @@ This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  I
 - The specified parts of SSFS API are fully implemented.  Async submission works and the callback produces correct results and validates.  Service Definition is implemented
 - End-to-end tests cannot be run locally due to usage of the AIO Files library
 - AIO files is currently the only supported file store
+  -file uploads limited to 1MB request body due to openwhisk limitations
 - lookup search is exact match only
 
 
