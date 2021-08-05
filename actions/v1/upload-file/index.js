@@ -1,7 +1,15 @@
 const filesLib = require('@adobe/aio-lib-files');
-const parser = require('multipart-form-parser');
+//const parser = require('multipart-form-parser');
 const { Core, Target } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, extractBoundary, findHeaderIgnoreCase } = require('../../../lib/actionUtils')
+
+const multipart = require('parted').multipart;
+
+const str = require('string-to-stream');
+
+
+
+
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
@@ -13,19 +21,6 @@ async function main(params) {
     // 'info' is the default level if not set
     logger.info('Calling the main action')
 
-
-
-    /* // check for missing request input parameters and headers
-    const requiredParams = ['target', 'file'];
-    const requiredHeaders = [
-      //'Authorization', 
-    ];
-    const errorMessage = checkMissingRequestInputs(params, requiredParams, requiredHeaders)
-    if (errorMessage) {
-      // return and log client errors
-      return errorResponse(400, errorMessage, logger)
-    } */
-
     var response = {
       body: {}
     };
@@ -34,11 +29,46 @@ async function main(params) {
     if (contentType && contentType.indexOf("multipart/form-data") > -1) {
       logger.info("Received multipart request")
       try {
-        var boundary = await extractBoundary(contentType);
-        var parsed = await parser.Parse(Buffer.from(params.__ow_body, 'base64'), boundary);
+        var parseOpts = {
+          limit: 30 * 1024,
+          disklimit: 30 * 1024 * 1024
+        }
+        // var boundary = await extractBoundary(contentType);
+        // var parsed = await parser.Parse(Buffer.from(params.__ow_body, 'base64'), boundary);
 
-        var target;
-        var content;
+        var formData = params.__ow_body;
+        var fileStream = str(Buffer.from(formData, "base64"));
+        
+        var parser = new multipart('multipart/form-data', parseOpts);
+
+        //inspired by: https://www.raymondcamden.com/2017/06/09/uploading-files-to-an-openwhisk-action
+        // let decoded = new Buffer(args.__ow_body,'base64');
+        // let fileStream = str(decoded);
+
+        parser.on('error', function(err) {
+          console.log('parser error', err);
+        });
+    
+        parser.on('part', function(field, part) {
+          // temporary path or string
+          parts[field] = part;
+        });
+    
+        parser.on('data', function() {
+          logger.debug('%d bytes written.', this.written);
+        });
+    
+        parser.on('end', function() {
+          logger.debug(parts);
+        });
+    
+        fileStream.pipe(parser);
+
+
+
+
+        var target = parts["target"];
+        var content = parts[""];
 
         parsed.forEach(element => {
           if (element.name === "target") {
