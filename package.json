@@ -1,12 +1,11 @@
 {
     "name": "mkto-flow-lookup",
+    "description": "Proof-of-concept implementation of Marketo Self-Service Flow Steps built as a Project Firefly application.",
     "version": "0.0.1",
     "private": true,
     "dependencies": {
         "@adobe/aio-lib-core-config": "^2.0.1",
-        "@adobe/aio-lib-state": "^1.1.0",
         "@adobe/aio-sdk": "^3.0.0",
-        "@adobe/exc-app": "^0.2.17",
         "busboy": "^0.3.1",
         "papaparse": "^5.3.1",
         "string-to-stream": "^3.0.1"
@@ -29,6 +28,13 @@
         "refresh-auth": "node ./scripts/refreshAuth.js"
     },
     "engines": {
-        "node": "^10 || ^12 || ^14"
+        "node": "^14"
+    },
+    "people": {
+        "author": {
+            "name": "Kenneth Elkington",
+            "email": "developerfeedback@marketo.com",
+            "url": "https://developers.marketo.com"
+        }
     }
 }
