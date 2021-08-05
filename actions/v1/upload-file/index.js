@@ -68,19 +68,19 @@ async function main(params) {
 
 
         var target = parts["target"];
-        var content = parts[""];
+        var content = parts["file"];
 
-        parsed.forEach(element => {
-          if (element.name === "target") {
-            target = element.data.toString();
-          }
-          if (element.name === "file") {
-            content = element.data;
-          }
-        });
+        // parsed.forEach(element => {
+        //   if (element.name === "target") {
+        //     target = element.data.toString();
+        //   }
+        //   if (element.name === "file") {
+        //     content = element.data;
+        //   }
+        // });
 
-        logger.debug("target:\r\n" + target);
-        logger.debug("content:\r\n" + content);
+        // logger.debug("target:\r\n" + target);
+        // logger.debug("content:\r\n" + content);
 
         await files.write(target, content);
         props = await files.getProperties(target);
