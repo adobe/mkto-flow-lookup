@@ -3,16 +3,18 @@ const filesLib = require('@adobe/aio-lib-files');
 const { Core, Target } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, extractBoundary, findHeaderIgnoreCase } = require('../../../lib/actionUtils')
 
-const multipart = require('parted').multipart;
+//const parted = require('parted');
 
 const str = require('string-to-stream');
 
+const Busboy = require('busboy');
 
 
 
 
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
+  // const multipart = parted.multipart;
   const files = await filesLib.init()
   // create a Logger
   const logger = Core.Logger('main', { level: params.LOG_LEVEL || 'info' })
@@ -29,43 +31,31 @@ async function main(params) {
     if (contentType && contentType.indexOf("multipart/form-data") > -1) {
       logger.info("Received multipart request")
       try {
-        var parseOpts = {
-          limit: 30 * 1024,
-          disklimit: 30 * 1024 * 1024
-        }
-        // var boundary = await extractBoundary(contentType);
-        // var parsed = await parser.Parse(Buffer.from(params.__ow_body, 'base64'), boundary);
 
-        var formData = params.__ow_body;
-        var fileStream = str(Buffer.from(formData, "base64"));
-        
-        var parser = new multipart('multipart/form-data', parseOpts);
+        var stream = str(params.__ow_body)
 
-        //inspired by: https://www.raymondcamden.com/2017/06/09/uploading-files-to-an-openwhisk-action
-        // let decoded = new Buffer(args.__ow_body,'base64');
-        // let fileStream = str(decoded);
-
-        parser.on('error', function(err) {
-          console.log('parser error', err);
+        var parsed = {}
+        var busboy = new busboy(params.__ow_headers)
+        busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+          logger.debug('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+          file.on('data', function(data) {
+            logger.debug('File [' + fieldname + '] got ' + data.length + ' bytes');
+          });
+          file.on('end', function() {
+            logger.debug('File [' + fieldname + '] Finished');
+          });
         });
-    
-        parser.on('part', function(field, part) {
-          // temporary path or string
-          parts[field] = part;
+        busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+          parsed[fieldname] = val;
+          logger.debug('Field [' + fieldname + ']: value: ' + inspect(val));
         });
-    
-        parser.on('data', function() {
-          logger.debug('%d bytes written.', this.written);
+        busboy.on('finish', function() {
+          console.log('Done parsing form!');
         });
-    
-        parser.on('end', function() {
-          logger.debug(parts);
-        });
-    
-        fileStream.pipe(parser);
 
 
-
+    
+        stream.pipe(busboy);
 
         var target = parts["target"];
         var content = parts["file"];
@@ -79,8 +69,8 @@ async function main(params) {
         //   }
         // });
 
-        // logger.debug("target:\r\n" + target);
-        // logger.debug("content:\r\n" + content);
+        logger.debug("target:\r\n" + target);
+        logger.debug("content:\r\n" + content);
 
         await files.write(target, content);
         props = await files.getProperties(target);
@@ -111,7 +101,7 @@ async function main(params) {
         }
 
       } catch (error) {
-        return errorResponse(400, error.message, logger)
+        return errorResponse(400, error, logger)
       }
     }
   }
@@ -119,7 +109,7 @@ async function main(params) {
     // log any server errors
     logger.info(error.message)
     // return with 500
-    return errorResponse(500, error.message, logger)
+    return errorResponse(500, error, logger)
   }
 }
 

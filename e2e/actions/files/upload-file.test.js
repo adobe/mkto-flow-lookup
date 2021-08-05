@@ -1,7 +1,7 @@
 const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
-const testUtils = require("../../test/lib/testUtils")
+const testUtils = require("../../../test/lib/testUtils")
 
 // get action url
 const namespace = Config.get('runtime.namespace');
@@ -17,13 +17,21 @@ describe('upload-file end to end test', () => {
             "target": target,
             "file": "asdfqwer1234"
         }
-        headers = { 'Content-Type': 'application/json' };
+        headers = { 'Content-Type': 'application/json',  "X-OW-EXTRA-LOGGING": "on" };
         testUtils.addAuthHeaders(headers);
         // console.log(headers)
         var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(params), headers: headers });
-        var jsonRes = await res.json();
-        // console.debug(jsonRes);
+        if (res.status == 400){
+            var actId = await res.headers.get("x-openwhisk-activation-id");
+            var err = await testUtils.getInitializationError(actId);
+            console.log("init error: ", err)
+        }
+        console.log(res);
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
+        var jsonRes = await res.json();
+        console.log(jsonRes);
+        console.log("headers", await res.headers)
+        
         expect(jsonRes.props).toEqual(expect.objectContaining({ name: target }))
     })
 })

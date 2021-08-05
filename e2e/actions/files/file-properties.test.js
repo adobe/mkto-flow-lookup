@@ -2,8 +2,8 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
-const { namespace, hostname, packagejson, runtimePackage, propsUrl, uploadUrl, deleteUrl, actionPrefix } =  require('../../lib/constants');
-const {addAuthHeaders} = require("../../test/lib/testUtils")
+const { propsUrl, uploadUrl} =  require('../../../lib/constants');
+const {addAuthHeaders} = require("../../../test/lib/testUtils")
 const actionUrl = propsUrl;
 
 const dir = "/test/"
