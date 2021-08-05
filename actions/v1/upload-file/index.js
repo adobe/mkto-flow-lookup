@@ -1,10 +1,20 @@
 const filesLib = require('@adobe/aio-lib-files');
-const parser = require('multipart-form-parser');
+//const parser = require('multipart-form-parser');
 const { Core, Target } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, extractBoundary, findHeaderIgnoreCase } = require('../../../lib/actionUtils')
 
+//const parted = require('parted');
+
+const str = require('string-to-stream');
+
+const Busboy = require('busboy');
+
+
+
+
 // main function that will be executed by Adobe I/O Runtime
 async function main(params) {
+  // const multipart = parted.multipart;
   const files = await filesLib.init()
   // create a Logger
   const logger = Core.Logger('main', { level: params.LOG_LEVEL || 'info' })
@@ -12,19 +22,6 @@ async function main(params) {
   try {
     // 'info' is the default level if not set
     logger.info('Calling the main action')
-
-
-
-    /* // check for missing request input parameters and headers
-    const requiredParams = ['target', 'file'];
-    const requiredHeaders = [
-      //'Authorization', 
-    ];
-    const errorMessage = checkMissingRequestInputs(params, requiredParams, requiredHeaders)
-    if (errorMessage) {
-      // return and log client errors
-      return errorResponse(400, errorMessage, logger)
-    } */
 
     var response = {
       body: {}
@@ -34,20 +31,43 @@ async function main(params) {
     if (contentType && contentType.indexOf("multipart/form-data") > -1) {
       logger.info("Received multipart request")
       try {
-        var boundary = await extractBoundary(contentType);
-        var parsed = await parser.Parse(Buffer.from(params.__ow_body, 'base64'), boundary);
 
-        var target;
-        var content;
+        var stream = str(params.__ow_body)
 
-        parsed.forEach(element => {
-          if (element.name === "target") {
-            target = element.data.toString();
-          }
-          if (element.name === "file") {
-            content = element.data;
-          }
+        var parsed = {}
+        var busboy = new busboy(params.__ow_headers)
+        busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+          logger.debug('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+          file.on('data', function(data) {
+            logger.debug('File [' + fieldname + '] got ' + data.length + ' bytes');
+          });
+          file.on('end', function() {
+            logger.debug('File [' + fieldname + '] Finished');
+          });
         });
+        busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+          parsed[fieldname] = val;
+          logger.debug('Field [' + fieldname + ']: value: ' + inspect(val));
+        });
+        busboy.on('finish', function() {
+          console.log('Done parsing form!');
+        });
+
+
+    
+        stream.pipe(busboy);
+
+        var target = parts["target"];
+        var content = parts["file"];
+
+        // parsed.forEach(element => {
+        //   if (element.name === "target") {
+        //     target = element.data.toString();
+        //   }
+        //   if (element.name === "file") {
+        //     content = element.data;
+        //   }
+        // });
 
         logger.debug("target:\r\n" + target);
         logger.debug("content:\r\n" + content);
@@ -81,7 +101,7 @@ async function main(params) {
         }
 
       } catch (error) {
-        return errorResponse(400, error.message, logger)
+        return errorResponse(400, error, logger)
       }
     }
   }
@@ -89,7 +109,7 @@ async function main(params) {
     // log any server errors
     logger.info(error.message)
     // return with 500
-    return errorResponse(500, error.message, logger)
+    return errorResponse(500, error, logger)
   }
 }
 

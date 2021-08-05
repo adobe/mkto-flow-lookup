@@ -2,8 +2,8 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
-const {  uploadUrl } =  require('../../lib/constants');
-const {addAuthHeaders} = require("../../test/lib/testUtils")
+const {  uploadUrl } =  require('../../../lib/constants');
+const {addAuthHeaders} = require("../../../test/lib/testUtils")
 
 // get action url
 const namespace = Config.get('runtime.namespace');
@@ -30,15 +30,17 @@ var badParams = {
 };
 
 describe('list-files end to end test', () => {
+    addAuthHeaders(badParams.headers);
+    addAuthHeaders(defaultParams.headers);
     test('look for fake dir', async () => {
         // console.debug(badParams);
-        addAuthHeaders(badParams.headers)
+        
         var res = await fetch(actionUrl, badParams);
         // console.debug(res);
         expect(res).toEqual(expect.objectContaining({ status: 204 }));
     })
     test('list dir contents', async () => {
-        addAuthHeaders(defaultParams.headers)
+        
         
         var ulParams = { method: "POST", body: JSON.stringify(file1), headers: defaultParams.headers }
         addAuthHeaders(ulParams.headers)

@@ -1,6 +1,5 @@
 const filesLib = require('@adobe/aio-lib-files');
 
-const fetch = require('node-fetch')
 const { Core, Target } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF } = require('../../../lib/actionUtils')
 

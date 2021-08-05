@@ -2,8 +2,8 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
-const {uploadUrl, actionPrefix} = require('../../lib/constants');
-const {addAuthHeaders} = require("../../test/lib/testUtils")
+const {uploadUrl, actionPrefix} = require('../../../lib/constants');
+const testUtils = require("../../../test/lib/testUtils")
 
 
 // get action url
@@ -25,8 +25,8 @@ var badParams = {
 };
 
 describe('delete-file end to end test', () => {
-    addAuthHeaders(badParams.headers);
-    addAuthHeaders(defaultParams.headers);
+    testUtils.addAuthHeaders(badParams.headers);
+    testUtils.addAuthHeaders(defaultParams.headers);
     test('delete a fake file', async () => {
         // console.debug(badParams);
         var res = await fetch(actionUrl, badParams);

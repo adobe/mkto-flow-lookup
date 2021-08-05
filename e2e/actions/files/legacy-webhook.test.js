@@ -2,9 +2,9 @@ const { Config } = require('@adobe/aio-sdk').Core
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { v4: uuidv4 } = require('uuid');
-const {uploadUrl} =  require('../../lib/constants');
-const wh = require('../webhook-helper');
-const {addAuthHeaders} = require("../../test/lib/testUtils")
+const {uploadUrl} =  require('../../../lib/constants');
+const wh = require('../../webhook-helper');
+const {addAuthHeaders} = require("../../../test/lib/testUtils")
 
 // get action url
 const namespace = Config.get('runtime.namespace');

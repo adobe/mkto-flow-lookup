@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
-const { uploadUrl, actionPrefix } = require('../../lib/constants');
-const { getInitializationError } = require('../../test/lib/testUtils');
+const { uploadUrl, actionPrefix } = require('../../../lib/constants');
+const { getInitializationError } = require('../../../test/lib/testUtils');
 const actionUrl = `${actionPrefix}/fileSwagger`
 
 const { Config } = require('@adobe/aio-sdk').Core

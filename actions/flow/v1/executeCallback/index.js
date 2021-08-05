@@ -1,7 +1,5 @@
 const { Core } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../../lib/actionUtils')
-const fetch = require('node-fetch')
-
 
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
@@ -110,7 +108,8 @@ async function main(params) {
         logger.info(error);
         return errorResponse(400, error, logger)
     }
-    cbReq["body"] = cbData;
+    if(params.LOG_LEVEL == "debug"){
+        cbReq["body"] = cbData;
     var cbRes;
     try {
         cbRes = await fetch(params.callbackUrl, { body: cbReq, "headers": { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" }, method: "POST" })
@@ -121,6 +120,8 @@ async function main(params) {
     }
     logger.debug(cbRes.json());
     return cbReq;
+    }
+    
 
 }
 
