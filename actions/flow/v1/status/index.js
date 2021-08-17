@@ -3,3 +3,7 @@ async function main(params){
         "statusCode": 200
     }
 }
+
+module.exports = {
+    main
+}
