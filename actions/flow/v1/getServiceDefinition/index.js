@@ -12,7 +12,8 @@ async function main(params) {
     const logger = Core.Logger('main', { level: params.LOG_LEVEL || 'info' })
 
 
-    const namespace = Config.get('runtime.namespace') || process.env.__OW_ACTION_NAME.split('/')[0];
+    const namespace = Config.get('runtime.namespace') || process.env.__OW_ACTION_NAME.split('/')[1];
+    logger.debug(process.env.__OW_ACTION_NAME)
     const hostname = Config.get('cna.hostname') || 'adobeioruntime.net';
 
     // 'info' is the default level if not set
@@ -22,6 +23,7 @@ async function main(params) {
     logger.debug(stringParameters(params))
 
     var sdf = getSdf(getRtActionPrefix(process.env, namespace, hostname))
+    console.debug(sdf)
     try {
         validateSchema(respSchemaKey, sdf);
     } catch (error) {

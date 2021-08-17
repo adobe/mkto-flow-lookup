@@ -88,6 +88,10 @@ packages:
           #   LOG_LEVEL: debug
           # annotations:
           #   require-adobe-auth: true
+      status:
+          function: actions\flow\v1\status\index.js
+          web: 'yes'
+          runtime: 'nodejs:14'
       # generic:
       #   function: actions\v1\generic\index.js
       #   web: 'yes'

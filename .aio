@@ -2,8 +2,8 @@
   "project": {
     "id": "4566206088344640745",
     "name": "AIOFileman",
-    "title": "AIO File Manager",
-    "description": "App to manage file uploads to AIO",
+    "title": "Flow Lookup POC",
+    "description": "App to lookup values from CSV",
     "org": {
       "id": "208192",
       "name": "Marketo Sandbox",
@@ -56,7 +56,7 @@
             "type": "entp"
           },
           {
-            "name": "Adobe Photoshop APIs (Trial)",
+            "name": "Adobe Photoshop API (Trial)",
             "code": "CIS SDK",
             "type": "entp"
           },
@@ -94,17 +94,15 @@
       }
     },
     "workspace": {
-      "id": "4566206088344642952",
-      "name": "Production",
-      "title": "ProjectWorkspace",
-      "description": "ProjectWorkspace description",
-      "action_url": "https://208192-aiofileman.adobeioruntime.net",
-      "app_url": "https://208192-aiofileman.adobeio-static.net",
+      "id": "4566206088344642953",
+      "name": "Stage",
+      "action_url": "https://208192-aiofileman-stage.adobeioruntime.net",
+      "app_url": "https://208192-aiofileman-stage.adobeio-static.net",
       "details": {
         "credentials": [
           {
-            "id": "170988",
-            "name": "aio-4566206088344642952",
+            "id": "170987",
+            "name": "Flow_Lookup_POC(1)_J_1623884073353",
             "integration_type": "service"
           }
         ],
