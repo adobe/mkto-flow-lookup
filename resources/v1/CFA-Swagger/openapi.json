@@ -46,6 +46,17 @@
           "selfServiceFlowComplete": {
             "{$request.body#/flowComplete}": {
               "post": {
+                "parameters": [
+                  {
+                    "in": "header",
+                    "name": "x-api-key",
+                    "schema": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "required": true
+                  }
+                ],
                 "requestBody": {
                   "description": "Flow Action return data for post processing",
                   "content": {
@@ -130,6 +141,11 @@
           },
           "batchid": {
             "description": "ID of the marketo campaign run invoking the service",
+            "type": "string",
+            "format": "uuid"
+          },
+          "apiCallBackKey": {
+            "description": "API key to be used in the callback header",
             "type": "string",
             "format": "uuid"
           },
@@ -315,7 +331,6 @@
             "additionalProperties": true
           },
           "leadData": {
-            "description": "Object used to submit data back to lead record.  Included fields must be included in service definition unless userDrivenMapping is false.  Fields must also be mapped and active in Incoming Fields menu for write to succeed.",
             "$ref": "#/components/schemas/leadData"
           }
         }
@@ -331,7 +346,8 @@
             "format": "int64"
           }
         },
-        "additionalProperties": true
+        "additionalProperties": true,
+        "description": "Object used to submit data back to lead record.  Included fields must be included in service definition unless userDrivenMapping is false.  Fields must also be mapped and active in Incoming Fields menu for write to succeed."
       },
       "flowCallBack": {
         "required": [
@@ -455,6 +471,18 @@
           },
           "callbackPayloadDef": {
             "$ref": "#/components/schemas/callbackPayloadDefObject"
+          },
+          "supportPage": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://serviceprovider.com/contact_us.html",
+            "description": "Either supportPage or supportEmail has to be defined"
+          },
+          "supportEmail": {
+            "type": "string",
+            "format": "email",
+            "example": "support@serviceprovider.com",
+            "description": "Either supportPage or supportEmail has to be defined"
           }
         }
       },
@@ -532,7 +560,7 @@
           },
           "headerName": {
             "type": "string",
-            "example": "x-API-Key"
+            "example": "X-API-Key"
           }
         }
       },
@@ -599,7 +627,7 @@
             "description": "Field mappings needed for invocation.  Fields which are mapped in Marketo are sent in the leadContext object.  If userDrivenMapping is 'true', the contents of this array will be ignored",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/serviceFieldMapping"
+              "$ref": "#/components/schemas/invocationFieldMapping"
             }
           },
           "userDrivenMapping": {
@@ -641,7 +669,7 @@
           "fields": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/serviceFieldMapping"
+              "$ref": "#/components/schemas/fieldMapping"
             }
           },
           "userDrivenMapping": {
@@ -658,10 +686,6 @@
           {
             "type": "object",
             "properties": {
-              "required": {
-                "type": "boolean",
-                "description": "Whether or not this attribute is required by the service"
-              },
               "enforcePicklistSelect": {
                 "type": "boolean",
                 "description": "Whether or not the attribute value has to be exact match of an entry from the picklist"
@@ -719,13 +743,34 @@
           }
         }
       },
-      "serviceFieldMapping": {
+      "invocationFieldMapping": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/fieldMapping"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "required": {
+                "type": "boolean",
+                "description": "Whether or not this field is required by the service, thus required during field mapping"
+              }
+            }
+          }
+        ]
+      },
+      "fieldMapping": {
         "type": "object",
+        "required": [
+          "serviceAttribute",
+          "description",
+          "dataType"
+        ],
         "properties": {
-          "serviceAttributeName": {
-            "description": "Name of the attribute as sent during invocation or callback.",
+          "serviceAttribute": {
+            "description": "Name of the attribute as sent during invocation or callback. 'id' is reserved by system and cannot be used here.",
             "type": "string",
-            "example": "serviceAttributeName"
+            "example": "providerFieldName"
           },
           "suggestedMarketoAttribute": {
             "description": "If this matches the apiName and data type of a Marketo lead field, that field will be populated as the default choice for the mapping during service installation",
@@ -750,18 +795,6 @@
       }
     },
     "securitySchemes": {
-      "petstoreAuth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://petstore.swagger.io/oauth/dialog",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
-      },
       "apiKey": {
         "type": "apiKey",
         "name": "api_key",
