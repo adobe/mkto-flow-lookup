@@ -25,7 +25,8 @@
         "bearerString": "node scripts/printBearerTokenString.js",
         "files-e2e": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 /e2e/actions/files",
         "upload-test": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 /e2e/actions/files/upload-file.test.js",
-        "refresh-auth": "node ./scripts/refreshAuth.js"
+        "refresh-auth": "node ./scripts/refreshAuth.js",
+        "upload-cc": "node ./scripts/uploadFile.js"
     },
     "engines": {
         "node": "^14"

@@ -19,32 +19,44 @@ async function main(params) {
 
     const files = await filesLib.init();
 
+    //Invoker sends params with display names instead of api names so need to remap
+
+    /* params["tableName"] = params["Table"];
+    params["keyName"] = params["Key Name"];
+    params["keyValField"] = params["Key Value Field"];
+    params["lookup"] = params["Lookup Column"];
+    params["returnField"] = params["Return Field"]; */
+
     //TODO support tokenized/multiple searches per invocation
 
-    var tableName = params.objectData[0].flowStepContext.table;
+    //var tableName = params.objectData[0].flowStepContext.table;
+    var tableName = params.objectData[0].flowStepContext["Table"];
     logger.debug(tableName)
     var table;
     try {
         table = await files.read(tableName);
-        logger.debug("Acquired Table File")
+        logger.debug(`Acquired Table: ${tableName}`)
     } catch (error) {
         logger.info(error);
         return errorResponse(400, error, logger)
     }
 
-    logger.debug("Starting table search")
-    var keyName = params.objectData[0].flowStepContext.keyName;
+    logger.debug(`Starting table search w/ ${tableName}`)
+    // var keyName = params.objectData[0].flowStepContext.keyName;
+    var keyName = params.objectData[0].flowStepContext["Key Name"];
+
     var keyValues = new Set();
 
     var results;
     try {
         params.objectData.forEach((obj) => {
-            keyValues.add(obj.objectContext[obj.flowStepContext.keyField])
+            //keyValues.add(obj.objectContext[obj.flowStepContext.keyField])
+            keyValues.add(obj.objectContext[obj.flowStepContext["Key Value Field"]])
         })
-        logger.debug("keyValues: ");
-        logger.debug(keyValues.values());
+        logger.debug("Key Values: " + JSON.stringify(keyValues.values()));
 
-        var lookup = params.objectData[0].flowStepContext.lookup;
+        // var lookup = params.objectData[0].flowStepContext.lookup;
+        var lookup = params.objectData[0].flowStepContext["Lookup Column"];
         results = lts.search(table.toString(), keyName, Array.from(keyValues), lookup);
     } catch (error) {
         logger.info(error);
@@ -53,10 +65,10 @@ async function main(params) {
 
 
 
-    logger.debug("Search Results");
-    logger.debug(results);
-    var cbData= {
-        "munchkinId": params.context.subscription.munchkinId,
+    logger.debug(`Search Results: ${JSON.stringify(results)}`);
+    var cbData = {
+        //"munchkinId": params.context.subscription.munchkin,
+        "munchkin": params.context.subscription.munchkin,
         "token": params.token,
         "time": new Date().toISOString(),
         "objectData": [
@@ -69,12 +81,13 @@ async function main(params) {
         },
         "body": {}
     };
-    
+
 
     logger.debug("Starting to map results");
     try {
         params.objectData.forEach((obj) => {
-            var kv = obj.objectContext[obj.flowStepContext.keyField];
+            // var kv = obj.objectContext[obj.flowStepContext.keyField];
+            var kv = obj.objectContext[obj.flowStepContext["Key Value Field"]];
             var data = {
                 "leadData": {
                     "id": obj.objectContext.id
@@ -82,7 +95,8 @@ async function main(params) {
                 "activityData": {}
             }
             if (results && results[kv]) {
-                data.leadData[obj.flowStepContext.resField] = results[kv];
+                // data.leadData[obj.flowStepContext.resField] = results[kv];
+                data.leadData[obj.flowStepContext["Return Field"]] = results[kv];
                 data.activityData["returnVal"] = results[kv];
                 data.activityData["success"] = true;
                 cbData.objectData.push(data)
@@ -99,29 +113,47 @@ async function main(params) {
     }
 
 
-    logger.debug("Callback data:");
-    logger.debug(JSON.stringify(cbData));
-    
+    logger.debug(`Callback Data: ${JSON.stringify(cbData)}`);
+
     try {
         validateSchema(cbSchema, cbData)
     } catch (error) {
         logger.info(error);
         return errorResponse(400, error, logger)
     }
-    if(params.LOG_LEVEL == "debug"){
-        cbReq["body"] = cbData;
+
+    cbReq["body"] = cbData;
     var cbRes;
     try {
-        cbRes = await fetch(params.callbackUrl, { body: cbReq, "headers": { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" }, method: "POST" })
-        logger.debug(cbRes);
+        var callbackUrl;
+        if(!params.callbackUrl){
+           
+            callbackUrl = "https://mkto-cfa-dev.adobe.io/customflowaction/submitCustomFlowAction";
+            logger.debug(`Falling back to default callbackUrl: ${callbackUrl}`)
+        }else{
+            callbackUrl = params.callbackUrl;
+        }
+        var ioApiKey;
+        if(params.apiCallBackKey && params.apiCallBackKey.length > 0  && params.apiCallBackKey != "todo"){
+            ioApiKey = params.apiCallBackKey
+        }else{
+            ioApiKey = params.ioFallbackKey;
+        }
+
+        var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on", "x-api-key": ioApiKey }
+        logger.debug(JSON.stringify(headers))
+        cbRes = await fetch(callbackUrl, { body: JSON.stringify(cbData), headers: headers , method: "POST" })
+        logger.debug(JSON.stringify(cbRes));
+        logger.debug(`CB Status: ${cbRes.status}`)
+        //logger.debug(`Callback Response JSON: ${JSON.stringify(await cbRes.json())}`);
     } catch (error) {
         logger.info(error);
         return errorResponse(500, error, logger)
     }
-    logger.debug(cbRes.json());
-    return cbReq;
-    }
     
+    return cbReq;
+
+
 
 }
 

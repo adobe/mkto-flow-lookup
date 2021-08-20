@@ -43,3 +43,5 @@ scratch
 .parcel-cache
 .archive
 .secrets
+.aio
+config.stage.json

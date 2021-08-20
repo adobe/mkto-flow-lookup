@@ -2,7 +2,8 @@ const { actionPrefix } = require('../../lib/constants')
 const mockCallbackUrl = `${actionPrefix}/mockCallbackResponse`;
 
 const mockSingleLead = {
-        "munchkinId": "AAA-999-ZZZ",
+        //"munchkinId": "AAA-999-ZZZ",
+        "munchkin": "AAA-999-ZZZ",
         "token": "0550e558-530a-40aa-83a8-c02c7a6831cb",
         "time": new Date().toISOString(),
         "objectData": [

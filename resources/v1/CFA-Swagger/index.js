@@ -127,28 +127,28 @@ module.exports ={
         "schemas": {
           "async": {
             "required": [
-              "id",
-              "batchid",
+              //"id",
+              //"batchid",
               "campaignId",
-              "type",
-              "callbackUrl"
+              //"type",
+              //"callbackUrl"
             ],
             "type": "object",
             "properties": {
               "token": {
                 "description": "One-time use access token for submitting callback data to Marketo",
                 "type": "string",
-                "format": "uuid"
+                //"format": "uuid"
               },
               "batchid": {
                 "description": "ID of the marketo campaign run invoking the service",
                 "type": "string",
-                "format": "uuid"
+                //"format": "uuid"
               },
               "apiCallBackKey": {
                 "description": "API key to be used in the callback header",
                 "type": "string",
-                "format": "uuid"
+                //"format": "uuid"
               },
               "campaignId": {
                 "description": "ID of the campaign invoking the service",
@@ -158,7 +158,7 @@ module.exports ={
               "callbackUrl": {
                 "description": "URL of the callback to submit data back to",
                 "type": "string",
-                "format": "uri",
+                //"format": "uri",
                 "example": "https://adobe.com/send/callback/here"
               },
               "context": {
@@ -197,10 +197,10 @@ module.exports ={
             "description": "Identifiers for Marketo subscription.  Can be used to locate invoking instance for REST API calls",
             "type": "object",
             "required": [
-              "munchkinId"
+              "munchkin"
             ],
             "properties": {
-              "munchkinId": {
+              "munchkin": {
                 "type": "string",
                 "example": "337-INS-529"
               },
@@ -352,13 +352,13 @@ module.exports ={
           },
           "flowCallBack": {
             "required": [
-              "munchkinId",
+              "munchkin",
               "token",
               "time"
             ],
             "type": "object",
             "properties": {
-              "munchkinId": {
+              "munchkin": {
                 "type": "string",
                 "example": "123-ABD-456"
               },
