@@ -1,6 +1,6 @@
 const { Core } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../../lib/actionUtils')
-
+const {ioFallbackKey, mktoFallbackToken} = require('../../../../.secrets/auth')
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
 
@@ -29,8 +29,8 @@ async function main(params) {
 
     //TODO support tokenized/multiple searches per invocation
 
-    //var tableName = params.objectData[0].flowStepContext.table;
-    var tableName = params.objectData[0].flowStepContext["Table"];
+    var tableName = params.objectData[0].flowStepContext.table;
+    // var tableName = params.objectData[0].flowStepContext["Table"];
     logger.debug(tableName)
     var table;
     try {
@@ -42,21 +42,21 @@ async function main(params) {
     }
 
     logger.debug(`Starting table search w/ ${tableName}`)
-    // var keyName = params.objectData[0].flowStepContext.keyName;
-    var keyName = params.objectData[0].flowStepContext["Key Name"];
+    var keyName = params.objectData[0].flowStepContext.keyName;
+    // var keyName = params.objectData[0].flowStepContext["Key Name"];
 
     var keyValues = new Set();
 
     var results;
     try {
         params.objectData.forEach((obj) => {
-            //keyValues.add(obj.objectContext[obj.flowStepContext.keyField])
-            keyValues.add(obj.objectContext[obj.flowStepContext["Key Value Field"]])
+            keyValues.add(obj.objectContext[obj.flowStepContext.keyValField])
+            // keyValues.add(obj.objectContext[obj.flowStepContext["Key Value Field"]])
         })
         logger.debug("Key Values: " + JSON.stringify(keyValues.values()));
 
-        // var lookup = params.objectData[0].flowStepContext.lookup;
-        var lookup = params.objectData[0].flowStepContext["Lookup Column"];
+        var lookup = params.objectData[0].flowStepContext.lookupField;
+        // var lookup = params.objectData[0].flowStepContext["Lookup Column"];
         results = lts.search(table.toString(), keyName, Array.from(keyValues), lookup);
     } catch (error) {
         logger.info(error);
@@ -66,10 +66,15 @@ async function main(params) {
 
 
     logger.debug(`Search Results: ${JSON.stringify(results)}`);
+    var token = params.token;
+    if (params.token.indexOf("NTM5") > -1){
+        token = mktoFallbackToken;
+        console.debug(token)
+    }
     var cbData = {
-        //"munchkinId": params.context.subscription.munchkin,
-        "munchkin": params.context.subscription.munchkin,
-        "token": params.token,
+        "munchkinId": params.context.subscription.munchkinId,
+        // "munchkin": params.context.subscription.munchkin,
+        "token": token,
         "time": new Date().toISOString(),
         "objectData": [
         ]
@@ -86,8 +91,8 @@ async function main(params) {
     logger.debug("Starting to map results");
     try {
         params.objectData.forEach((obj) => {
-            // var kv = obj.objectContext[obj.flowStepContext.keyField];
-            var kv = obj.objectContext[obj.flowStepContext["Key Value Field"]];
+            var kv = obj.objectContext[obj.flowStepContext.keyValField];
+            // var kv = obj.objectContext[obj.flowStepContext["Key Value Field"]];
             var data = {
                 "leadData": {
                     "id": obj.objectContext.id
@@ -95,7 +100,7 @@ async function main(params) {
                 "activityData": {}
             }
             if (results && results[kv]) {
-                // data.leadData[obj.flowStepContext.resField] = results[kv];
+                data.leadData[obj.flowStepContext.resField] = results[kv];
                 data.leadData[obj.flowStepContext["Return Field"]] = results[kv];
                 data.activityData["returnVal"] = results[kv];
                 data.activityData["success"] = true;
@@ -137,7 +142,7 @@ async function main(params) {
         if(params.apiCallBackKey && params.apiCallBackKey.length > 0  && params.apiCallBackKey != "todo"){
             ioApiKey = params.apiCallBackKey
         }else{
-            ioApiKey = params.ioFallbackKey;
+            ioApiKey = ioFallbackKey;
         }
 
         var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on", "x-api-key": ioApiKey }

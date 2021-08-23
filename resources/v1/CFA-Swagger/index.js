@@ -197,10 +197,10 @@ module.exports ={
             "description": "Identifiers for Marketo subscription.  Can be used to locate invoking instance for REST API calls",
             "type": "object",
             "required": [
-              "munchkin"
+              "munchkinId"
             ],
             "properties": {
-              "munchkin": {
+              "munchkinId": {
                 "type": "string",
                 "example": "337-INS-529"
               },
@@ -352,13 +352,13 @@ module.exports ={
           },
           "flowCallBack": {
             "required": [
-              "munchkin",
+              "munchkinId",
               "token",
               "time"
             ],
             "type": "object",
             "properties": {
-              "munchkin": {
+              "munchkinId": {
                 "type": "string",
                 "example": "123-ABD-456"
               },

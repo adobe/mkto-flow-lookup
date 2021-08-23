@@ -64,7 +64,6 @@ packages:
         runtime: 'nodejs:14'
         inputs:
           LOG_LEVEL: debug
-          ioFallbackKey: 11ebb29b5ffa827ba1e283324418a6e3
         annotations:
          # require-adobe-auth: true
       mockCallbackResponse:
