@@ -42,7 +42,7 @@ async function main(params) {
     }
 
     logger.debug(`Starting table search w/ ${tableName}`)
-    var keyName = params.objectData[0].flowStepContext.keyName;
+    var keyName = params.objectData[0].flowStepContext.keyName; //"country"
     // var keyName = params.objectData[0].flowStepContext["Key Name"];
 
     var keyValues = new Set();
@@ -50,12 +50,12 @@ async function main(params) {
     var results;
     try {
         params.objectData.forEach((obj) => {
-            keyValues.add(obj.objectContext[obj.flowStepContext.keyValField])
+            keyValues.add(obj.objectContext[obj.flowStepContext.keyValField])// "Zimbabwe"
             // keyValues.add(obj.objectContext[obj.flowStepContext["Key Value Field"]])
         })
         logger.debug("Key Values: " + JSON.stringify(keyValues.values()));
 
-        var lookup = params.objectData[0].flowStepContext.lookupField;
+        var lookup = params.objectData[0].flowStepContext.lookupField;// = "alpha-2"
         // var lookup = params.objectData[0].flowStepContext["Lookup Column"];
         results = lts.search(table.toString(), keyName, Array.from(keyValues), lookup);
     } catch (error) {
@@ -91,8 +91,7 @@ async function main(params) {
     logger.debug("Starting to map results");
     try {
         params.objectData.forEach((obj) => {
-            var kv = obj.objectContext[obj.flowStepContext.keyValField];
-            // var kv = obj.objectContext[obj.flowStepContext["Key Value Field"]];
+            var kv = obj.objectContext[obj.flowStepContext.keyValField];//"country":"Zimbabwe"
             var data = {
                 "leadData": {
                     "id": obj.objectContext.id
@@ -100,8 +99,8 @@ async function main(params) {
                 "activityData": {}
             }
             if (results && results[kv]) {
-                data.leadData[obj.flowStepContext.resField] = results[kv];
-                data.leadData[obj.flowStepContext["Return Field"]] = results[kv];
+                data.leadData[obj.flowStepContext.resField] = results[kv];//results.Zimbabwe
+                // data.leadData[obj.flowStepContext["Return Field"]] = results[kv];
                 data.activityData["returnVal"] = results[kv];
                 data.activityData["success"] = true;
                 cbData.objectData.push(data)
