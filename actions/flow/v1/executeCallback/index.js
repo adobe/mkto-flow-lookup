@@ -1,6 +1,6 @@
 const { Core } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../../lib/actionUtils')
-const {ioFallbackKey, mktoFallbackToken} = require('../../../../.secrets/auth')
+const { ioFallbackKey } = require('../../../../.secrets/auth')
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
 
@@ -67,10 +67,6 @@ async function main(params) {
 
     logger.debug(`Search Results: ${JSON.stringify(results)}`);
     var token = params.token;
-    if (params.token.indexOf("NTM5") > -1){
-        token = mktoFallbackToken;
-        console.debug(token)
-    }
     var cbData = {
         "munchkinId": params.context.subscription.munchkinId,
         // "munchkin": params.context.subscription.munchkin,
@@ -91,6 +87,7 @@ async function main(params) {
     logger.debug("Starting to map results");
     try {
         params.objectData.forEach((obj) => {
+            logger.debug(obj)
             var kv = obj.objectContext[obj.flowStepContext.keyValField];//"country":"Zimbabwe"
             var data = {
                 "leadData": {
@@ -99,7 +96,8 @@ async function main(params) {
                 "activityData": {}
             }
             if (results && results[kv]) {
-                data.leadData[obj.flowStepContext.resField] = results[kv];//results.Zimbabwe
+                logger.debug(obj.flowStepContext.returnField)
+                data.leadData[obj.flowStepContext.returnField] = results[kv];//results.Zimbabwe
                 // data.leadData[obj.flowStepContext["Return Field"]] = results[kv];
                 data.activityData["returnVal"] = results[kv];
                 data.activityData["success"] = true;
@@ -130,31 +128,36 @@ async function main(params) {
     var cbRes;
     try {
         var callbackUrl;
-        if(!params.callbackUrl){
-           
+        if (!params.callbackUrl) {
+
             callbackUrl = "https://mkto-cfa-dev.adobe.io/customflowaction/submitCustomFlowAction";
             logger.debug(`Falling back to default callbackUrl: ${callbackUrl}`)
-        }else{
+        } else {
             callbackUrl = params.callbackUrl;
         }
         var ioApiKey;
-        if(params.apiCallBackKey && params.apiCallBackKey.length > 0  && params.apiCallBackKey != "todo"){
+        if (params.apiCallBackKey && params.apiCallBackKey.length > 0 && params.apiCallBackKey != "todo") {
             ioApiKey = params.apiCallBackKey
-        }else{
+        } else {
             ioApiKey = ioFallbackKey;
         }
 
         var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on", "x-api-key": ioApiKey }
         logger.debug(JSON.stringify(headers))
-        cbRes = await fetch(callbackUrl, { body: JSON.stringify(cbData), headers: headers , method: "POST" })
+        cbRes = await fetch(callbackUrl, { body: JSON.stringify(cbData), headers: headers, method: "POST" })
         logger.debug(JSON.stringify(cbRes));
-        logger.debug(`CB Status: ${cbRes.status}`)
-        //logger.debug(`Callback Response JSON: ${JSON.stringify(await cbRes.json())}`);
+        logger.debug(`CB Status: ${cbRes.status} ${cbRes.statusText}`)
+        try {
+            logger.debug(`Callback Response JSON: ${JSON.stringify(await cbRes.json())}`);
+        } catch (error) {
+            logger.info(error)
+        }
+
     } catch (error) {
         logger.info(error);
         return errorResponse(500, error, logger)
     }
-    
+
     return cbReq;
 
 

@@ -44,7 +44,7 @@ const mockSingleLead = {
                 "keyName": "country",
                 "keyValField": "country",
                 "lookupField": "alpha-2",
-                "resField": "countryCode2",
+                "returnField": "countryCode2",
                 // "Key Name": "country",
                 // "Key Value Field": "country",
                 // "Lookup Column": "alpha-2",
