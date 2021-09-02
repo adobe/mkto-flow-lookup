@@ -14,6 +14,6 @@ describe('mockCallbackResponse Test', () => {
         // console.log(res);
         // var json = await res.json();
         // console.log(json);
-        expect(res).toEqual(expect.objectContaining({status: 200}))
+        expect(res).toEqual(expect.objectContaining({status: 202}))
     })
 })
