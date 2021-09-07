@@ -100,6 +100,18 @@ packages:
           runtime: 'nodejs:14'
           inputs:
             LOG_LEVEL: debug
+      brandIcon:
+          function: actions\flow\v1\brandIcon\index.js
+          web: 'yes'
+          runtime: 'nodejs:14'
+          inputs:
+            LOG_LEVEL: debug
+      serviceIcon:
+          function: actions\flow\v1\serviceIcon\index.js
+          web: 'yes'
+          runtime: 'nodejs:14'
+          inputs:
+            LOG_LEVEL: debug
       # generic:
       #   function: actions\v1\generic\index.js
       #   web: 'yes'
