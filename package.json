@@ -25,7 +25,11 @@
         "bearerString": "node scripts/printBearerTokenString.js",
         "files-e2e": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 /e2e/actions/files",
         "upload-test": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 /e2e/actions/files/upload-file.test.js",
-        "refresh-auth": "node ./scripts/refreshAuth.js"
+        "refresh-auth": "node ./scripts/refreshAuth.js",
+        "upload-cc": "node ./scripts/uploadFile.js",
+        "list-files": "node ./scripts/listFiles.js",
+        "get-picklist": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/getPicklist.test.js",
+        "icons": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/brandIcon.test.js ./e2e/actions/flow/serviceIcon.test.js"
     },
     "engines": {
         "node": "^14"

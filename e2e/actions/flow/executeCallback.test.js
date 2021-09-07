@@ -9,6 +9,7 @@ const actionUrl = `${actionPrefix}/executeCallback`;
 
 
 describe('executeCallback e2e test', () => {
+    jest.setTimeout(10000)
     var target = "country-codes.csv"
     var params = {
         "target": target,
@@ -21,9 +22,9 @@ describe('executeCallback e2e test', () => {
         var headers = {"Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on"};
         addAuthHeaders(headers)
         var res = await fetch(actionUrl, {"headers": headers, body: JSON.stringify(mockSingleLead), method: "POST"})
-        // console.log(res);
+        console.log(res);
         var json = await res.json();
-        // console.log(JSON.stringify(json))
-        expect(json.objectData[0].leadData).toEqual(expect.objectContaining({"country-code-2": "ZW", "id": 1000000}))
+        console.log(JSON.stringify(json))
+        expect(json.objectData[0].leadData).toEqual(expect.objectContaining({"countryCode2": "ZW", "id": 1000000}))
     })
 })

@@ -42,9 +42,14 @@ const mockSingleLead = {
             "flowStepContext": {
                 "table": "country-codes.csv",
                 "keyName": "country",
-                "keyField": "country",
-                "lookup": "alpha-2",
-                "resField": "country-code-2"
+                "keyValField": "country",
+                "lookupField": "alpha-2",
+                "returnField": "countryCode2",
+                // "Key Name": "country",
+                // "Key Value Field": "country",
+                // "Lookup Column": "alpha-2",
+                // "Return Field": "countryCode2",
+                // "Table": "country-codes.csv"
             }
         }
     ]

@@ -32,5 +32,24 @@ describe('getServiceDefinition e2e test', () => {
         
         //not quite sure where the diff is here, but it returns a schema-valid response which is good enough for now
         //expect(json).toEqual(expect.objectContaining(getSdf(actionPrefix)))
+    }),
+    test('Endpoints should populate as expected', async () => {
+        var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" };
+        addAuthHeaders(headers)
+        var res = await fetch(actionUrl, {"Method": "POST", "headers": headers});
+        // console.log(res);
+        if(res.status == 400){
+            var activationId = await res.headers.get('x-openwhisk-activation-id');
+            console.log("Init error: ", await getInitializationError(activationId))
+            console.log(await res.json())
+        }
+        expect(res).toEqual(expect.objectContaining({status: 200}))
+        var json = await res.json();
+        // console.log(JSON.stringify(json))
+        expect(validateSchema(respSchemaKey, json)).toEqual(true);
+        expect(json.statusEndpoint).toEqual(`${actionPrefix}/status`)
+        
+        //not quite sure where the diff is here, but it returns a schema-valid response which is good enough for now
+        //expect(json).toEqual(expect.objectContaining(getSdf(actionPrefix)))
     })
 })

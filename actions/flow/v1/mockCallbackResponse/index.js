@@ -13,7 +13,7 @@ function main(params) {
 
     try {
         validateSchema("#/components/schemas/flowCallBack", params)
-        return { "statusCode": 200 }
+        return { "statusCode": 202 }
     } catch (error) {
         logger.info(error);
         return errorResponse(400, error, logger)

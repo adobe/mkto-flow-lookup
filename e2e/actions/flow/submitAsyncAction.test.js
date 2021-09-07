@@ -36,8 +36,11 @@ describe('submitAsyncAction e2e test', () => {
         
     })
     test('validate callback activation', async ()=>{
-        var cbAct = await ow.activations.get(cbActId);
-        // console.log("cbAct: ", cbAct);
-        expect(cbAct.response.result.body.objectData[0].leadData).toEqual(expect.objectContaining({"country-code-2": "ZW", "id": 1000000}));
+        setTimeout(async () => {
+            var cbAct = await ow.activations.get(cbActId);
+            // console.log("cbAct: ", cbAct);
+            expect(cbAct.response.result.body.objectData[0].leadData).toEqual(expect.objectContaining({"countryCode2": "ZW", "id": 1000000}));
+        }, 1000);
+       
     })
 })
