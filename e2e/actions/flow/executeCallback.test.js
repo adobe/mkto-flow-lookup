@@ -9,7 +9,7 @@ const actionUrl = `${actionPrefix}/executeCallback`;
 
 
 describe('executeCallback e2e test', () => {
-    jest.setTimeout(30000)
+    jest.setTimeout(10000)
     var target = "country-codes.csv"
     var params = {
         "target": target,

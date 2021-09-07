@@ -26,14 +26,14 @@ packages:
           LOG_LEVEL: debug
         annotations:
          # require-adobe-auth: true
-      legacy-webhook:
-        function: actions\v1\legacy-webhook\index.js
-        web: 'yes'
-        runtime: 'nodejs:14'
-        inputs:
-          LOG_LEVEL: debug
-        annotations:
-         # require-adobe-auth: true
+      # legacy-webhook:
+      #   function: actions\v1\legacy-webhook\index.js
+      #   web: 'yes'
+      #   runtime: 'nodejs:14'
+      #   inputs:
+      #     LOG_LEVEL: debug
+      #   annotations:
+      #    # require-adobe-auth: true
       list-files:
         function: actions\v1\list-files\index.js
         web: 'yes'
@@ -90,6 +90,12 @@ packages:
           #   require-adobe-auth: true
       status:
           function: actions\flow\v1\status\index.js
+          web: 'yes'
+          runtime: 'nodejs:14'
+          inputs:
+            LOG_LEVEL: debug
+      getPicklist:
+          function: actions\flow\v1\getPicklist\index.js
           web: 'yes'
           runtime: 'nodejs:14'
           inputs:

@@ -9,7 +9,7 @@ module.exports ={
           "name": "Marketo API License",
           "url": "https://developers.marketo.com/api-license/"
         },
-        "version": "0.1.0"
+        "version": "0.2.0"
       },
       "externalDocs": {
         "description": "Find out more about Swagger",
@@ -121,34 +121,134 @@ module.exports ={
               }
             }
           }
+        },
+        "/status": {
+          "description": "Returns status information, notifications and deprecation info from the service.  Polled nightly by Marketo",
+          "get": {
+            "summary": "Returns status information for the service",
+            "responses": {
+              "200": {
+                "description": "Status info of Service",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/serviceStatus"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/providerInstructions": {
+          "description": "Returns html document to embed how-to instructions for any required configuration which is not covered by automated installation",
+          "get": {
+            "summary": "Returns how-to html",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "text/html": {
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/brandIcon": {
+          "description": "Returns an icon to represent brand in Service Providers menu",
+          "get": {
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "image/*": {
+                    "schema": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/serviceIcon": {
+          "description": "Returns an icon to represent brand in Smart Campaign Flow Pallette, and in Service Providers menu",
+          "get": {
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "image/*": {
+                    "schema": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/getPicklist": {
+          "description": "Returns lists of choices for a flow or global parameter.",
+          "post": {
+            "summary": "Returns lists of choices for a flow or global parameter.",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/getPicklistRequest"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Returns lists of choices for a flow or global parameter.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/picklistObject"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "components": {
         "schemas": {
           "async": {
             "required": [
-              //"id",
-              //"batchid",
+              "id",
+              "batchid",
               "campaignId",
-              //"type",
-              //"callbackUrl"
+              "type",
+              "callbackUrl"
             ],
             "type": "object",
             "properties": {
               "token": {
                 "description": "One-time use access token for submitting callback data to Marketo",
                 "type": "string",
-                //"format": "uuid"
+                "format": "uuid"
               },
               "batchid": {
                 "description": "ID of the marketo campaign run invoking the service",
                 "type": "string",
-                //"format": "uuid"
+                "format": "uuid"
               },
               "apiCallBackKey": {
                 "description": "API key to be used in the callback header",
                 "type": "string",
-                //"format": "uuid"
+                "format": "uuid"
               },
               "campaignId": {
                 "description": "ID of the campaign invoking the service",
@@ -158,7 +258,7 @@ module.exports ={
               "callbackUrl": {
                 "description": "URL of the callback to submit data back to",
                 "type": "string",
-                //"format": "uri",
+                "format": "uri",
                 "example": "https://adobe.com/send/callback/here"
               },
               "context": {
@@ -329,6 +429,22 @@ module.exports ={
               "activityData": {
                 "description": "Object used to submit activity data for a single lead.  Attributes defined as 'response' attributes may be included to write to the activity resulting from invocation",
                 "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "description": "Whether the operation succeeded for this record"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "What occurred to cause the operation to fail",
+                    "example": "No value found for search parameters, Key: country Value: Cascadia"
+                  },
+                  "errorCode": {
+                    "type": "string",
+                    "description": "Provide an easy-to-reference error code in the case of failure",
+                    "example": "LOOKUP_VALUE_NOT_FOUND"
+                  }
+                },
                 "additionalProperties": true
               },
               "leadData": {
@@ -386,6 +502,16 @@ module.exports ={
                   }
                 }
               },
+              "errorCode": {
+                "type": "string",
+                "description": "If set, no objectData will be processed, and an error will be logged with the given errorCode and errorMessage",
+                "example": "LOOKUP_VALUE_NOT_FOUND"
+              },
+              "errorMessage": {
+                "type": "string",
+                "description": "Message to be logged if errorCode was set.",
+                "example": "No value found for search parameters, Key: country Value: Cascadia"
+              },
               "objectData": {
                 "type": "array",
                 "items": {
@@ -410,7 +536,7 @@ module.exports ={
             ],
             "properties": {
               "apiName": {
-                "description": "Default identifier for service and activity.  Users installing multiple service with the same apiName will be prompted to resolve collision by inputting a custom name during installation",
+                "description": "Default identifier for service and activity.  Users installing multiple service with the same apiName will be prompted to resolve collision by inputting a custom name during installation.  Values 'success', 'reason', and 'errorCode' are always included in activityData and may not be declared here, see '#components/schemas/callbackData'.",
                 "type": "string",
                 "example": "lookupTable"
               },
@@ -458,7 +584,7 @@ module.exports ={
                 "format": "uri",
                 "example": "https://serviceprovider.com/get/brand.ico"
               },
-              "providerInstruction": {
+              "providerInstructions": {
                 "type": "string",
                 "format": "uri",
                 "example": "https://serviceprovider.com/get/provider_instruction.html"
@@ -722,8 +848,7 @@ module.exports ={
                 }
               },
               "dataType": {
-                "type": "string",
-                "example": "string"
+                "$ref": "#/components/schemas/fieldType"
               }
             }
           },
@@ -789,29 +914,190 @@ module.exports ={
                 }
               },
               "dataType": {
-                "type": "string",
-                "example": "integer"
+                "$ref": "#/components/schemas/fieldType"
               }
             }
-          }
-        },
-        "securitySchemes": {
-          "petstoreAuth": {
-            "type": "oauth2",
-            "flows": {
-              "implicit": {
-                "authorizationUrl": "https://petstore.swagger.io/oauth/dialog",
-                "scopes": {
-                  "write:pets": "modify pets in your account",
-                  "read:pets": "read your pets"
+          },
+          "serviceStatus": {
+            "description": "Object containing status information.  Polled nightly.",
+            "type": "object",
+            "properties": {
+              "info": {
+                "description": "Array of info notifications to send to Marketo.  Logged as INFO in the service log",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "warnings": {
+                "description": "Array of warning notifications to send to Marketo.  Logged as WARN in the service log",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "errors": {
+                "description": "Array of error notifications to send to Marketo.  Logged as ERROR in the service log",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "deprecationMessage": {
+                "description": "Message indicating that the service is being deprecated.",
+                "type": "string"
+              },
+              "deprecationDate": {
+                "description": "If set, and the date is in the past, Marketo will consider the service deprecated. Remove to clear deprecation status",
+                "type": "string",
+                "format": "datetime"
+              }
+            }
+          },
+          "picklistObject": {
+            "description": "Object containing choices for flow and global parameters",
+            "type": "object",
+            "required": [
+              "choices"
+            ],
+            "properties": {
+              "choices": {
+                "description": "List of choices to be offered in the picklist for the parameter in Marketo",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/picklistChoice"
                 }
               }
             }
           },
-          "apiKey": {
-            "type": "apiKey",
-            "name": "api_key",
-            "in": "header"
+          "picklistChoice": {
+            "description": "Object containing display value and submitted value.",
+            "required": [
+              "displayValue",
+              "submittedValue"
+            ],
+            "properties": {
+              "displayValue": {
+                "type": "object",
+                "$ref": "#/components/schemas/displayValue"
+              },
+              "submittedValue": {
+                "description": "Value which will be submitted when the choice is selected",
+                "example": "country-codes.csv",
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          },
+          "displayValue": {
+            "description": "Object containing display value and translations.  Additional property names should be two letter language codes, e.g. 'fr', or language/locale pairs, e.g. 'fr_ca'.",
+            "type": "object",
+            "required": [
+              "en_US"
+            ],
+            "properties": {
+              "en_US": {
+                "description": "English display value.  This is the primary Marketo fallback choice if no translation is found in the end user's language",
+                "type": "string",
+                "example": "Country Codes Table"
+              }
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "fieldMappingContext": {
+            "description": "Object containing lists of lead fields which are mapped and sent in the payload of invocation or callback.  May be used to generate picklist choices on the fly based on configuration in Marketo",
+            "type": "object",
+            "properties": {
+              "invocationFieldMappings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/reqFieldMapping"
+                }
+              },
+              "callbackFieldMappings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/reqFieldMapping"
+                }
+              }
+            }
+          },
+          "reqFieldMapping": {
+            "description": "Describes lead field mappings as they are configured in the invoking marketo instance",
+            "type": "object",
+            "required": [
+              "marketoAttribute"
+            ],
+            "properties": {
+              "marketoAttribute": {
+                "description": "Marketo API name of the mapped field.  If service is configured to use User-Driven Mappings, only the Marketo Field Name will be sent",
+                "type": "string",
+                "example": "email"
+              },
+              "serviceAttribute": {
+                "description": "API Name of the mapped field as defined by the service.  Only sent if service does not use User-Driven Mappings",
+                "type": "string",
+                "example": "emailAddress"
+              }
+            }
+          },
+          "getPicklistRequest": {
+            "description": "Schema of requests to /getPicklist",
+            "required": [
+              "name",
+              "type"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the field to retrieve choices for",
+                "example": "table"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of parameter to return choices for.  Either flow or global",
+                "enum": [
+                  "flow",
+                  "global"
+                ]
+              },
+              "fieldMappingContext": {
+                "description": "Field mappings as configured in the invoking Marketo instance",
+                "type": "object",
+                "$ref": "#/components/schemas/fieldMappingContext"
+              }
+            }
+          },
+          "fieldType": {
+            "description": "Enum of acceptable datatypes for mappings, parameters, and activity attributes",
+            "type": "string",
+            "enum": [
+              "boolean",
+              "integer",
+              "date",
+              "datetime",
+              "email",
+              "float",
+              "phone",
+              "score",
+              "string",
+              "url",
+              "text"
+            ]
           }
         }
       }

@@ -27,7 +27,8 @@
         "upload-test": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 /e2e/actions/files/upload-file.test.js",
         "refresh-auth": "node ./scripts/refreshAuth.js",
         "upload-cc": "node ./scripts/uploadFile.js",
-        "list-files": "node ./scripts/listFiles.js"
+        "list-files": "node ./scripts/listFiles.js",
+        "get-picklist": "jest --passWithNoTests --maxConcurrency=1 --maxWorkers=1 ./e2e/actions/flow/getPicklist.test.js"
     },
     "engines": {
         "node": "^14"

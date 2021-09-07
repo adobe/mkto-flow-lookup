@@ -19,14 +19,6 @@ async function main(params) {
 
     const files = await filesLib.init();
 
-    //Invoker sends params with display names instead of api names so need to remap
-
-    /* params["tableName"] = params["Table"];
-    params["keyName"] = params["Key Name"];
-    params["keyValField"] = params["Key Value Field"];
-    params["lookup"] = params["Lookup Column"];
-    params["returnField"] = params["Return Field"]; */
-
     //TODO support tokenized/multiple searches per invocation
 
     var tableName = params.objectData[0].flowStepContext.table;
@@ -125,21 +117,7 @@ async function main(params) {
     }
 
     cbReq["body"] = cbData;
-    var cbRes;
-    var arg;
-/*     setTimeout(function(){
-        logger.debug("Waiting to check for race condition. Token: " + params.token)
-        arg = "something"
-    }, 10000) */
-        setTimeout(async function() {
-            var result = {
-                statusCode: 200,
-                body: { 
-                    payload: 'Hello from the long running job!'
-                }
-            };
-            return result;
-        }, 10000);  
+    var cbRes;    
     try {
         var callbackUrl;
         if (!params.callbackUrl) {

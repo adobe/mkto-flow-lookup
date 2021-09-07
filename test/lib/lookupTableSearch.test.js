@@ -16,7 +16,10 @@ describe("testing lookup table search", () =>{
         var res = lts.search(fs.readFileSync("./test/country-codes.csv", "utf-8"), defParams.kn, [defParams.kv], defParams.lookup);
         console.log(res);
         expect(res).toEqual(expect.objectContaining({"Zimbabwe": "ZW"}));
-    }
-    
-    )
+    })
+    test('test getHeaders', async () => {
+        var headers = lts.getHeaders(fs.readFileSync("./test/country-codes.csv", "utf-8"));
+        console.log(`Headers: ${JSON.stringify(headers)}`)
+        expect(headers).toEqual(expect.arrayContaining(["country", "alpha-2", "alpha-3", "numeric"]))
+    })
 });
