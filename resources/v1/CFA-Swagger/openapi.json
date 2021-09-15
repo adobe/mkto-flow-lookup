@@ -8,7 +8,7 @@
       "name": "Marketo API License",
       "url": "https://developers.marketo.com/api-license/"
     },
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "externalDocs": {
     "description": "Find out more about Swagger",
@@ -226,28 +226,22 @@
     "schemas": {
       "async": {
         "required": [
-          "id",
-          "batchid",
           "campaignId",
-          "type",
           "callbackUrl"
         ],
         "type": "object",
         "properties": {
           "token": {
             "description": "One-time use access token for submitting callback data to Marketo",
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "batchid": {
             "description": "ID of the marketo campaign run invoking the service",
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "apiCallBackKey": {
             "description": "API key to be used in the callback header",
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "campaignId": {
             "description": "ID of the campaign invoking the service",
