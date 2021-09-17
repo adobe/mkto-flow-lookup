@@ -1,7 +1,7 @@
 {
     "name": "mkto-flow-lookup",
     "description": "Proof-of-concept implementation of Marketo Self-Service Flow Steps built as a Project Firefly application.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "dependencies": {
         "@adobe/aio-lib-core-config": "^2.0.1",

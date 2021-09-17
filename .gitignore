@@ -45,3 +45,4 @@ scratch
 .secrets
 .aio
 config.stage.json
+config.*

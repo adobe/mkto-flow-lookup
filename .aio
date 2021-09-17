@@ -1,119 +1,22 @@
 {
   "project": {
-    "id": "4566206088344640745",
-    "name": "AIOFileman",
-    "title": "Flow Lookup POC",
-    "description": "App to lookup values from CSV",
+    "id": "4566206088344678314",
+    "name": "697GrayKangaroo",
+    "title": "Mkto Flow Lookup",
     "org": {
       "id": "208192",
       "name": "Marketo Sandbox",
-      "ims_org_id": "F28222C85C46D8530A495EB6@AdobeOrg",
-      "details": {
-        "services": [
-          {
-            "name": "Adobe Stock",
-            "code": "StockSDK",
-            "type": "adobeid"
-          },
-          {
-            "name": "PDF Embed API",
-            "code": "ViewSDK",
-            "type": "adobeid"
-          },
-          {
-            "name": "Lightroom Services",
-            "code": "LightroomPartnersSDK",
-            "type": "adobeid"
-          },
-          {
-            "name": "Content and Commerce AI",
-            "code": "ccai-sdk",
-            "type": "adobeid"
-          },
-          {
-            "name": "Creative Cloud Libraries",
-            "code": "CC-Libraries-SDK",
-            "type": "adobeid"
-          },
-          {
-            "name": "Adobe Analytics",
-            "code": "AdobeAnalyticsSDK",
-            "type": "analytics"
-          },
-          {
-            "name": "Adobe Analytics",
-            "code": "AdobeAnalyticsSDK",
-            "type": "entp"
-          },
-          {
-            "name": "Privacy Service API",
-            "code": "McGdprSDK",
-            "type": "entp"
-          },
-          {
-            "name": "Experience Platform Launch API",
-            "code": "McDtmSDK",
-            "type": "entp"
-          },
-          {
-            "name": "Adobe Photoshop API (Trial)",
-            "code": "CIS SDK",
-            "type": "entp"
-          },
-          {
-            "name": "User Management API",
-            "code": "UserMgmtSDK",
-            "type": "entp"
-          },
-          {
-            "name": "I/O Events",
-            "code": "CloudIntegrationSDK",
-            "type": "entp"
-          },
-          {
-            "name": "Audience Manager API",
-            "code": "AudienceManagerCustomerSDK",
-            "type": "entp"
-          },
-          {
-            "name": "I/O Management API",
-            "code": "AdobeIOManagementAPISDK",
-            "type": "entp"
-          },
-          {
-            "name": "Adobe Target",
-            "code": "AdobeTargetSDK",
-            "type": "entp"
-          },
-          {
-            "name": "Places",
-            "code": "McPlacesSDK",
-            "type": "entp"
-          }
-        ]
-      }
+      "ims_org_id": "F28222C85C46D8530A495EB6@AdobeOrg"
     },
     "workspace": {
-      "id": "4566206088344681141",
-      "name": "v001",
-      "title": "v001",
-      "description": "https:&#x2F;&#x2F;git.corp.adobe.com&#x2F;kelkingt&#x2F;mkto-flow-lookup&#x2F;releases&#x2F;tag&#x2F;0.0.1-test",
-      "action_url": "https://208192-aiofileman-v001.adobeioruntime.net",
-      "app_url": "https://208192-aiofileman-v001.adobeio-static.net",
+      "id": "4566206088344682039",
+      "name": "v002",
+      "title": "v002",
+      "action_url": "https://208192-697graykangaroo-v002.adobeioruntime.net",
+      "app_url": "https://208192-697graykangaroo-v002.adobeio-static.net",
       "details": {
-        "credentials": [
-          {
-            "id": "202114",
-            "name": "aio-4566206088344681141",
-            "integration_type": "service"
-          }
-        ],
-        "services": [
-          {
-            "code": "AdobeIOManagementAPISDK",
-            "name": "I/O Management API"
-          }
-        ]
+        "credentials": [],
+        "services": []
       }
     }
   },

@@ -62,7 +62,7 @@ async function main(params) {
     var cbData = {
         "munchkinId": params.context.subscription.munchkinId,
         // "munchkin": params.context.subscription.munchkin,
-        "token": token,
+        //"token": token,
         "time": new Date().toISOString().split('.')[0] + 'Z',
         "objectData": [
         ]
@@ -70,7 +70,8 @@ async function main(params) {
 
     var cbReq = {
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "x-callback-token": params.token
         },
         "body": {}
     };

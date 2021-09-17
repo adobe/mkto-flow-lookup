@@ -9,7 +9,7 @@ module.exports ={
         "name": "Marketo API License",
         "url": "https://developers.marketo.com/api-license/"
       },
-      "version": "0.2.1"
+      "version": "0.2.2"
     },
     "externalDocs": {
       "description": "Find out more about Swagger",
@@ -54,6 +54,14 @@ module.exports ={
                       "schema": {
                         "type": "string",
                         "format": "uuid"
+                      },
+                      "required": true
+                    },
+                    {
+                      "in": "header",
+                      "name": "x-callback-token",
+                      "schema": {
+                        "type": "string"
                       },
                       "required": true
                     }
@@ -463,7 +471,6 @@ module.exports ={
         "flowCallBack": {
           "required": [
             "munchkinId",
-            "token",
             "time"
           ],
           "type": "object",
@@ -471,10 +478,6 @@ module.exports ={
             "munchkinId": {
               "type": "string",
               "example": "123-ABD-456"
-            },
-            "token": {
-              "type": "string",
-              "example": "3912aec7-6d5c-4348-8b32-08966ac0dbc7"
             },
             "time": {
               "type": "string",
@@ -1016,13 +1019,13 @@ module.exports ={
           "description": "Object containing lists of lead fields which are mapped and sent in the payload of invocation or callback.  May be used to generate picklist choices on the fly based on configuration in Marketo",
           "type": "object",
           "properties": {
-            "invocationFieldMappings": {
+            "invocation": {
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/reqFieldMapping"
               }
             },
-            "callbackFieldMappings": {
+            "callback": {
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/reqFieldMapping"
