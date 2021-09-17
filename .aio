@@ -94,15 +94,17 @@
       }
     },
     "workspace": {
-      "id": "4566206088344642953",
-      "name": "Stage",
-      "action_url": "https://208192-aiofileman-stage.adobeioruntime.net",
-      "app_url": "https://208192-aiofileman-stage.adobeio-static.net",
+      "id": "4566206088344681141",
+      "name": "v001",
+      "title": "v001",
+      "description": "https:&#x2F;&#x2F;git.corp.adobe.com&#x2F;kelkingt&#x2F;mkto-flow-lookup&#x2F;releases&#x2F;tag&#x2F;0.0.1-test",
+      "action_url": "https://208192-aiofileman-v001.adobeioruntime.net",
+      "app_url": "https://208192-aiofileman-v001.adobeio-static.net",
       "details": {
         "credentials": [
           {
-            "id": "170987",
-            "name": "Flow_Lookup_POC(1)_J_1623884073353",
+            "id": "202114",
+            "name": "aio-4566206088344681141",
             "integration_type": "service"
           }
         ],

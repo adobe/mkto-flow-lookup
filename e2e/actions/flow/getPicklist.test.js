@@ -63,7 +63,7 @@ describe('getPicklist e2e test', () => {
         var json = await res.json();
         console.log(json)
         // expect(json.choices).toEqual(expect.arrayContaining([{ submittedValue: "alpha-2" }])); 
-        expect(json.choices).toEqual(expect.arrayContaining([{"displayValue": {"en_US": "test/country-codes.csv - alpha-2"}, "submittedValue": "alpha-2"}]))
+        expect(json.choices).toEqual(expect.arrayContaining([{"displayValue": {"en_US": "country-codes.csv - alpha-2"}, "submittedValue": "alpha-2"}]))
         //expect(json.choices).toEqual(expect.arrayContaining(expect.objectContaining({ displayValue: expect.objectContaining({ en_US: "alpha-2" }) })));
     })
     test('rfChoices', async () => {

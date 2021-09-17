@@ -28,12 +28,14 @@ async function main() {
         console.log("init error: ", err)
     }
     console.log(res);
-    expect(res).toEqual(expect.objectContaining({ status: 200 }))
+    //expect(res).toEqual(expect.objectContaining({ status: 200 }))
     var jsonRes = await res.json();
     console.log(jsonRes);
     console.log("headers", await res.headers)
 
 }
+
+main()
 
 module.exports ={
     main
