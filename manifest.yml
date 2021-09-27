@@ -9,7 +9,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       delete-file:
         function: actions\v1\delete-file\index.js
         web: 'yes'
@@ -17,7 +17,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       file-properties:
         function: actions\v1\file-properties\index.js
         web: 'yes'
@@ -25,7 +25,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       # legacy-webhook:
       #   function: actions\v1\legacy-webhook\index.js
       #   web: 'yes'
@@ -33,7 +33,7 @@ packages:
       #   inputs:
       #     LOG_LEVEL: debug
       #   annotations:
-      #    # require-adobe-auth: true
+      #    # require-whisk-auth: $WSK_AUTH_SECRET
       list-files:
         function: actions\v1\list-files\index.js
         web: 'yes'
@@ -41,7 +41,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       getServiceDefinition:
         function: actions\flow\v1\getServiceDefinition\index.js
         web: 'yes'
@@ -49,7 +49,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       submitAsyncAction:
         function: actions\flow\v1\submitAsyncAction\index.js
         web: 'yes'
@@ -57,7 +57,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       executeCallback:
         function: actions\flow\v1\executeCallback\index.js
         web: 'yes'
@@ -65,7 +65,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       mockCallbackResponse:
         function: actions\flow\v1\mockCallbackResponse\index.js
         web: 'yes'
@@ -73,7 +73,7 @@ packages:
         inputs:
           LOG_LEVEL: debug
         annotations:
-         # require-adobe-auth: true
+         # require-whisk-auth: $WSK_AUTH_SECRET
       serviceSwagger:
           function: actions\flow\v1\openapi\index.js
           web: 'yes'
