@@ -23,6 +23,7 @@ describe('submitAsyncAction e2e test', () => {
         // console.log(JSON.stringify(mockSingleLead))
         var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on" };
         addAuthHeaders(headers)
+        console.log(headers)
         var res = await fetch(actionUrl, { headers: headers, body: JSON.stringify(mockSingleLead),  method: "POST" })
         // console.log(res.headers);
         //get callback activation id

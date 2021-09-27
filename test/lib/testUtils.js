@@ -37,7 +37,12 @@ function addOrgHeader(headers){
     headers["x-gw-ims-org-id"] = Config.get("ims.contexts.aio-4566206088344642952.ims_org_id");
 }
 
+function addAPIKeyHeader(headers){
+    headers['x-require-whisk-auth'] = process.env.WSK_AUTH_SECRET
+}
+
 function addAuthHeaders(headers){
+    addAPIKeyHeader(headers)
     // addTokenHeader(headers);
     // addOrgHeader(headers)
 }
