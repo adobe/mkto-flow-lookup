@@ -52,6 +52,10 @@ var kvReq = {
         ]
     }
 }
+var kvReqNoCtxt = {
+    "name": "keyValField",
+    "type": "flow"
+}
 var lookupReq = {
     "name": "lookupField",
     "type": "flow",
@@ -69,6 +73,11 @@ var lookupReq = {
             }
         ]
     }
+}
+var lookupReqNoCtxt = {
+    "name": "lookupField",
+    "type": "flow",
+    
 }
 var rfReq = {
     "name": "returnField",
@@ -88,11 +97,19 @@ var rfReq = {
         ]
     }
 }
+var rfReqNoCtxt = {
+    "name": "returnField",
+    "type": "flow"
+}
+
 
 module.exports = {
     tableReq,
     knReq,
     kvReq,
     lookupReq,
-    rfReq
+    rfReq,
+    rfReqNoCtxt,
+    lookupReqNoCtxt,
+    kvReqNoCtxt
 }

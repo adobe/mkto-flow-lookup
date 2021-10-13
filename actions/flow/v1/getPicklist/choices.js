@@ -55,10 +55,12 @@ async function knChoices(dir, filesClient, logger) {
  */
 async function kvChoices(fieldMappingContext, logger) {
     var choices = []
-
-    for(var i = 0; i < fieldMappingContext.invocation.length; i++ ){
-        choices.push(await choice(fieldMappingContext.invocation[i].marketoAttribute, fieldMappingContext.invocation[i].marketoAttribute, null, logger ))
+    if(fieldMappingContext != null  && fieldMappingContext.invocation != null && fieldMappingContext.invocation.length > 0){
+        for(var i = 0; i < fieldMappingContext.invocation.length; i++ ){
+            choices.push(await choice(fieldMappingContext.invocation[i].marketoAttribute, fieldMappingContext.invocation[i].marketoAttribute, null, logger ))
+        }
     }
+
 
     return choices;
 }
@@ -109,9 +111,13 @@ async function rfChoices(fieldMappingContext, logger) {
     // fieldMappingContext.callback.forEach(async fm => {
     //     choices.push(await choice(fm.marketoAttribute, fm.marketoAttribute))
     // })
-    for(var i = 0; i < fieldMappingContext.callback.length; i++ ){
-        choices.push(await choice(fieldMappingContext.callback[i].marketoAttribute, fieldMappingContext.callback[i].marketoAttribute, null, logger ))
+    
+    if(fieldMappingContext != null  && fieldMappingContext.callback != null && fieldMappingContext.callback.length > 0){
+        for(var i = 0; i < fieldMappingContext.callback.length; i++ ){
+            choices.push(await choice(fieldMappingContext.callback[i].marketoAttribute, fieldMappingContext.callback[i].marketoAttribute, null, logger ))
+        }
     }
+
 
     return choices;
 }

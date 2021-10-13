@@ -2,7 +2,7 @@
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { uploadUrl, actionPrefix } = require('../../../lib/constants');
-const { tableReq, knReq, kvReq, lookupReq, rfReq } = require('../../../test/mocks/mockGetPicklistRequest')
+const { tableReq, knReq, kvReq, lookupReq, rfReq, rfReqNoCtxt, lookupReqNoCtxt, kvReqNoCtxt } = require('../../../test/mocks/mockGetPicklistRequest')
 const { addAuthHeaders, getInitializationError } = require("../../../test/lib/testUtils")
 const { reqSchemaKey, respSchemaKey } = require('../../../actions/flow/v1/getPicklist')
 const { validateSchema } = require('../../../lib/actionUtils')
@@ -57,8 +57,21 @@ describe('getPicklist e2e test', () => {
         expect(json.choices[0].displayValue.en_US).toEqual("country");
         expect(json.choices[0].submittedValue).toEqual("country");
     })
+    test('kvChoices w/o context', async () => {
+        var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(kvReqNoCtxt), headers: headers });
+        expect(res).toEqual(expect.objectContaining({ status: 200 }))
+    })
     test('lookupChoices', async () => {
         var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(lookupReq), headers: headers });
+        expect(res).toEqual(expect.objectContaining({ status: 200 }))
+        var json = await res.json();
+        console.log(json)
+        // expect(json.choices).toEqual(expect.arrayContaining([{ submittedValue: "alpha-2" }])); 
+        expect(json.choices).toEqual(expect.arrayContaining([{"displayValue": {"en_US": "country-codes.csv - alpha-2"}, "submittedValue": "alpha-2"}]))
+        //expect(json.choices).toEqual(expect.arrayContaining(expect.objectContaining({ displayValue: expect.objectContaining({ en_US: "alpha-2" }) })));
+    }),
+    test('lookupChoices w/o context', async () => {
+        var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(lookupReqNoCtxt), headers: headers });
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
         var json = await res.json();
         console.log(json)
@@ -73,5 +86,9 @@ describe('getPicklist e2e test', () => {
         console.log(json)
         expect(json.choices[0].displayValue.en_US).toEqual("countryCode2");
         expect(json.choices[0].submittedValue).toEqual("countryCode2");
+    }),
+    test('rfChoices w/o fieldMappingContext', async () => {
+        var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(rfReqNoCtxt), headers: headers });
+        expect(res).toEqual(expect.objectContaining({ status: 200 }))
     })
 })
