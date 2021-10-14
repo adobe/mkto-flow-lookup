@@ -69,10 +69,7 @@ async function main(params) {
     };
 
     var cbReq = {
-        "headers": {
-            "Content-Type": "application/json",
-            "x-callback-token": params.token
-        },
+
         "body": {}
     };
 
@@ -117,8 +114,10 @@ async function main(params) {
         return errorResponse(400, error, logger)
     }
 
+    //For the time being needs to be in header and body
+    cbData["token"] = params.token;
     cbReq["body"] = cbData;
-    var cbRes;    
+    var cbRes;
     try {
         var callbackUrl;
         if (!params.callbackUrl) {
@@ -135,7 +134,19 @@ async function main(params) {
             ioApiKey = ioFallbackKey;
         }
 
-        var headers = { "Content-Type": "application/json", "X-OW-EXTRA-LOGGING": "on", "x-api-key": ioApiKey }
+
+
+
+        var headers = {
+            "Content-Type": "application/json",
+            "X-OW-EXTRA-LOGGING": "on",
+            //This is the token unique to each request
+            "x-callback-token": params.token,
+            //API Key for Gateway
+            "x-api-key": ioApiKey,
+            // "x-callback-token": ioApiKey,
+            // "x-api-key": params.token,
+        }
         logger.debug(JSON.stringify(headers))
         cbRes = await fetch(callbackUrl, { body: JSON.stringify(cbData), headers: headers, method: "POST" })
         logger.debug(JSON.stringify(cbRes));

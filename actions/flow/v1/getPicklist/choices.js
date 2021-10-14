@@ -129,7 +129,7 @@ async function choice(en_US, submitVal, translations, logger) {
         },
         submittedValue: submitVal
     }
-    if (translations && translations.length > 0) {
+    if (translations != null && translations.length > 0) {
         translations.forEach(t => {
             choice.displayValue[t.key] = t.val
         })
