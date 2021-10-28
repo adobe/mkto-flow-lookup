@@ -3,26 +3,18 @@ module.exports ={
     "openapi": "3.0.1",
     "info": {
       "title": "SSFA",
-      "description": "This is a sample SSFA server swagger doc for providers to build their own services to be used with Marketo SSFA.",
+      "description": "This document describes the schema used by Marketo Self-Service Flow actions.  By implementing an API conforming to this interface, you can create custom flow actions for use in Marketo Smart Campaigns",
       "termsOfService": "https://documents.marketo.com/legal/eusa/us/2012-08-28/",
       "license": {
-        "name": "Marketo API License",
-        "url": "https://developers.marketo.com/api-license/"
+        "name": "MIT",
+        "url": "https://github.com/adobe/Marketo-SSFS-Service-Provider-Interface/blob/master/LICENSE"
       },
-      "version": "0.2.2"
-    },
-    "externalDocs": {
-      "description": "Find out more about Swagger",
-      "url": "https://swagger.io"
+      "version": "0.2.3"
     },
     "tags": [
       {
         "name": "flow action",
-        "description": "your service action",
-        "externalDocs": {
-          "description": "Find out more",
-          "url": "todo://marketo.docs/link"
-        }
+        "description": "your service action"
       }
     ],
     "paths": {
@@ -51,15 +43,16 @@ module.exports ={
                     {
                       "in": "header",
                       "name": "x-api-key",
+                      "description": "IO Gateway Key.",
                       "schema": {
-                        "type": "string",
-                        "format": "uuid"
+                        "type": "string"
                       },
                       "required": true
                     },
                     {
                       "in": "header",
                       "name": "x-callback-token",
+                      "description": "Token sent by Marketo during submitAsyncAction invocation.",
                       "schema": {
                         "type": "string"
                       },
@@ -470,18 +463,13 @@ module.exports ={
         },
         "flowCallBack": {
           "required": [
-            "munchkinId",
-            "time"
+            "munchkinId"
           ],
           "type": "object",
           "properties": {
             "munchkinId": {
               "type": "string",
               "example": "123-ABD-456"
-            },
-            "time": {
-              "type": "string",
-              "format": "date-time"
             },
             "defaultValues": {
               "description": "If a value for a given record is not set in the objectData array, then it will default to the value set in the corresponding defaults object here if there is one",
@@ -510,6 +498,7 @@ module.exports ={
               "example": "No value found for search parameters, Key: country Value: Cascadia"
             },
             "objectData": {
+              "description": "List of lead and activity data to write back to Marketo",
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/callbackData"
@@ -588,7 +577,7 @@ module.exports ={
             },
             "primaryAttribute": {
               "type": "string",
-              "description": "API name of the attribute that describes the primary asset. This must match the name of an attribute from the flow or callback attribute list"
+              "description": "API name of the attribute that describes the primary asset. This must match an attribute from the flow attribute list and *cannot* match an attribute from the callback attribute list."
             },
             "invocationPayloadDef": {
               "$ref": "#/components/schemas/invocationPayloadDefObject"
@@ -691,7 +680,8 @@ module.exports ={
         "oauth2AuthObject": {
           "type": "object",
           "required": [
-            "authType"
+            "authType",
+            "tokenEndpoint"
           ],
           "description": "See RFC 6749",
           "properties": {
@@ -725,7 +715,7 @@ module.exports ={
             "tokenEndpoint": {
               "type": "string",
               "format": "uri",
-              "description": "Applicable if refreshTokenEnabled is true"
+              "description": "Endpoint to retrieve access token from"
             }
           }
         },
@@ -1089,7 +1079,6 @@ module.exports ={
             "datetime",
             "email",
             "float",
-            "phone",
             "score",
             "string",
             "url",

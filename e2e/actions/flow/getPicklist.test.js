@@ -31,7 +31,7 @@ describe('getPicklist e2e test', () => {
         }
         // console.log("res: ", res)
         var json = await res.json();
-        // console.log(json)
+        console.log(JSON.stringify(json))
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
 
         expect(json.choices[0].displayValue.en_US).toEqual("country-codes.csv");
@@ -53,7 +53,7 @@ describe('getPicklist e2e test', () => {
         var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(kvReq), headers: headers });
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
         var json = await res.json();
-        console.log(json)
+        console.log(JSON.stringify(json))
         expect(json.choices[0].displayValue.en_US).toEqual("country");
         expect(json.choices[0].submittedValue).toEqual("country");
     })
@@ -65,7 +65,7 @@ describe('getPicklist e2e test', () => {
         var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(lookupReq), headers: headers });
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
         var json = await res.json();
-        console.log(json)
+        console.log(JSON.stringify(json))
         // expect(json.choices).toEqual(expect.arrayContaining([{ submittedValue: "alpha-2" }])); 
         expect(json.choices).toEqual(expect.arrayContaining([{"displayValue": {"en_US": "country-codes.csv - alpha-2"}, "submittedValue": "alpha-2"}]))
         //expect(json.choices).toEqual(expect.arrayContaining(expect.objectContaining({ displayValue: expect.objectContaining({ en_US: "alpha-2" }) })));
@@ -74,7 +74,7 @@ describe('getPicklist e2e test', () => {
         var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(lookupReqNoCtxt), headers: headers });
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
         var json = await res.json();
-        console.log(json)
+        console.log(JSON.stringify(json))
         // expect(json.choices).toEqual(expect.arrayContaining([{ submittedValue: "alpha-2" }])); 
         expect(json.choices).toEqual(expect.arrayContaining([{"displayValue": {"en_US": "country-codes.csv - alpha-2"}, "submittedValue": "alpha-2"}]))
         //expect(json.choices).toEqual(expect.arrayContaining(expect.objectContaining({ displayValue: expect.objectContaining({ en_US: "alpha-2" }) })));
@@ -83,7 +83,7 @@ describe('getPicklist e2e test', () => {
         var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(rfReq), headers: headers });
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
         var json = await res.json();
-        console.log(json)
+        console.log(JSON.stringify(json))
         expect(json.choices[0].displayValue.en_US).toEqual("countryCode2");
         expect(json.choices[0].submittedValue).toEqual("countryCode2");
     }),
