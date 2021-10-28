@@ -3,18 +3,44 @@ module.exports ={
     "openapi": "3.0.1",
     "info": {
       "title": "SSFA",
-      "description": "This document describes the schema used by Marketo Self-Service Flow actions.  By implementing an API conforming to this interface, you can create custom flow actions for use in Marketo Smart Campaigns",
+      "x-provderName": "This should be the name of the Service Provider, e.g. Adobe Marketo Engage",
+      "description": "This document describes the schema used by Marketo Self-Service Flow actions.  By implementing an API conforming to this interface, you can create custom flow actions for use in Marketo Smart Campaigns.  Title will be used to define the service name when ingested in Marketo, while x-providerName should be the name of the organization providing the service.  Use 'version' to indicate the version of your service, use 'x-schemaVersion' to indicate which version of the Service Provider Interface that your service implements.  'servers' may be set if the service host is different from the URL used to access your API definition, if unset the same host will be assumed, values after the first will be ignored.",
       "termsOfService": "https://documents.marketo.com/legal/eusa/us/2012-08-28/",
       "license": {
         "name": "MIT",
-        "url": "https://github.com/adobe/Marketo-SSFS-Service-Provider-Interface/blob/master/LICENSE"
+        "url": "/license"
       },
-      "version": "0.2.3"
+      "version": "0.3.0",
+      "x-schemaVersion": "0.3.0",
+      "x-supportContact": {
+        "description": "Used to define support contact for your service, either a page or an email.",
+        "oneOf": [
+          {
+            "x-supportEmail": null,
+            "type": "string"
+          },
+          {
+            "x-supportPage": null,
+            "type": "string"
+          }
+        ]
+      }
     },
     "tags": [
       {
         "name": "flow action",
         "description": "your service action"
+      }
+    ],
+    "security": [
+      {
+        "apiKey": []
+      },
+      {
+        "oauth2": []
+      },
+      {
+        "basic": []
       }
     ],
     "paths": {
@@ -302,23 +328,113 @@ module.exports ={
             "prefix": {
               "type": "string",
               "example": "customerPrefix"
+            },
+            "crmSyncStatus": {
+              "description": "Whether native sync has been enabled and whether it is active",
+              "type": "string"
             }
           }
         },
         "admin": {
           "description": "Global configuration data as defined by Marketo administrator",
-          "type": "object"
+          "type": "object",
+          "additionalProperties": true
+        },
+        "headers": {
+          "description": "List of headers to be sent in invocation.  Inputs must be added by users in the UI",
+          "additionalProperties": {
+            "$ref": "#/components/schemas/headerAttributeObject"
+          }
         },
         "campaign": {
           "description": "Data related to the invoking Smart Campaign",
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "commLimitEnabled": {
+              "description": "Whether communication limits are enabled for invoking campaign",
+              "type": "boolean"
+            },
+            "description": {
+              "description": "Description of invoking campaign from inside Marketo",
+              "type": "string"
+            },
+            "flowId": {
+              "description": "Integer id of flow inside of campaign",
+              "type": "number"
+            },
+            "folderId": {
+              "description": "Integer id of parent folder",
+              "type": "number"
+            },
+            "folderName": {
+              "type": "string"
+            },
+            "id": {
+              "description": "Id of the invoking campaign",
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "parentProgramId": {
+              "description": "Id of parent program if available",
+              "type": "number"
+            },
+            "smartListId": {
+              "description": "Id of smart list belonging to the invoking campaign",
+              "type": "number"
+            },
+            "status": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "workspaceId": {
+              "type": "number"
+            },
+            "workspaceName": {
+              "type": "string"
+            }
+          }
         },
         "program": {
           "description": "Data related to the parent program of the invoking smart campaign.  May be empty even if required by service provider, if the smart campaign is not housed within a program",
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "channelName": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "updatedAt": {
+              "type": "string"
+            }
+          }
         },
         "flowStepContext": {
           "description": "Data related to specific invocation of the flow action.  Property list is defined by 'flow' type service attributes in Service Definition.  Values will be based on inputs given by Marketo users in Smart Campaign UI",
+          "type": "object",
+          "additionalProperties": true
+        },
+        "myTokenContext": {
+          "description": "List of tokens matching the list requested in service definition",
           "type": "object",
           "additionalProperties": true
         },
@@ -526,11 +642,6 @@ module.exports ={
               "type": "string",
               "example": "lookupTable"
             },
-            "provider": {
-              "description": "Name of the service provider, typically the organization offering the service",
-              "type": "string",
-              "example": "Adobe Marketo Engage"
-            },
             "i18n": {
               "description": "Used to provide internationalized strings",
               "type": "object",
@@ -540,40 +651,23 @@ module.exports ={
                 }
               }
             },
-            "invocationEndpoint": {
-              "type": "string",
-              "format": "uri",
-              "example": "https://serviceprovider.com/send/action/here"
-            },
-            "statusEndpoint": {
-              "type": "string",
-              "format": "uri",
-              "example": "https://serviceprovider.com/get/status"
-            },
-            "authSetting": {
-              "$ref": "#/components/schemas/authSettingObject"
-            },
             "caBundle": {
+              "description": "Location of CA bundle.  Used if your service's SSL certificate chain is not know to Marketo API clients",
               "type": "string",
               "format": "uri",
               "example": "https://serviceprovider.com/get/caBundle"
             },
             "serviceIcon": {
-              "description": "Icon to represent the individual service.  Used to represent the service flow step in the Marketo Campaign UI",
-              "type": "string",
-              "format": "uri",
-              "example": "https://serviceprovider.com/get/service.ico"
+              "description": "Whether serviceIcon enpoint is implemented. Icon is used to represent the service flow step in the Marketo Campaign UI",
+              "type": "boolean"
             },
             "brandIcon": {
-              "description": "Icon to represent the service provider.  Used to represent the service provider in the Service Providers Admin Menu",
-              "type": "string",
-              "format": "uri",
-              "example": "https://serviceprovider.com/get/brand.ico"
+              "description": "Whether brandIcon endpoint is implemented. Icon is used to represent the service provider in the Service Providers Admin Menu",
+              "type": "boolean"
             },
             "providerInstructions": {
-              "type": "string",
-              "format": "uri",
-              "example": "https://serviceprovider.com/get/provider_instruction.html"
+              "description": "Whether providerInstructions endpoint is implemented.  Instructions will be displayed during onboarding flow",
+              "type": "boolean"
             },
             "primaryAttribute": {
               "type": "string",
@@ -584,18 +678,6 @@ module.exports ={
             },
             "callbackPayloadDef": {
               "$ref": "#/components/schemas/callbackPayloadDefObject"
-            },
-            "supportPage": {
-              "type": "string",
-              "format": "uri",
-              "example": "https://serviceprovider.com/contact_us.html",
-              "description": "Either supportPage or supportEmail has to be defined"
-            },
-            "supportEmail": {
-              "type": "string",
-              "format": "email",
-              "example": "support@serviceprovider.com",
-              "description": "Either supportPage or supportEmail has to be defined"
             }
           }
         },
@@ -617,105 +699,6 @@ module.exports ={
             "description": {
               "type": "string",
               "example": "Use a lookup table to get a value"
-            }
-          }
-        },
-        "authSettingObject": {
-          "oneOf": [
-            {
-              "$ref": "#/components/schemas/basicAuthObject"
-            },
-            {
-              "$ref": "#/components/schemas/apikeyAuthObject"
-            },
-            {
-              "$ref": "#/components/schemas/oauth2AuthObject"
-            }
-          ],
-          "discriminator": {
-            "propertyName": "authType",
-            "mapping": {
-              "basic": "#/components/schemas/basicAuthObject",
-              "apiKey": "#/components/schemas/apikeyAuthObject",
-              "oauth2": "#/components/schemas/oauth2AuthObject"
-            }
-          }
-        },
-        "basicAuthObject": {
-          "type": "object",
-          "required": [
-            "authType"
-          ],
-          "description": "See RFC 7617",
-          "properties": {
-            "authType": {
-              "type": "string",
-              "enum": [
-                "basic"
-              ]
-            },
-            "realmRequired": {
-              "type": "boolean"
-            }
-          }
-        },
-        "apikeyAuthObject": {
-          "type": "object",
-          "required": [
-            "authType"
-          ],
-          "properties": {
-            "authType": {
-              "type": "string",
-              "enum": [
-                "apiKey"
-              ]
-            },
-            "headerName": {
-              "type": "string",
-              "example": "X-API-Key"
-            }
-          }
-        },
-        "oauth2AuthObject": {
-          "type": "object",
-          "required": [
-            "authType",
-            "tokenEndpoint"
-          ],
-          "description": "See RFC 6749",
-          "properties": {
-            "authType": {
-              "type": "string",
-              "enum": [
-                "oauth2"
-              ]
-            },
-            "grantType": {
-              "type": "string",
-              "enum": [
-                "client_credentials"
-              ]
-            },
-            "grantTypeName": {
-              "type": "string",
-              "description": "grant_type by default"
-            },
-            "clientIdName": {
-              "type": "string",
-              "description": "client_id by default. Applicable if grantType is 'client_credentials'"
-            },
-            "clientSecretName": {
-              "type": "string",
-              "description": "client_secret by default. Applicable if grantType is 'client_credentials'"
-            },
-            "refreshTokenEnabled": {
-              "type": "boolean"
-            },
-            "tokenEndpoint": {
-              "type": "string",
-              "format": "uri",
-              "description": "Endpoint to retrieve access token from"
             }
           }
         },
@@ -744,6 +727,13 @@ module.exports ={
                 "$ref": "#/components/schemas/invocationFieldMapping"
               }
             },
+            "headers": {
+              "description": "List of headers to be included in invocations of /async.  Headers defined here can be populated in the UI by end users",
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/headerAttributeObject"
+              }
+            },
             "userDrivenMapping": {
               "description": "Indicates whether the service will provide a pre-defined list of mappings.  If 'true', 'fields' will be ignored, and mappings must be added manually by users.",
               "type": "boolean"
@@ -767,6 +757,17 @@ module.exports ={
             "subscriptionContext": {
               "type": "boolean",
               "description": "true if Service Provider needs to access subscription context"
+            },
+            "myTokenContext": {
+              "description": "List of My Token keys to be sent in invocation.  Should be formatted without brackets or prefix.  e.g. A token from the UI called \"{{my.Event Date}}\" would be requested as \"Event Date\"",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "Event Date",
+                "Event Address"
+              ]
             }
           }
         },
@@ -798,21 +799,22 @@ module.exports ={
               "$ref": "#/components/schemas/attributeObject"
             },
             {
-              "type": "object",
-              "properties": {
-                "enforcePicklistSelect": {
-                  "type": "boolean",
-                  "description": "Whether or not the attribute value has to be exact match of an entry from the picklist"
-                },
-                "picklistUrl": {
-                  "type": "string",
-                  "format": "uri",
-                  "description": "Endpoint to provide a value list for this attribute to choose from. Applicable if enforcePicklistSelect is true",
-                  "example": "https://serviceprovider.com/get/picklist"
-                }
-              }
+              "$ref": "#/components/schemas/picklistAttribute"
             }
           ]
+        },
+        "picklistAttribute": {
+          "type": "object",
+          "properties": {
+            "enforcePicklistSelect": {
+              "type": "boolean",
+              "description": "Whether or not the attribute value has to be exact match of an entry from the picklist.  Ignored if hasPicklist is false"
+            },
+            "hasPicklist": {
+              "type": "boolean",
+              "description": "Whether picklist choices are provided for this attribute."
+            }
+          }
         },
         "attributeObject": {
           "type": "object",
@@ -828,16 +830,46 @@ module.exports ={
             },
             "i18n": {
               "type": "object",
+              "required": [
+                "en_US"
+              ],
               "properties": {
                 "en_US": {
                   "$ref": "#/components/schemas/attributeI18nObject"
                 }
+              },
+              "additionalProperties": {
+                "$ref": "#/components/schemas/attributeI18nObject"
               }
             },
             "dataType": {
               "$ref": "#/components/schemas/fieldType"
             }
           }
+        },
+        "headerAttributeObject": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/picklistAttribute"
+            },
+            {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the header to send",
+                  "example": "x-enable-extended-logging"
+                },
+                "description": {
+                  "description": "Used to describe purpose of the header.  Keys should be valid 2-letter language and locale codes, e.g. fr_CA, for Canadian french",
+                  "$ref": "#/components/schemas/i18nString"
+                }
+              }
+            }
+          ]
         },
         "attributeI18nObject": {
           "type": "object",
@@ -892,7 +924,7 @@ module.exports ={
             },
             "description": {
               "description": "Description presented to the user for the mapping during installation.",
-              "type": "object",
+              "$ref": "#/components/schemas/i18nString",
               "properties": {
                 "en_US": {
                   "type": "string",
@@ -966,7 +998,7 @@ module.exports ={
           "properties": {
             "displayValue": {
               "type": "object",
-              "$ref": "#/components/schemas/displayValue"
+              "$ref": "#/components/schemas/i18nString"
             },
             "submittedValue": {
               "description": "Value which will be submitted when the choice is selected",
@@ -986,23 +1018,6 @@ module.exports ={
                 }
               ]
             }
-          }
-        },
-        "displayValue": {
-          "description": "Object containing display value and translations.  Additional property names should be two letter language codes, e.g. 'fr', or language/locale pairs, e.g. 'fr_ca'.",
-          "type": "object",
-          "required": [
-            "en_US"
-          ],
-          "properties": {
-            "en_US": {
-              "description": "English display value.  This is the primary Marketo fallback choice if no translation is found in the end user's language",
-              "type": "string",
-              "example": "Country Codes Table"
-            }
-          },
-          "additionalProperties": {
-            "type": "string"
           }
         },
         "fieldMappingContext": {
@@ -1084,6 +1099,48 @@ module.exports ={
             "url",
             "text"
           ]
+        },
+        "i18nString": {
+          "description": "Used to provide translations for string fields which are surfaced to end users.  Keys should be valid 2-letter language and locale codes, e.g. fr_CA, for Canadian french",
+          "type": "object",
+          "required": [
+            "en_US"
+          ],
+          "properties": {
+            "en_US": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "securitySchemes": {
+        "apiKey": {
+          "type": "apiKey",
+          "name": "x-api-key",
+          "in": "header"
+        },
+        "basic": {
+          "type": "http",
+          "scheme": "basic",
+          "x-realm-required": false
+        },
+        "oauth2": {
+          "type": "oauth2",
+          "flows": {
+            "clientCredentials": {
+              "tokenUrl": "https://www.example.com/token",
+              "refreshUrl": "https://www.example.com/refreshToken",
+              "scopes": {
+                "scope": "Grants nothing"
+              },
+              "x-grantTypeName": "not_client_credentials",
+              "x-clientIdName": "not_client_id",
+              "x-clientSecretName": "not_client_secret"
+            }
+          }
         }
       }
     }
