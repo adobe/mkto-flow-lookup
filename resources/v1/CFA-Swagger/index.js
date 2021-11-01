@@ -1074,7 +1074,8 @@ module.exports ={
               "description": "Type of parameter to return choices for.  Either flow or global",
               "enum": [
                 "flow",
-                "global"
+                "global",
+                "header"
               ]
             },
             "fieldMappingContext": {

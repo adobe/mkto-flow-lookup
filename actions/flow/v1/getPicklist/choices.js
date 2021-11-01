@@ -121,6 +121,22 @@ async function rfChoices(fieldMappingContext, logger) {
 
     return choices;
 }
+async function logChoices(logger){
+    var choices = [];
+    choices.push(await choice("true", true, null, logger));
+    choices.push(await choice("false", false, null, logger));
+    return choices
+}
+
+async function logLvlChoices(logger){
+    var choices = [];
+    choices.push(await choice("debug", "debug", null, logger));
+    choices.push(await choice("info", "info", null, logger));
+    choices.push(await choice("warning", "warning", null, logger));
+    choices.push(await choice("error", "error", null, logger));
+    return choices
+}
+
 
 async function choice(en_US, submitVal, translations, logger) {
     var choice = {
@@ -143,5 +159,7 @@ module.exports = {
     knChoices,
     kvChoices,
     lookupChoices,
-    rfChoices
+    rfChoices,
+    logChoices,
+    logLvlChoices
 }
