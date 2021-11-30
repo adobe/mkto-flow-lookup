@@ -3,7 +3,7 @@ module.exports = {
         "openapi": "3.0.1",
         "info": {
           "title": "Marketo Flow Lookup",
-          "x-provderName": "Adobe Marketo Engage",
+          "x-providerName": "Adobe Marketo Engage",
           "description": "This document describes the schema used by Marketo Self-Service Flow actions.  By implementing an API conforming to this interface, you can create custom flow actions for use in Marketo Smart Campaigns.  Title will be used to define the service name when ingested in Marketo, while x-providerName should be the name of the organization providing the service.  Use 'version' to indicate the version of your service, use 'x-schemaVersion' to indicate which version of the Service Provider Interface that your service implements.  'servers' may be set if the service host is different from the URL used to access your API definition, if unset the same host will be assumed, values after the first will be ignored.",
           "license": {
             "name": "MIT",
