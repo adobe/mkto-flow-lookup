@@ -123,8 +123,8 @@ async function rfChoices(fieldMappingContext, logger) {
 }
 async function logChoices(logger){
     var choices = [];
-    choices.push(await choice("true", true, null, logger));
-    choices.push(await choice("false", false, null, logger));
+    choices.push(await choice("on", true, null, logger));
+    choices.push(await choice("off", false, null, logger));
     return choices
 }
 
