@@ -2,7 +2,7 @@
 const fs = require('fs')
 const fetch = require('node-fetch')
 const { uploadUrl, actionPrefix } = require('../../../lib/constants');
-const { tableReq, knReq, kvReq, lookupReq, rfReq, rfReqNoCtxt, lookupReqNoCtxt, kvReqNoCtxt } = require('../../../test/mocks/mockGetPicklistRequest')
+const { tableReq, knReq, kvReq, lookupReq, rfReq, rfReqNoCtxt, lookupReqNoCtxt, kvReqNoCtxt, logReq } = require('../../../test/mocks/mockGetPicklistRequest')
 const { addAuthHeaders, getInitializationError } = require("../../../test/lib/testUtils")
 const { reqSchemaKey, respSchemaKey } = require('../../../actions/flow/v1/getPicklist')
 const { validateSchema } = require('../../../lib/actionUtils')
@@ -90,5 +90,15 @@ describe('getPicklist e2e test', () => {
     test('rfChoices w/o fieldMappingContext', async () => {
         var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(rfReqNoCtxt), headers: headers });
         expect(res).toEqual(expect.objectContaining({ status: 200 }))
+    })
+    test('X-OW-EXTRA-LOGGING choices', async () =>{
+        var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(logReq), headers: headers });
+        expect(res).toEqual(expect.objectContaining({ status: 200 }))
+
+    })
+    test('Log Level choices', async () =>{
+        var res = await fetch(actionUrl, { method: "POST", body: JSON.stringify(rfReqNoCtxt), headers: headers });
+        expect(res).toEqual(expect.objectContaining({ status: 200 }))
+
     })
 })

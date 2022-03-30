@@ -101,7 +101,14 @@ var rfReqNoCtxt = {
     "name": "returnField",
     "type": "flow"
 }
-
+var logReq = {
+    "name": "X-OW-EXTRA-LOGGING",
+    "type": "header"
+}
+var logLvlReq = {
+    "name": "LOG_LEVEL",
+    "type": "global"
+}
 
 module.exports = {
     tableReq,
@@ -111,5 +118,6 @@ module.exports = {
     rfReq,
     rfReqNoCtxt,
     lookupReqNoCtxt,
-    kvReqNoCtxt
+    kvReqNoCtxt,
+    logReq
 }

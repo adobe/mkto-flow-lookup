@@ -2,7 +2,7 @@ const { Core } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../../lib/actionUtils')
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
-const {tableChoices, knChoices, kvChoices, lookupChoices, rfChoices} = require('./choices')
+const {tableChoices, knChoices, kvChoices, lookupChoices, rfChoices, logChoices, logLvlChoices} = require('./choices')
 
 const actionName = "getPicklist";
 
@@ -43,6 +43,12 @@ async function main(params){
         }
         if(params.name === "returnField"){
             choices = await rfChoices(params.fieldMappingContext, logger)
+        }
+        if(params.name.toLowerCase() ===  "x-ow-extra-logging"){
+            choices = await logChoices(logger)
+        }
+        if(params.name.toLowerCase() === "log_level"){
+            choices = await logLvlChoices(logger);
         }
         logger.debug(`Choices: ${JSON.stringify(choices)}`)
     } catch (error) {

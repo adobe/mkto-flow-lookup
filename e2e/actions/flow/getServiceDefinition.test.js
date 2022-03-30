@@ -27,7 +27,7 @@ describe('getServiceDefinition e2e test', () => {
         }
         expect(res).toEqual(expect.objectContaining({status: 200}))
         var json = await res.json();
-        // console.log(JSON.stringify(json))
+        console.log(JSON.stringify(json))
         expect(validateSchema(respSchemaKey, json)).toEqual(true);
         
         //not quite sure where the diff is here, but it returns a schema-valid response which is good enough for now
@@ -45,7 +45,7 @@ describe('getServiceDefinition e2e test', () => {
         }
         expect(res).toEqual(expect.objectContaining({status: 200}))
         var json = await res.json();
-        // console.log(JSON.stringify(json))
+        console.log(JSON.stringify(json))
         expect(validateSchema(respSchemaKey, json)).toEqual(true);
         expect(json.statusEndpoint).toEqual(`${actionPrefix}/status`)
         
