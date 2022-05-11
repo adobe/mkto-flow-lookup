@@ -165,6 +165,7 @@ module.exports = {
                 }
               }
             }
+<<<<<<< Updated upstream
           },
           "/brandIcon": {
             "description": "Returns an icon to represent brand in Service Providers menu",
@@ -208,6 +209,64 @@ module.exports = {
               "summary": "Returns lists of choices for a flow or global parameter.",
               "requestBody": {
                 "required": true,
+=======
+          }
+        },
+        //commenting out icon paths to bypass validation
+        // "/brandIcon": {
+        //   "description": "Returns an icon to represent brand in Service Providers menu",
+        //   "get": {
+        //     "responses": {
+        //       "200": {
+        //         "description": "OK",
+        //         "content": {
+        //           "image/*": {
+        //             "schema": {
+        //               "type": "string",
+        //               "format": "binary"
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
+        //   }
+        // },
+        // "/serviceIcon": {
+        //   "description": "Returns an icon to represent brand in Smart Campaign Flow Pallette, and in Service Providers menu",
+        //   "get": {
+        //     "responses": {
+        //       "200": {
+        //         "description": "OK",
+        //         "content": {
+        //           "image/*": {
+        //             "schema": {
+        //               "type": "string",
+        //               "format": "binary"
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
+        //   }
+        // },
+        "/getPicklist": {
+          "description": "Returns lists of choices for a flow or global parameter.",
+          "post": {
+            "summary": "Returns lists of choices for a flow or global parameter.",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/getPicklistRequest"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Returns lists of choices for a flow or global parameter.",
+>>>>>>> Stashed changes
                 "content": {
                   "application/json": {
                     "schema": {

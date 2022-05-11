@@ -36,7 +36,9 @@ async function knChoices(dir, filesClient, logger) {
         if (headers.length > 0) {
             logger.debug(`headers for ${files[i].name}: ${JSON.stringify(headers)}`)
             for(var j = 0; j < headers.length; j++){
-                var displayValue = `${files[i].name} - ${headers[j]}`
+                //removing filename prefix because picklists are broken again
+                // var displayValue = `${files[i].name} - ${headers[j]}`
+                var displayValue = `${headers[j]}`
                 logger.debug(displayValue)
                 choices.push(await choice(displayValue, headers[j], null, logger))
                 logger.debug(`choices from file ${files[i].name}: ${JSON.stringify(choices)}`)
@@ -89,7 +91,9 @@ async function lookupChoices(dir, filesClient, logger) {
         if (headers.length > 0) {
             logger.debug(`headers for ${files[i].name}: ${JSON.stringify(headers)}`)
             for(var j = 0; j < headers.length; j++){
-                var displayValue = `${files[i].name} - ${headers[j]}`
+                //removing filename prefix because picklists are broken again
+                // var displayValue = `${files[i].name} - ${headers[j]}`
+                var displayValue = `${headers[j]}`
                 logger.debug(displayValue)
                 choices.push(await choice(displayValue, headers[j], null, logger))
                 logger.debug(`choices from file ${files[i].name}: ${JSON.stringify(choices)}`)
