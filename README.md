@@ -57,21 +57,3 @@ by your project name and version.
 code.
 - More documentation for supported action fields can be found
 [here](https://github.com/apache/incubator-openwhisk-wskdeploy/blob/master/specification/html/spec_actions.md#actions).
-
-#### Action Dependencies
-
-- You have two options to resolve your actions' dependencies:
-
-  1. **Packaged action file**: Add your action's dependencies to the root
-   `package.json` and install them using `npm install`. Then set the `function`
-   field in `manifest.yml` to point to the **entry file** of your action
-   folder. We will use `parcelJS` to package your code and dependencies into a
-   single minified js file. The action will then be deployed as a single file.
-   Use this method if you want to reduce the size of your actions.
-
-  2. **Zipped action folder**: In the folder containing the action code add a
-     `package.json` with the action's dependencies. Then set the `function`
-     field in `manifest.yml` to point to the **folder** of that action. We will
-     install the required dependencies within that directory and zip the folder
-     before deploying it as a zipped action. Use this method if you want to keep
-     your action's dependencies separated.
