@@ -10,18 +10,17 @@ This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  I
 - lookup search is exact match only
 
 
-## Setup
+## Setup and configuration
 
 - [Get IO runtime credentials.](https://www.adobe.io/apis/experienceplatform/runtime/docs.html#!adobedocs/adobeio-runtime/master/getting_started.md) then Populate the `.env` file in the project root and fill it as shown [below](#env)
-- you'll need an Access Token to run the tests.  tests expect this to be in '.secrets/auth' and for the module to have an "access_token" property containing the access token string.  Instructions here: https://www.adobe.io/authentication/auth-methods.html#!AdobeDocs/adobeio-auth/master/JWT/JWT.md
+- Create a new IO Project and Workspace, then download your credentials from that workspace.  It will be a .json file named something like: 697GrayKangaroo-208192-Stage.json
+- run `aio app use <credentials file>` and follow the prompts to configure the app to use those credentials
+- run `aio app deploy` to deploy it
+- run `npm run upload-cc` to upload the `country-codes.csv` sample file.
+- To get the URI of your swagger file run `aio app get-url` this will be the "serviceSwagger" endpoint
+- In your Marketo instance, go to Admin -> Service Providers, then click on Add New Service.  Enter your URI and follow the installation and config steps to complete configuration.
+- to make other CSV files available for use, you may use `npm run upload --path=<path of file> --target=<uploaded filename>` 
 
-## Local Dev
-
-- `aio app run` to start your local Dev server
-- App will run on `localhost:9080` by default
-
-By default the UI will be served locally but actions will be deployed and served from Adobe I/O Runtime. To start a
-local serverless stack and also run your actions locally use the `aio app run --local` option.
 
 ## Test & Coverage
 
