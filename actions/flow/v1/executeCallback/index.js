@@ -1,6 +1,5 @@
 const { Core } = require('@adobe/aio-sdk')
 const { errorResponse, getBearerToken, stringParameters, checkMissingRequestInputs, handleFNF, validateSchema } = require('../../../../lib/actionUtils')
-const { ioFallbackKey } = require('../../../../.secrets/auth')
 const lts = require("../../../../lib/lookupTableSearch.js");
 const filesLib = require('@adobe/aio-lib-files');
 
@@ -131,7 +130,7 @@ async function main(params) {
         if (params.apiCallBackKey && params.apiCallBackKey.length > 0 && params.apiCallBackKey != "todo") {
             ioApiKey = params.apiCallBackKey
         } else {
-            ioApiKey = ioFallbackKey;
+            return errorResponse(400, "apiCallBackKey not found", logger)
         }
 
 

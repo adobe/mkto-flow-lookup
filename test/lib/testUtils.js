@@ -16,23 +16,6 @@ async function getInitializationError(activationId){
     return act.response.result.error;
 }
 
-// /**
-//  * 
-//  * @returns access token from .secrets/auth
-//  */
-// function getAccessToken(){
-//     return require('../../.secrets/auth').access_token
-// }
-
-// /**
-//  * Adds an access_token to a headers object
-//  * 
-//  * @param {Object} headers list of headers to add to
-//  */
-// function addTokenHeader(headers){
-//     headers["Authorization"] = `Bearer ${getAccessToken()}`
-// }
-
 function addOrgHeader(headers){
     headers["x-gw-ims-org-id"] = Config.get("ims.contexts.aio-4566206088344642952.ims_org_id");
 }

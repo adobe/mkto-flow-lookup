@@ -15,6 +15,7 @@ This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  I
 - [Get IO runtime credentials.](https://www.adobe.io/apis/experienceplatform/runtime/docs.html#!adobedocs/adobeio-runtime/master/getting_started.md) then Populate the `.env` file in the project root and fill it as shown [below](#env)
 - Create a new IO Project and Workspace, then download your credentials from that workspace.  It will be a .json file named something like: 697GrayKangaroo-208192-Stage.json
 - run `aio app use <credentials file>` and follow the prompts to configure the app to use those credentials
+- run `npm install` to install local dependencies
 - run `aio app deploy` to deploy it
 - run `npm run upload-cc` to upload the `country-codes.csv` sample file.
 - To get the URI of your swagger file run `aio app get-url` this will be the "serviceSwagger" endpoint
@@ -56,4 +57,4 @@ by your project name and version.
 - For each action, use the `function` field to indicate the path to the action
 code.
 - More documentation for supported action fields can be found
-[here](https://github.com/apache/incubator-openwhisk-wskdeploy/blob/master/specification/html/spec_actions.md#actions).
+[here](https://github.com/apache/incubator-openwhisk-wskdeploy/blob/master/specification/html/spec_actions.md#actions).F
