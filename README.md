@@ -19,7 +19,8 @@ This is a proof-of-concept for Marketo Self-service Flow steps on IO Runtime.  I
 - run `npm run upload-cc` to upload the `country-codes.csv` sample file.
 - To get the URI of your swagger file run `aio app get-url` this will be the "serviceSwagger" endpoint
 - In your Marketo instance, go to Admin -> Service Providers, then click on Add New Service.  Enter your URI and follow the installation and config steps to complete configuration.
-- to make other CSV files available for use, you may use `npm run upload --path=<path of file> --target=<uploaded filename>` 
+- to make other CSV files available for use, you may use `npm run upload-files --path=<path of file> --target=<uploaded filename>`
+- When you first install the flow step service, you should use the Refresh Picklist action to populate choices from your CSV files.
 
 
 ## Test & Coverage
@@ -57,21 +58,3 @@ by your project name and version.
 code.
 - More documentation for supported action fields can be found
 [here](https://github.com/apache/incubator-openwhisk-wskdeploy/blob/master/specification/html/spec_actions.md#actions).
-
-#### Action Dependencies
-
-- You have two options to resolve your actions' dependencies:
-
-  1. **Packaged action file**: Add your action's dependencies to the root
-   `package.json` and install them using `npm install`. Then set the `function`
-   field in `manifest.yml` to point to the **entry file** of your action
-   folder. We will use `parcelJS` to package your code and dependencies into a
-   single minified js file. The action will then be deployed as a single file.
-   Use this method if you want to reduce the size of your actions.
-
-  2. **Zipped action folder**: In the folder containing the action code add a
-     `package.json` with the action's dependencies. Then set the `function`
-     field in `manifest.yml` to point to the **folder** of that action. We will
-     install the required dependencies within that directory and zip the folder
-     before deploying it as a zipped action. Use this method if you want to keep
-     your action's dependencies separated.
