@@ -11,7 +11,7 @@ module.exports = {
           },
           "version": "0.3.0",
           "x-schemaVersion": "0.3.0",
-          "x-supportPage": "https://developers.marketo.com"
+          "x-supportContact": "https://developers.marketo.com"
         },
         "tags": [
           {
@@ -165,49 +165,62 @@ module.exports = {
                 }
               }
             }
-          },
-          "/brandIcon": {
-            "description": "Returns an icon to represent brand in Service Providers menu",
-            "get": {
-              "responses": {
-                "200": {
-                  "description": "OK",
-                  "content": {
-                    "image/*": {
-                      "schema": {
-                        "type": "string",
-                        "format": "binary"
-                      }
-                    }
+          }
+        },
+        //commenting out icon paths to bypass validation
+        // "/brandIcon": {
+        //   "description": "Returns an icon to represent brand in Service Providers menu",
+        //   "get": {
+        //     "responses": {
+        //       "200": {
+        //         "description": "OK",
+        //         "content": {
+        //           "image/*": {
+        //             "schema": {
+        //               "type": "string",
+        //               "format": "binary"
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
+        //   }
+        // },
+        // "/serviceIcon": {
+        //   "description": "Returns an icon to represent brand in Smart Campaign Flow Pallette, and in Service Providers menu",
+        //   "get": {
+        //     "responses": {
+        //       "200": {
+        //         "description": "OK",
+        //         "content": {
+        //           "image/*": {
+        //             "schema": {
+        //               "type": "string",
+        //               "format": "binary"
+        //             }
+        //           }
+        //         }
+        //       }
+        //     }
+        //   }
+        // },
+        "/getPicklist": {
+          "description": "Returns lists of choices for a flow or global parameter.",
+          "post": {
+            "summary": "Returns lists of choices for a flow or global parameter.",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/getPicklistRequest"
                   }
                 }
               }
-            }
-          },
-          "/serviceIcon": {
-            "description": "Returns an icon to represent brand in Smart Campaign Flow Pallette, and in Service Providers menu",
-            "get": {
-              "responses": {
-                "200": {
-                  "description": "OK",
-                  "content": {
-                    "image/*": {
-                      "schema": {
-                        "type": "string",
-                        "format": "binary"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "/getPicklist": {
-            "description": "Returns lists of choices for a flow or global parameter.",
-            "post": {
-              "summary": "Returns lists of choices for a flow or global parameter.",
-              "requestBody": {
-                "required": true,
+            },
+            "responses": {
+              "200": {
+                "description": "Returns lists of choices for a flow or global parameter.",
                 "content": {
                   "application/json": {
                     "schema": {
